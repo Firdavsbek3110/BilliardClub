@@ -244,8 +244,8 @@ async function testLogin(){
   el.innerHTML = '<div class="loading">⏳ Sinab ko\'rilmoqda...</div>';
   log("🔐 Test 3: Login sinovi boshlandi");
 
-  const email = "firdavsbek@billiard.local";
-  const password = "Ziyo3110";
+  const email = "firdavsbekibrohimov39@billiar.local";
+  const password = "3110";
 
   try {
     const cred = await auth.signInWithEmailAndPassword(email, password);
@@ -345,8 +345,8 @@ async function createAdmin(){
   el.innerHTML = '<div class="status warn">⏳ Yaratilmoqda...</div>';
   log("🔧 Bosh admin yaratilmoqda...");
 
-  const email = "firdavsbek@billiard.local";
-  const password = "Ziyo3110";
+  const email = "firdavsbekibrohimov39@billiar.local";
+  const password = "311010";
 
   try {
     let uid = null;
@@ -408,8 +408,8 @@ async function deleteAdmin(){
   log("🔧 Bosh admin o'chirilmoqda...");
 
   try {
-    const email = "firdavsbek@billiard.local";
-    const password = "Ziyo3110";
+    const email = "firdavsbekibrohimov39@billiar.local";
+    const password = "311010";
 
     const cred = await auth.signInWithEmailAndPassword(email, password);
     await cred.user.delete();
