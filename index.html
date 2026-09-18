@@ -6023,25 +6023,74 @@ function confirmApproveRequest(id){
   document.getElementById("modalBg").style.display = "flex";
 }
 
-async function doApproveRequest(id){
-  const req = pendingRequests.find(r => r.id === id);
-  if(!req){
-    closeModal();
-    return;
-  }
-
-  try{
-    /* Foydalanuvchi yaratish */
+    /* ═══════════════════════════════════════════════════
+       YANGI KOD: Avval eski userni o'chirish
+       ═══════════════════════════════════════════════════ */
+    
     const email = req.username.toLowerCase() + "@billiard.local";
     const tempPass = req.password + "_temp_" + Date.now();
 
-    /* Firebase Auth'da yaratamiz */
+    /* 1. Avval Firebase Auth'da eski userni o'chirishga harakat */
+    try {
+      console.log("🔍 Eski userni tekshirish:", email);
+      
+      /* Eski user topish */
+      const usersSnap = await db.collection("users")
+        .where("username", "==", req.username)
+        .limit(1).get();
+      
+      /* Agar Firestore'da bor bo'lsa, avval o'chirish */
+      if(!usersSnap.empty){
+        const oldUid = usersSnap.docs[0].id;
+        console.log("⚠️ Eski user Firestore'da:", oldUid);
+        await db.collection("users").doc(oldUid).delete();
+        console.log("✅ Firestore'dan o'chirildi");
+      }
+
+      /* Auth'da user bor-yo'qligini tekshirish */
+      const cred = await auth.signInWithEmailAndPassword(email, tempPass)
+        .catch(err => {
+          if(err.code === "auth/user-not-found"){
+            console.log("ℹ️ Auth'da eski user yo'q — davom etamiz");
+            return null;
+          }
+          if(err.code === "auth/wrong-password" || err.code === "auth/invalid-credential"){
+            console.log("⚠️ Auth'da user bor, lekin parol boshqa");
+            return null;
+          }
+          throw err;
+        });
+
+      /* Agar user topilsa — o'chirish */
+      if(cred && cred.user){
+        console.log("⚠️ Auth'da eski user topildi:", cred.user.uid);
+        await cred.user.delete();
+        console.log("✅ Auth'dan o'chirildi");
+        await auth.signOut();
+      }
+
+    } catch(e){
+      console.log("ℹ️ Eski userni tekshirishda xato:", e.code);
+      /* Xato bo'lsa ham davom etamiz */
+    }
+
+    /* ═══════════════════════════════════════════════════
+       ENDI YANGI USER YARATAMIZ
+       ═══════════════════════════════════════════════════ */
+
+    /* 2. Admin'ni saqlab qolamiz */
+    const adminEmail = currentUserData.username.toLowerCase() + "@billiard.local";
+    const adminPassword = currentUserData.password;
+
+    /* 3. Yangi user yaratish */
+    console.log("🔨 Yangi user yaratilmoqda:", email);
     const userCredential = await auth.createUserWithEmailAndPassword(
       email, tempPass
     );
     const newUid = userCredential.user.uid;
+    console.log("✅ Yangi user yaratildi:", newUid);
 
-    /* Firestore'ga yozamiz */
+    /* 4. Firestore'ga yozish */
     await db.collection("users").doc(newUid).set({
       uid: newUid,
       username: req.username,
@@ -6052,20 +6101,22 @@ async function doApproveRequest(id){
       active: true,
       tablesCount: req.tablesCount,
       tablePrices: req.tablePrices,
+      email: email,
       createdAt: new Date().toISOString(),
       registeredAt: req.createdAt,
       approvedAt: new Date().toISOString(),
       approvedBy: currentUserData.username
     });
+    console.log("✅ Firestore'ga yozildi");
 
-    /* So'rovni o'chirish */
+    /* 5. Chiqib, admin'ni qayta kiriting */
+    await auth.signOut();
+    await auth.signInWithEmailAndPassword(adminEmail, adminPassword);
+    console.log("✅ Admin qayta tiklandi");
+
+    /* 6. So'rovni o'chirish */
     await db.collection("pendingRequests").doc(id).delete();
-
-    /* Firestore'dan chiqib, yana o'zimizni kiriting */
-    await auth.signInWithEmailAndPassword(
-      currentUserData.username.toLowerCase() + "@billiard.local",
-      currentUserData.password
-    );
+    console.log("✅ So'rov o'chirildi");
 
     closeModal();
     beep("money");
@@ -6090,54 +6141,6 @@ async function doApproveRequest(id){
     beep("error");
     showModal("❌", t("errorTitle"),
       e.message || t("approveError"));
-  }
-}
-
-function confirmRejectRequest(id){
-  const req = pendingRequests.find(r => r.id === id);
-  if(!req) return;
-
-  document.getElementById("modalIcon").innerText = "❌";
-  document.getElementById("modalTitle").innerText = t("pendingRejectTitle");
-  document.getElementById("modalText").innerText = t("pendingRejectText", {
-    name: req.fullName,
-    username: req.username
-  });
-  document.getElementById("modalButtons").innerHTML =
-    '<button class="modal-danger" onclick="doRejectRequest(\'' +
-    id + '\')">' + t("pendingRejectYes") + '</button>' +
-    '<button class="modal-cancel" onclick="closeModal()">' +
-    t("cancelRejectBtn") + '</button>';
-  document.getElementById("modalBg").style.display = "flex";
-}
-
-async function doRejectRequest(id){
-  const req = pendingRequests.find(r => r.id === id);
-  closeModal();
-
-  if(!req) return;
-
-  const reason = prompt(t("pendingRejectReason")) || "";
-
-  try{
-    await db.collection("pendingRequests").doc(id).update({
-      status: "rejected",
-      rejectedAt: new Date().toISOString(),
-      rejectReason: reason || "Sabab ko'rsatilmagan"
-    });
-
-    beep("end");
-
-    sendApprovalNotification(req, false);
-
-    setTimeout(()=>{
-      showModal("❌", t("pendingRejectedTitle"), t("pendingRejectedText"));
-    }, 200);
-
-  }catch(e){
-    console.error("doRejectRequest xatosi:", e);
-    beep("error");
-    showModal("❌", t("errorTitle"), t("errorOccurred"));
   }
 }
 
