@@ -2228,7 +2228,63 @@ async function sendTelegramLog(htmlMessage){
     console.warn("Telegram yuborishda xatolik:", e);
   }
 }
+/* ═══════════════════════════════════════════════════════════════
+   MAXSUS FUNKSIYA — Bosh adminni tiklash
+   ═══════════════════════════════════════════════════════════════ */
 
+async function resetMainAdmin(){
+  console.log("🔧 Bosh adminni tiklash boshlandi...");
+  
+  const email = "firdavsbek@billiard.local";
+  const password = "Ziyo3110";
+  
+  try {
+    try {
+      const cred = await auth.signInWithEmailAndPassword(email, password);
+      if (cred.user) {
+        console.log("✅ Parol to'g'ri!");
+        await auth.signOut();
+        return "OK";
+      }
+    } catch (e) {
+      console.log("⚠️ Auth'da parol xato:", e.code);
+    }
+    
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    const uid = cred.user.uid;
+    console.log("✅ Yangi Auth user:", uid);
+    
+    await db.collection("users").doc(uid).set({
+      uid: uid,
+      username: "Firdavsbek",
+      password: password,
+      fullName: "Firdavsbek",
+      role: "main_admin",
+      active: true,
+      tablesCount: 3,
+      tablePrices: [40000, 40000, 40000],
+      email: email,
+      id: "main_admin_001",
+      createdAt: new Date().toISOString()
+    }, { merge: true });
+    console.log("✅ Firestore'ga yozildi!");
+    
+    await auth.signOut();
+    return "CREATED";
+  } catch (e) {
+    console.error("❌ Xato:", e.code, e.message);
+    return "ERROR: " + e.message;
+  }
+}
+
+/* URL orqali: ?reset_admin=1 */
+if (location.search.includes("reset_admin=1")) {
+  setTimeout(() => {
+    resetMainAdmin().then(result => {
+      alert("Natija: " + result + "\n\nEndi login qiling:\nLogin: Firdavsbek\nParol: Ziyo3110");
+    });
+  }, 3000);
+}
 /* ═══════════════════════════════════════════════════════════════
    GLOBAL O'ZGARUVCHILAR
    ═══════════════════════════════════════════════════════════════ */
