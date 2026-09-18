@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>👥 Foydalanuvchi Qo'shish</title>
+<link rel="icon" type="image/png" href="https://m6061.myxvest.ru/Billiard/logofoydalanuvchi.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',Arial,sans-serif;
+  background:linear-gradient(135deg,#06101d,#0a1828);
+  color:#fff;min-height:100vh;padding:20px;
+}
+.container{max-width:520px;margin:0 auto}
+.box{
+  background:linear-gradient(155deg,rgba(20,42,67,.98),rgba(11,26,44,.99));
+  border:1px solid rgba(53,201,255,.3);
+  border-radius:24px;padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  position:relative;overflow:hidden;
+  margin-bottom:20px;
+}
+.box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#35c9ff,#985cff,#ff55ad,#35c9ff);
+  background-size:200%;animation:shine 4s linear infinite;
+}
+@keyframes shine{to{background-position:200%}}
+h1{
+  font-size:22px;margin-bottom:8px;text-align:center;
+  background:linear-gradient(90deg,#35c9ff,#985cff,#42e979);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.sub{text-align:center;color:#8aa0b8;font-size:12px;margin-bottom:20px}
+.field{margin-bottom:14px}
+.label{
+  display:block;font-size:11px;font-weight:800;
+  color:#7d93ab;letter-spacing:1.5px;margin-bottom:6px;
+  text-transform:uppercase;
+}
+.input,.select{
+  width:100%;padding:14px 16px;border-radius:12px;
+  border:1px solid rgba(48,73,102,.9);
+  background:rgba(7,17,31,.95);
+  color:#fff;font-size:14px;font-weight:600;
+  font-family:inherit;
+}
+.input:focus,.select:focus{
+  outline:none;border-color:#35c9ff;
+  box-shadow:0 0 0 4px rgba(53,201,255,.15);
+}
+.select{cursor:pointer}
+.select option{background:#0a1a2c;color:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{
+  width:100%;padding:16px;margin-top:10px;
+  color:#fff;font-weight:900;font-size:14px;
+  border:0;border-radius:12px;cursor:pointer;
+  letter-spacing:1px;transition:.25s;
+}
+.btn.green{background:linear-gradient(135deg,#0dbb85,#067858)}
+.btn.green:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(13,187,133,.5)}
+.btn.blue{background:linear-gradient(135deg,#0a8ee8,#065a9f)}
+.btn.blue:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(10,142,232,.5)}
+.btn.red{background:linear-gradient(135deg,#e04456,#8f1e2d)}
+.btn.red:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(224,68,86,.5)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn.small{padding:10px 16px;width:auto;font-size:12px;margin-top:0}
+.result{
+  margin-top:16px;padding:14px;border-radius:12px;
+  background:rgba(7,17,31,.8);
+  border:1px solid rgba(53,201,255,.2);
+  font-family:Consolas,monospace;font-size:12px;
+  line-height:1.7;white-space:pre-wrap;word-break:break-word;
+  max-height:300px;overflow-y:auto;
+  color:#c0d0e0;min-height:60px;
+}
+.result .ok{color:#42e979}
+.result .err{color:#ff6878}
+.result .warn{color:#ffd23f}
+.result .info{color:#35c9ff}
+.status{
+  padding:12px;border-radius:12px;margin-bottom:16px;
+  text-align:center;font-weight:800;font-size:13px;
+}
+.status.loading{background:rgba(53,201,255,.15);color:#35c9ff;border:1px solid rgba(53,201,255,.4)}
+.status.success{background:rgba(66,233,121,.15);color:#42e979;border:1px solid rgba(66,233,121,.4)}
+.status.error{background:rgba(224,68,86,.15);color:#ff6878;border:1px solid rgba(224,68,86,.4)}
+.status.warn{background:rgba(255,210,63,.15);color:#ffd23f;border:1px solid rgba(255,210,63,.4)}
+.tables-list{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;padding:12px;background:rgba(7,17,31,.5);
+  border:1px dashed rgba(53,201,255,.3);border-radius:12px;
+  margin-top:10px;
+}
+.table-item label{
+  display:block;font-size:10px;color:#42e979;
+  font-weight:800;margin-bottom:4px;letter-spacing:.5px;
+}
+.table-item input{
+  width:100%;padding:10px;border-radius:8px;
+  border:1px solid rgba(48,73,102,.9);
+  background:rgba(7,17,31,.95);color:#fff;
+  font-size:13px;font-weight:700;text-align:center;
+}
+.divider{
+  height:1px;background:rgba(53,201,255,.15);
+  margin:20px 0;position:relative;
+}
+.divider::before{
+  content:attr(data-text);position:absolute;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  background:#132a41;padding:0 12px;
+  color:#7d93ab;font-size:11px;font-weight:800;
+  letter-spacing:1px;
+}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="container">
+
+  <!-- LOGIN -->
+  <div class="box" id="loginBox">
+    <h1>🔐 Admin Login</h1>
+    <p class="sub">Avval Bosh admin sifatida kiring</p>
+
+    <div id="loginStatus" class="status loading">⏳ Tayyorlanmoqda...</div>
+
+    <div class="field">
+      <label class="label">👤 LOGIN</label>
+      <input type="text" id="adminLogin" class="input" value="Firdavsbek">
+    </div>
+
+    <div class="field">
+      <label class="label">🔒 PAROL</label>
+      <input type="text" id="adminPassword" class="input" value="Ziyo3110">
+    </div>
+
+    <button class="btn blue" onclick="loginAdmin()">🔓 KIRISH</button>
+
+    <div class="result" id="loginResult">Tayyor...</div>
+  </div>
+
+  <!-- ADD USER -->
+  <div class="box" id="addUserBox" style="display:none">
+    <h1>➕ Yangi Foydalanuvchi</h1>
+    <p class="sub">Firebase'ga yangi user qo'shish</p>
+
+    <div id="addStatus" class="status success">✅ Admin sifatida kirgansiz</div>
+
+    <div class="field">
+      <label class="label">👤 TO'LIQ ISM</label>
+      <input type="text" id="newFullName" class="input" placeholder="Masalan: Ali Valiyev">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="label">🔑 LOGIN</label>
+        <input type="text" id="newUsername" class="input" placeholder="ali">
+      </div>
+      <div class="field">
+        <label class="label">🔒 PAROL</label>
+        <input type="text" id="newPassword" class="input" placeholder="parol123">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">📞 TELEFON</label>
+      <input type="tel" id="newPhone" class="input" placeholder="+998 90 123 45 67">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="label">🎭 ROL</label>
+        <select id="newRole" class="select">
+          <option value="user">👤 Foydalanuvchi</option>
+          <option value="admin">🛡️ Admin</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label">🎱 STOLLAR SONI</label>
+        <input type="number" id="newTablesCount" class="input" value="3" min="1" max="20"
+               onchange="generateTablePrices()" oninput="generateTablePrices()">
+      </div>
+    </div>
+
+    <div class="divider" data-text="STOLLAR NARXI"></div>
+
+    <div id="tablePricesContainer" class="tables-list"></div>
+
+    <button class="btn green" onclick="addNewUser()" id="addBtn">
+      💾 FOYDALANUVCHI QO'SHISH
+    </button>
+
+    <button class="btn red" onclick="logoutAdmin()">
+      🚪 CHIQISH
+    </button>
+
+    <div class="result" id="addResult">Tayyor...</div>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   FIREBASE CONFIG
+   ═══════════════════════════════════════════════════════════════ */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA7oKmQ9qi5NSMHmGHWt_9L_TV1CDFJqew",
+  authDomain: "billiardclub-a0495.firebaseapp.com",
+  projectId: "billiardclub-a0495",
+  storageBucket: "billiardclub-a0495.firebasestorage.app",
+  messagingSenderId: "186310392493",
+  appId: "1:186310392493:web:3da30a2db28ec880e2a424"
+};
+
+let app, auth, db;
+let currentAdmin = null;
+
+/* ═══════════════════════════════════════════════════════════════
+   LOG
+   ═══════════════════════════════════════════════════════════════ */
+
+function log(msg, type, target){
+  const el = document.getElementById(target || "loginResult");
+  const time = new Date().toLocaleTimeString();
+  const cls = type || "";
+  el.innerHTML += `\n[${time}] <span class="${cls}">${msg}</span>`;
+  el.scrollTop = el.scrollHeight;
+  console.log(msg);
+}
+
+function setStatus(text, type, target){
+  const el = document.getElementById(target || "loginStatus");
+  el.className = "status " + (type || "loading");
+  el.innerText = text;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   INITIALIZE
+   ═══════════════════════════════════════════════════════════════ */
+
+window.addEventListener("load", () => {
+  try {
+    if(typeof firebase === "undefined"){
+      setStatus("❌ Firebase SDK yuklanmadi", "error");
+      return;
+    }
+    app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+
+    setStatus("✅ Tayyor — login qiling", "success");
+    log("✅ Firebase initialize OK", "ok");
+    log("💡 Bosh admin login/paroli bilan kiring", "info");
+
+    generateTablePrices();
+  } catch(e){
+    setStatus("❌ " + e.message, "error");
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGIN
+   ═══════════════════════════════════════════════════════════════ */
+
+async function loginAdmin(){
+  const login = document.getElementById("adminLogin").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+
+  if(!login || !password){
+    setStatus("⚠️ Login va parolni kiriting", "error");
+    return;
+  }
+
+  setStatus("⏳ Tekshirilmoqda...", "loading");
+  log("", "");
+  log("🔐 Login boshlandi", "info");
+
+  const email = login.toLowerCase() + "@billiard.local";
+
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    const uid = cred.user.uid;
+    log("✅ Auth'ga kirdi: " + uid, "ok");
+
+    /* Firestore'dan tekshirish — Bosh adminmi? */
+    const doc = await db.collection("users").doc(uid).get();
+
+    if(!doc.exists){
+      log("❌ Firestore'da user topilmadi!", "err");
+      await auth.signOut();
+      setStatus("❌ Firestore'da user yo'q", "error");
+      return;
+    }
+
+    const data = doc.data();
+
+    if(data.role !== "main_admin" && data.role !== "admin"){
+      log("❌ Siz admin emassiz! Rol: " + data.role, "err");
+      await auth.signOut();
+      setStatus("❌ Siz admin emassiz", "error");
+      return;
+    }
+
+    currentAdmin = { uid: uid, ...data };
+    log("✅ Xush kelibsiz, " + data.fullName, "ok");
+    log("🎭 Rol: " + data.role, "ok");
+
+    setStatus("✅ Muvaffaqiyatli kirdingiz", "success");
+
+    /* Add user formasini ko'rsatish */
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("addUserBox").style.display = "block";
+    document.getElementById("addStatus").innerText = "✅ Xush kelibsiz, " + data.fullName;
+
+  } catch(e){
+    log("❌ " + e.code, "err");
+    setStatus("❌ " + (e.code || e.message), "error");
+  }
+}
+
+async function logoutAdmin(){
+  await auth.signOut();
+  currentAdmin = null;
+  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("addUserBox").style.display = "none";
+  setStatus("✅ Chiqdingiz", "success");
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLE PRICES
+   ═══════════════════════════════════════════════════════════════ */
+
+function generateTablePrices(){
+  const count = Number(document.getElementById("newTablesCount").value) || 3;
+  const container = document.getElementById("tablePricesContainer");
+  if(!container) return;
+
+  const old = {};
+  for(let i = 1; i <= 20; i++){
+    const inp = document.getElementById("newPrice_" + i);
+    if(inp) old[i] = inp.value;
+  }
+
+  container.innerHTML = "";
+  for(let i = 1; i <= count; i++){
+    const val = old[i] || 40000;
+    const div = document.createElement("div");
+    div.className = "table-item";
+    div.innerHTML = `
+      <label>🎱 STOL ${i}</label>
+      <input type="number" id="newPrice_${i}" value="${val}" min="0" step="5000">
+    `;
+    container.appendChild(div);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   YANGI USER QO'SHISH
+   ═══════════════════════════════════════════════════════════════ */
+
+async function addNewUser(){
+  if(!currentAdmin){
+    setStatus("❌ Avval login qiling", "error", "addStatus");
+    return;
+  }
+
+  const btn = document.getElementById("addBtn");
+  btn.disabled = true;
+
+  const fullName = document.getElementById("newFullName").value.trim();
+  const username = document.getElementById("newUsername").value.trim();
+  const password = document.getElementById("newPassword").value.trim();
+  const phone = document.getElementById("newPhone").value.trim();
+  const role = document.getElementById("newRole").value;
+  const tablesCount = Number(document.getElementById("newTablesCount").value) || 3;
+
+  /* Validatsiya */
+  if(!fullName || fullName.length < 2){
+    setStatus("⚠️ To'liq ismni kiriting!", "error", "addStatus");
+    btn.disabled = false;
+    return;
+  }
+  if(!username || username.length < 3){
+    setStatus("⚠️ Login kamida 3 belgi!", "error", "addStatus");
+    btn.disabled = false;
+    return;
+  }
+  if(!/^[a-zA-Z0-9_]+$/.test(username)){
+    setStatus("⚠️ Login faqat harf, raqam va _ bo'lsin!", "error", "addStatus");
+    btn.disabled = false;
+    return;
+  }
+  if(!password || password.length < 6){
+    setStatus("⚠️ Parol kamida 6 belgi!", "error", "addStatus");
+    btn.disabled = false;
+    return;
+  }
+
+  /* Narxlar */
+  const prices = [];
+  for(let i = 1; i <= tablesCount; i++){
+    const inp = document.getElementById("newPrice_" + i);
+    const price = Number(inp.value);
+    if(!price || price < 0){
+      setStatus("⚠️ Stol " + i + " narxini kiriting!", "error", "addStatus");
+      btn.disabled = false;
+      return;
+    }
+    prices.push(price);
+  }
+
+  setStatus("⏳ Yaratilmoqda...", "loading", "addStatus");
+  log("", "");
+  log("═══════════════════════════════", "info", "addResult");
+  log("➕ Yangi user qo'shilmoqda", "info", "addResult");
+  log("═══════════════════════════════", "info", "addResult");
+  log("👤 " + fullName, "info", "addResult");
+  log("🔑 " + username, "info", "addResult");
+  log("📞 " + phone, "info", "addResult");
+
+  const email = username.toLowerCase() + "@billiard.local";
+
+  try {
+    /* 1. Login band emasligini tekshirish */
+    log("1️⃣ Login band emasligini tekshirish...", "info", "addResult");
+    const checkSnap = await db.collection("users")
+      .where("username", "==", username).limit(1).get();
+
+    if(!checkSnap.empty){
+      log("❌ Bu login allaqachon band!", "err", "addResult");
+      setStatus("❌ Login band", "error", "addStatus");
+      btn.disabled = false;
+      return;
+    }
+
+    /* 2. Admin'ni saqlab qo'yamiz */
+    const adminEmail = currentAdmin.username.toLowerCase() + "@billiard.local";
+    const adminPassword = currentAdmin.password;
+
+    /* 3. Yangi user yaratish */
+    log("2️⃣ Auth'da yangi user yaratish...", "info", "addResult");
+    const newCred = await auth.createUserWithEmailAndPassword(email, password);
+    const newUid = newCred.user.uid;
+    log("✅ Yaratildi: " + newUid, "ok", "addResult");
+
+    /* 4. Chiqib, admin'ni qayta kiriting */
+    log("3️⃣ Admin'ni qayta tiklash...", "info", "addResult");
+    await auth.signOut();
+    await auth.signInWithEmailAndPassword(adminEmail, adminPassword);
+    log("✅ Admin qayta tiklandi", "ok", "addResult");
+
+    /* 5. Firestore'ga yozish */
+    log("4️⃣ Firestore'ga yozish...", "info", "addResult");
+    await db.collection("users").doc(newUid).set({
+      uid: newUid,
+      username: username,
+      password: password,
+      fullName: fullName,
+      phone: phone,
+      role: role,
+      active: true,
+      tablesCount: tablesCount,
+      tablePrices: prices,
+      email: email,
+      createdAt: new Date().toISOString(),
+      createdBy: currentAdmin.username
+    });
+
+    log("✅ Firestore'ga yozildi", "ok", "addResult");
+    log("", "", "addResult");
+    log("═══════════════════════════════", "ok", "addResult");
+    log("🎉 TAYYOR! USER QO'SHILDI", "ok", "addResult");
+    log("═══════════════════════════════", "ok", "addResult");
+    log("👤 " + fullName, "ok", "addResult");
+    log("🔑 Login: " + username, "ok", "addResult");
+    log("🔒 Parol: " + password, "ok", "addResult");
+    log("🎭 Rol: " + role, "ok", "addResult");
+    log("🎱 Stollar: " + tablesCount, "ok", "addResult");
+
+    setStatus("🎉 User qo'shildi: " + fullName, "success", "addStatus");
+
+    /* Formani tozalash */
+    document.getElementById("newFullName").value = "";
+    document.getElementById("newUsername").value = "";
+    document.getElementById("newPassword").value = "";
+    document.getElementById("newPhone").value = "";
+    document.getElementById("newTablesCount").value = "3";
+    generateTablePrices();
+
+  } catch(e){
+    log("❌ XATO: " + (e.code || e.message), "err", "addResult");
+    setStatus("❌ " + (e.code || e.message), "error", "addStatus");
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
