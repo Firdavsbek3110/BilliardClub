@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔧 Admin Setup</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Segoe UI',Arial,sans-serif;
+  background:linear-gradient(135deg,#06101d,#0a1828);
+  color:#fff;min-height:100vh;padding:20px;
+  display:flex;justify-content:center;align-items:center;
+}
+.box{
+  max-width:500px;width:100%;
+  background:linear-gradient(155deg,rgba(20,42,67,.98),rgba(11,26,44,.99));
+  border:1px solid rgba(53,201,255,.3);
+  border-radius:24px;padding:30px;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  position:relative;overflow:hidden;
+}
+.box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#35c9ff,#985cff,#ff55ad,#35c9ff);
+  background-size:200%;animation:shine 4s linear infinite;
+}
+@keyframes shine{to{background-position:200%}}
+h1{
+  font-size:24px;margin-bottom:8px;text-align:center;
+  background:linear-gradient(90deg,#35c9ff,#985cff,#42e979);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.sub{text-align:center;color:#8aa0b8;font-size:12px;margin-bottom:20px}
+.field{margin-bottom:16px}
+.label{
+  display:block;font-size:11px;font-weight:800;
+  color:#7d93ab;letter-spacing:1.5px;margin-bottom:6px;
+}
+.input{
+  width:100%;padding:14px 16px;border-radius:12px;
+  border:1px solid rgba(48,73,102,.9);
+  background:rgba(7,17,31,.95);
+  color:#fff;font-size:14px;font-weight:600;
+}
+.input:focus{
+  outline:none;border-color:#35c9ff;
+  box-shadow:0 0 0 4px rgba(53,201,255,.15);
+}
+.btn{
+  width:100%;padding:16px;margin-top:10px;
+  background:linear-gradient(135deg,#0dbb85,#067858);
+  color:#fff;font-weight:900;font-size:14px;
+  border:0;border-radius:12px;cursor:pointer;
+  letter-spacing:1px;transition:.25s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(13,187,133,.5)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.red{background:linear-gradient(135deg,#e04456,#8f1e2d)}
+.btn.blue{background:linear-gradient(135deg,#0a8ee8,#065a9f)}
+.result{
+  margin-top:20px;padding:16px;border-radius:12px;
+  background:rgba(7,17,31,.8);
+  border:1px solid rgba(53,201,255,.2);
+  font-family:Consolas,monospace;font-size:12px;
+  line-height:1.7;white-space:pre-wrap;word-break:break-word;
+  max-height:300px;overflow-y:auto;
+  color:#c0d0e0;min-height:60px;
+}
+.result .ok{color:#42e979}
+.result .err{color:#ff6878}
+.result .warn{color:#ffd23f}
+.result .info{color:#35c9ff}
+.status{
+  padding:14px;border-radius:12px;margin-bottom:16px;
+  text-align:center;font-weight:800;font-size:14px;
+}
+.status.loading{background:rgba(53,201,255,.15);color:#35c9ff;border:1px solid rgba(53,201,255,.4)}
+.status.success{background:rgba(66,233,121,.15);color:#42e979;border:1px solid rgba(66,233,121,.4)}
+.status.error{background:rgba(224,68,86,.15);color:#ff6878;border:1px solid rgba(224,68,86,.4)}
+</style>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="box">
+  <h1>🔧 Bosh Admin Setup</h1>
+  <p class="sub">Bir marta bosib, Bosh adminni yaratasiz</p>
+
+  <div id="status" class="status loading">⏳ Tayyorlanmoqda...</div>
+
+  <div class="field">
+    <label class="label">🔑 LOGIN</label>
+    <input type="text" id="adminLogin" class="input" value="Firdavsbek">
+  </div>
+
+  <div class="field">
+    <label class="label">🔒 PAROL</label>
+    <input type="text" id="adminPassword" class="input" value="Ziyo3110">
+  </div>
+
+  <div class="field">
+    <label class="label">👤 TO'LIQ ISM</label>
+    <input type="text" id="adminFullName" class="input" value="Firdavsbek">
+  </div>
+
+  <div class="field">
+    <label class="label">🎱 STOLLAR SONI</label>
+    <input type="number" id="adminTables" class="input" value="3" min="1" max="20">
+  </div>
+
+  <button class="btn" id="createBtn" onclick="createAdmin()">
+    ✨ BOSH ADMINNI YARATISH
+  </button>
+
+  <button class="btn red" onclick="deleteAdmin()">
+    🗑️ BOSH ADMINNI O'CHIRISH
+  </button>
+
+  <button class="btn blue" onclick="testLogin()">
+    🔐 LOGIN TESTINI SINASH
+  </button>
+
+  <div class="result" id="result">Tayyor...</div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   FIREBASE CONFIG
+   ═══════════════════════════════════════════════════════════════ */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA7oKmQ9qi5NSMHmGHWt_9L_TV1CDFJqew",
+  authDomain: "billiardclub-a0495.firebaseapp.com",
+  projectId: "billiardclub-a0495",
+  storageBucket: "billiardclub-a0495.firebasestorage.app",
+  messagingSenderId: "186310392493",
+  appId: "1:186310392493:web:3da30a2db28ec880e2a424"
+};
+
+let auth, db;
+let app;
+
+/* Log funksiyasi */
+function log(msg, type){
+  const el = document.getElementById("result");
+  const time = new Date().toLocaleTimeString();
+  const cls = type || "";
+  el.innerHTML += `\n[${time}] <span class="${cls}">${msg}</span>`;
+  el.scrollTop = el.scrollHeight;
+  console.log(msg);
+}
+
+function setStatus(text, type){
+  const el = document.getElementById("status");
+  el.className = "status " + (type || "loading");
+  el.innerText = text;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FIREBASE INITIALIZE
+   ═══════════════════════════════════════════════════════════════ */
+
+window.addEventListener("load", () => {
+  try {
+    if(typeof firebase === "undefined"){
+      setStatus("❌ Firebase SDK yuklanmadi!", "error");
+      log("❌ Firebase SDK yuklanmadi — internet aloqasini tekshiring", "err");
+      return;
+    }
+
+    app = firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+
+    log("✅ Firebase initialize muvaffaqiyatli", "ok");
+    log("📊 Project: " + firebaseConfig.projectId, "info");
+    log("🌐 Auth Domain: " + firebaseConfig.authDomain, "info");
+    log("", "");
+    log("💡 'BOSH ADMINNI YARATISH' tugmasini bosing", "info");
+
+    setStatus("✅ Tayyor — tugmani bosing", "success");
+
+  } catch(e){
+    setStatus("❌ Xato: " + e.message, "error");
+    log("❌ " + e.message, "err");
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN YARATISH
+   ═══════════════════════════════════════════════════════════════ */
+
+async function createAdmin(){
+  const btn = document.getElementById("createBtn");
+  btn.disabled = true;
+
+  const login = document.getElementById("adminLogin").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+  const fullName = document.getElementById("adminFullName").value.trim();
+  const tablesCount = Number(document.getElementById("adminTables").value) || 3;
+
+  if(!login || !password || !fullName){
+    setStatus("⚠️ Barcha maydonlarni to'ldiring!", "error");
+    btn.disabled = false;
+    return;
+  }
+
+  setStatus("⏳ Yaratilmoqda...", "loading");
+  log("", "");
+  log("═══════════════════════════════════", "info");
+  log("🔧 Bosh admin yaratish boshlandi", "info");
+  log("═══════════════════════════════════", "info");
+
+  const email = login.toLowerCase() + "@billiard.local";
+  log("📧 Email: " + email, "info");
+  log("🔑 Login: " + login, "info");
+  log("🔒 Parol: " + password, "info");
+  log("👤 Ism: " + fullName, "info");
+  log("", "");
+
+  try {
+    let uid = null;
+
+    /* 1. Auth'da mavjudligini tekshirish */
+    log("1️⃣ Auth'da userni tekshirish...", "info");
+    try {
+      const cred = await auth.signInWithEmailAndPassword(email, password);
+      uid = cred.user.uid;
+      log("✅ User mavjud: " + uid, "ok");
+      log("   Parol to'g'ri!", "ok");
+      await auth.signOut();
+    } catch(signInErr){
+      log("⚠️ Auth'da yo'q: " + signInErr.code, "warn");
+
+      /* 2. Yangi user yaratish */
+      log("2️⃣ Yangi user yaratish...", "info");
+      try {
+        const cred = await auth.createUserWithEmailAndPassword(email, password);
+        uid = cred.user.uid;
+        log("✅ Yangi user yaratildi: " + uid, "ok");
+        await auth.signOut();
+      } catch(createErr){
+        log("❌ Yaratishda xato: " + createErr.code, "err");
+        throw createErr;
+      }
+    }
+
+    /* 3. Firestore'ga yozish */
+    log("3️⃣ Firestore'ga yozish...", "info");
+    const prices = [];
+    for(let i = 0; i < tablesCount; i++) prices.push(40000);
+
+    await db.collection("users").doc(uid).set({
+      uid: uid,
+      username: login,
+      password: password,
+      fullName: fullName,
+      role: "main_admin",
+      active: true,
+      tablesCount: tablesCount,
+      tablePrices: prices,
+      email: email,
+      id: "main_admin_001",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+
+    log("✅ Firestore'ga yozildi", "ok");
+
+    /* 4. Natija */
+    log("", "");
+    log("═══════════════════════════════════", "ok");
+    log("🎉 TAYYOR! BOSH ADMIN YARATILDI", "ok");
+    log("═══════════════════════════════════", "ok");
+    log("", "");
+    log("🔑 Login: " + login, "ok");
+    log("🔒 Parol: " + password, "ok");
+    log("🆔 UID: " + uid, "ok");
+    log("", "");
+    log("📱 Endi saytga kiring:", "info");
+    log("   https://firdavsbek3110.github.io/BilliardClub", "info");
+    log("", "");
+    log("Login: " + login, "warn");
+    log("Parol: " + password, "warn");
+
+    setStatus("🎉 Bosh admin tayyor! Saytga kiring.", "success");
+
+  } catch(e){
+    log("", "");
+    log("❌ XATO: " + (e.code || e.message), "err");
+
+    let hint = "";
+    if(e.code === "auth/api-key-not-valid.-please-pass-a-valid-api-key."){
+      hint = "API kalit noto'g'ri. Firebase Console → Project Settings → Config'dan yangi kalit oling.";
+    } else if(e.code === "auth/email-already-in-use"){
+      hint = "Email allaqachon band. 'O'chirish' tugmasini bosing, keyin qayta yaratish.";
+    } else if(e.code === "auth/weak-password"){
+      hint = "Parol juda kuchsiz — 6 ta belgidan kam bo'lmasin.";
+    } else if(e.code === "auth/network-request-failed"){
+      hint = "Internet aloqasi yo'q.";
+    } else if(e.code === "permission-denied"){
+      hint = "Firestore Rules ruxsat bermaydi. Rules'ni tekshiring.";
+    }
+
+    if(hint){
+      log("", "");
+      log("💡 " + hint, "warn");
+    }
+
+    setStatus("❌ Xato: " + (e.code || e.message), "error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ADMIN O'CHIRISH
+   ═══════════════════════════════════════════════════════════════ */
+
+async function deleteAdmin(){
+  const login = document.getElementById("adminLogin").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+
+  log("", "");
+  log("═══════════════════════════════════", "warn");
+  log("🗑️ O'chirish boshlandi", "warn");
+  log("═══════════════════════════════════", "warn");
+
+  const email = login.toLowerCase() + "@billiard.local";
+
+  try {
+    /* Auth'dan o'chirish */
+    try {
+      const cred = await auth.signInWithEmailAndPassword(email, password);
+      await cred.user.delete();
+      log("✅ Auth'dan o'chirildi", "ok");
+    } catch(e){
+      log("⚠️ Auth'da yo'q yoki parol xato", "warn");
+    }
+
+    /* Firestore'dan o'chirish */
+    const snap = await db.collection("users")
+      .where("username", "==", login).get();
+
+    if(!snap.empty){
+      snap.forEach(doc => doc.ref.delete());
+      log("✅ Firestore'dan o'chirildi (" + snap.size + " ta)", "ok");
+    } else {
+      log("⚠️ Firestore'da topilmadi", "warn");
+    }
+
+    setStatus("✅ O'chirildi", "success");
+
+  } catch(e){
+    log("❌ " + (e.code || e.message), "err");
+    setStatus("❌ " + (e.code || e.message), "error");
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOGIN TEST
+   ═══════════════════════════════════════════════════════════════ */
+
+async function testLogin(){
+  const login = document.getElementById("adminLogin").value.trim();
+  const password = document.getElementById("adminPassword").value.trim();
+
+  log("", "");
+  log("═══════════════════════════════════", "info");
+  log("🔐 Login testi", "info");
+  log("═══════════════════════════════════", "info");
+
+  const email = login.toLowerCase() + "@billiard.local";
+
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    log("✅ LOGIN MUVAFFAQIYATLI!", "ok");
+    log("🆔 UID: " + cred.user.uid, "ok");
+
+    /* Firestore'dan ma'lumot olish */
+    const doc = await db.collection("users").doc(cred.user.uid).get();
+    if(doc.exists){
+      const data = doc.data();
+      log("👤 Ism: " + data.fullName, "ok");
+      log("🎭 Rol: " + data.role, "ok");
+      log("🎱 Stollar: " + data.tablesCount, "ok");
+    } else {
+      log("⚠️ Firestore'da ma'lumot yo'q!", "warn");
+    }
+
+    await auth.signOut();
+    setStatus("✅ Login ishlayapti!", "success");
+
+  } catch(e){
+    log("❌ LOGIN XATO: " + e.code, "err");
+    log("   " + e.message, "err");
+    setStatus("❌ Login ishlamayapti", "error");
+  }
+}
+</script>
+</body>
+</html>
