@@ -3680,7 +3680,20 @@ function updatePriceTexts(){
   }
 }
 
+
+
+
+
+
+
+
+
+
 async function startGame(id){
+  /* ═══ MUHIM: Faqat bitta bosish uchun ═══ */
+  const btn = document.getElementById("start" + id);
+  if(btn && btn.disabled) return;  // Ikki marta bosilmasin
+  
   if(games[id] && games[id].start && !games[id].finished){
     beep("error");
     showModal("🔴", t("tableBusyTitle"), t("tableBusyText"));
@@ -3690,8 +3703,14 @@ async function startGame(id){
   const ownerId = getOwnerId();
   if(!ownerId){
     beep("error");
-    showModal("❌", "Xatolik", "Foydalanuvchi aniqlanmadi. Qayta kiring.");
+    showModal("❌", "Xatolik", "Foydalanuvchi aniqlanmadi.");
     return;
+  }
+
+  /* Tugmani vaqtincha o'chirish */
+  if(btn){
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
   }
 
   const data = {
@@ -3705,37 +3724,42 @@ async function startGame(id){
   };
 
   try{
-    console.log("🎱 O'yin boshlanmoqda:", data);
+    console.log("🎱 O'yin boshlanmoqda, stol:", id);
     await db.collection("games").doc(ownerId + "_" + id).set(data);
-    console.log("✅ Firestore'ga saqlandi");
+    console.log("✅ Firestore'ga saqlandi, stol:", id);
     beep("start");
     logUserAction("start_game", `Stol ${id} boshlandi`);
 
-    const win = document.getElementById("tableWindow" + id);
-    if(win){
-      win.style.transition = "box-shadow .3s, border-color .3s";
-      win.style.boxShadow = "0 0 50px rgba(66,233,121,.7)";
-      win.style.borderColor = "#42e979";
-      setTimeout(()=>{
-        win.style.boxShadow = "";
-        win.style.borderColor = "";
-      }, 800);
-    }
+    /* Darhol UI'ni yangilash */
+    games[id] = data;
+    updateTable(id);
+    updateActiveTablesBadge();
+
   }catch(e){
     console.error("❌ startGame xatosi:", e);
     beep("error");
-
-    let errMsg = "Xatolik yuz berdi";
-    if(e.code === "permission-denied"){
-      errMsg = "⚠️ Firestore ruxsat xatosi!";
-    } else if(e.code === "unavailable"){
-      errMsg = "⚠️ Internet aloqasi yo'q!";
-    } else if(e.message){
-      errMsg = e.message;
+    
+    if(btn){
+      btn.disabled = false;
+      btn.style.opacity = "1";
     }
+    
+    let errMsg = "Xatolik yuz berdi";
+    if(e.code === "permission-denied") errMsg = "⚠️ Firestore ruxsat xatosi!";
+    else if(e.code === "unavailable") errMsg = "⚠️ Internet yo'q!";
+    else if(e.message) errMsg = e.message;
     showModal("❌", "Xatolik", errMsg);
   }
 }
+
+
+
+
+
+
+
+
+
 
 function updateTable(id){
   const g = games[id];
