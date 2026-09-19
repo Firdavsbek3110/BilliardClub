@@ -1272,7 +1272,6 @@ input:focus{
 }
 </style>
 </head>
-
 <body>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -1805,7 +1804,6 @@ input:focus{
         </div>
       </div>
 
-      <!-- PENDING REQUESTS SECTION -->
       <div id="pendingRequestsSection" class="booking-form-card" 
            style="margin-bottom:20px;border-color:rgba(255,210,63,.5);
                   background:linear-gradient(155deg,rgba(30,26,15,.95),rgba(18,14,8,.98))">
@@ -1820,7 +1818,6 @@ input:focus{
         <div id="pendingRequestsList"></div>
       </div>
 
-      <!-- CREATE USER SECTION -->
       <div class="booking-form-card" style="margin-bottom:20px">
         <div style="font-size:14px;font-weight:900;color:#35c9ff;
                     margin-bottom:14px;letter-spacing:1px" 
@@ -1920,7 +1917,6 @@ input:focus{
         </button>
       </div>
 
-      <!-- EXISTING USERS -->
       <div class="page-header" style="margin-top:20px">
         <div>
           <div class="page-title" style="font-size:20px" 
@@ -1931,7 +1927,6 @@ input:focus{
       </div>
       <div id="usersList"></div>
 
-      <!-- USER ACTIVITY LOGS -->
       <div class="page-header" style="margin-top:30px">
         <div>
           <div class="page-title" style="font-size:20px" 
@@ -2136,10 +2131,10 @@ input:focus{
 <!-- EXTERNAL LIBRARIES -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   FIREBASE CONFIG — TUZATILDI
-   (enablePersistence va db.settings olib tashlandi)
+   FIREBASE CONFIG
    ═══════════════════════════════════════════════════════════════ */
 
 const firebaseConfig = {
@@ -2346,741 +2341,323 @@ function beep(type){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   i18n TIZIMI
+   i18n — TARJIMALAR
    ═══════════════════════════════════════════════════════════════ */
 
 const I18N = {
   uz: {
-    loginSub: "WINDOWS EDITION",
-    loginLabel: "👤 Login",
-    loginPlaceholder: "Loginni kiriting",
-    passwordLabel: "🔒 Parol",
-    passwordPlaceholder: "Parolni kiriting",
-    rememberMe: "Meni eslab qol",
-    loginBtn: "🔓 KIRISH",
-    loginFillAll: "⚠️ Login va parolni to'ldiring!",
-    loginSuccess: "✅ Kirish muvaffaqiyatli!",
-    loginWrong: "❌ Login yoki parol noto'g'ri!",
-    loginPending: "⏳ So'rovingiz hali tasdiqlanmagan!\n\n👑 Admin tasdiqlashini kuting.",
-    loginRejected: "❌ So'rovingiz rad etilgan!\n\nBatafsil ma'lumot uchun admin bilan bog'laning.",
-    loginBlocked: "🚫 Sizning hisobingiz bloklangan!",
-    noAccount: "Hisobingiz yo'qmi?",
-    registerNow: "Ro'yxatdan o'tish",
-    registerTitle: "RO'YXATDAN O'TISH",
-    registerSub: "SO'ROV YUBORISH",
-    registerWarning: "⏳ <b>Diqqat!</b> Ro'yxatdan o'tganingizdan so'ng hisobingiz <b>avtomatik yaratilmaydi</b>.<br>👑 Glavniy Admin <b>tasdiqlashini</b> kutasiz.",
-    fullNameLabel: "👤 To'liq ism",
-    fullNamePlaceholder: "Ism va familiya",
-    registerLoginPlaceholder: "Kamida 3 belgi",
-    registerPasswordPlaceholder: "Kamida 3 belgi",
-    passwordConfirmLabel: "🔒 Parolni tasdiqlang",
-    passwordConfirmPlaceholder: "Qayta kiriting",
-    phoneLabelReg: "📞 Telefon",
-    tablesCountLabel: "🎱 Nechta stol?",
-    registerBtn: "📩 SO'ROV YUBORISH",
-    backToLogin: "← KIRISHGA QAYTISH",
-    regSuccess: "⏳ So'rovingiz yuborildi!\n\n👑 Glavniy Admin tasdiqlashini kuting.",
-    regErrorFullName: "⚠️ To'liq ismingizni kiriting!",
-    regErrorUsername: "⚠️ Login kamida 3 ta belgi bo'lishi kerak!",
-    regErrorUsernameFormat: "⚠️ Login faqat harf, raqam va _ belgisidan iborat bo'lsin!",
-    regErrorPhone: "⚠️ To'g'ri telefon raqam kiriting!",
-    regErrorPassword: "⚠️ Parol kamida 3 ta belgi bo'lishi kerak!",
-    regErrorPasswordMatch: "⚠️ Parollar mos kelmadi!",
-    regErrorUsernameTaken: "⚠️ Bu login allaqachon band!",
-    regErrorPending: "⏳ Bu login bilan so'rov allaqachon yuborilgan.",
-    navHome: "Asosiy",
-    navTables: "Stollar",
-    navAdmin: "Admin panel",
-    tipHome: "H tugmasi",
-    tipTables: "1-9 tugmalari",
-    tipAdmin: "A tugmasi",
-    logoutBtn: "CHIQISH",
-    logoutTitle: "Tizimdan chiqish",
-    logoutText: "Rostdan ham tizimdan chiqmoqchimisiz?",
-    logoutYes: "🚪 HA, CHIQISH",
-    logoutNo: "❌ BEKOR QILISH",
-    modalOk: "TUSHUNDIM",
-    tablesTitle: "🎱 STOLLAR",
-    tablesSubtitle: "Barcha stollar bir ekranda",
-    tableLabel: "🎱 STOL",
-    statusFree: "🔵 BO'SH",
-    statusBusy: "🔴 BAND",
-    statusFinished: "⏸ TUGADI",
-    priceLabel: "1 SOAT NARXI",
-    currentBill: "💰 Hozirgi hisob:",
-    startBtn: "▶️ O'YINNI BOSHLASH",
-    finishBtn: "⏹️ O'YINNI TUGATISH",
-    totalLabel: "💰 JAMI:",
-    paidBtn: "🟢 PUL OLINDI",
-    debtBtn: "🔴 PUL OLINMADI",
-    nameLabel: "👤 Ismi",
-    namePlaceholder: "Ismini yozing",
-    phoneLabel: "📞 Telefon",
-    phonePlaceholder: "Telefon raqami",
-    saveDebtBtn: "💾 QARZDORNI SAQLASH",
-    tableBusyTitle: "Stol band",
-    tableBusyText: "Bu stol hozir o'ynatilmoqda.",
-    paidTitle: "Pul olindi",
-    paidText: "{amount} qabul qilindi.",
-    nameMissingTitle: "Ism kiritilmagan",
-    nameMissingText: "Iltimos, ismni yozing.",
-    phoneMissingTitle: "Telefon kiritilmagan",
-    phoneMissingText: "Iltimos, telefon raqamini yozing.",
-    debtSavedTitle: "Qarzdor saqlandi",
-    debtSavedText: "{name} — {amount}",
-    paidLaterTitle: "To'lov olindi",
-    paidLaterText: "{name}ning {amount} qarzi yopildi.",
-    adminTitle: "🔐 ADMIN PANEL",
-    adminSubtitle: "Boshqaruv menyusi",
-    backToMain: "🏠 ASOSIY MENYUGA",
-    reportsCard: "Hisobot",
-    reportsCardSub: "Tushum va o'yinlar",
-    debtorsCard: "Qarzdor",
-    debtorsCardSub: "Olinmagan pullar",
-    historyCard: "Tarix",
-    historyCardSub: "Barcha o'yinlar",
-    bookingCard: "Bron qilish",
-    bookingCardSub: "Stol band qilish",
-    usersCard: "Foydalanuvchilar",
-    usersCardSub: "Login/parol va stollar",
-    pendingCardTitle: "Kutilayotgan so'rovlar",
-    pendingCardSub: "Tasdiqlash kutilmoqda",
-    backToAdmin: "← ADMIN MENYUSIGA QAYTISH",
-    reportsTitle: "📊 HISOBOT",
-    reportsSubtitle: "Bugungi tushum va statistika",
-    statGames: "🎱 Bugungi o'yinlar",
-    statPaid: "🟢 Pul olingan",
-    statUnpaid: "🔴 Pul olinmagan",
-    statDebtors: "👥 Qarzdorlar",
-    statBookings: "📅 Faol bronlar",
-    downloadReportPdf: "📄 UMUMIY HISOBOTNI PDF YUKLASH",
-    debtorsTitle: "🔴 QARZDORLAR",
-    debtorsSubtitle: "To'lanmagan o'yinlar ro'yxati",
-    downloadAllDebtorsPdf: "📄 BARCHA QARZDORLAR PDF YUKLASH",
-    noDebtors: "🎉 Qarzdorlar yo'q",
-    noDebtorsPdf: "Barcha pullar to'langan!",
-    debtStatus: "🔴 PUL OLINMAGAN",
-    payNowBtn: "🟢 PULNI OLDIM",
-    pdfBtn: "📄 PDF",
-    historyTitle: "📋 TARIX",
-    historySubtitle: "Sanalar bo'yicha o'yinlar",
-    allDatesTotal: "💰 BARCHA SANALARNING UMUMIY SUMMASI",
-    downloadAllHistoryPdf: "📄 BARCHA TARIXNI PDF YUKLASH",
-    backToDates: "← SANALARGA QAYTISH",
-    dateLabel: "📅 Sana",
-    dailyGames: "Kunlik o'yinlar",
-    downloadPdf: "📄 PDF YUKLASH",
-    clearDate: "🗑️ SANANI TOZALASH",
-    noHistory: "📋 Hozircha saqlangan tarix yo'q",
-    noHistoryDate: "Bu sanada saqlangan ma'lumot yo'q.",
-    gamesCount: "ta o'yin",
-    gamesShort: "o'yin",
-    dateTotal: "💰 SHU SANANING UMUMIY SUMMASI",
-    gamesSmall: "🎱 O'YINLAR",
-    paidSmall: "🟢 OLINAN",
-    unpaidSmall: "🔴 OLINMAGAN",
-    paidStatus: "🟢 PUL OLINDI",
-    unpaidStatus: "🔴 PUL OLINMAGAN",
-    paidAt: "✅ Pul olingan:",
-    clearHistoryTitle: "Tarixni tozalash",
-    clearHistoryText: "{date} sanasidagi {count} ta o'yin tarixini ({amount}) o'chirishni xohlaysizmi?",
-    clearYes: "🗑️ HA, O'CHIRISH",
-    clearNo: "❌ BEKOR QILISH",
-    dateNotSelected: "Sana tanlanmagan",
-    dateNotSelectedText: "O'chiriladigan sana aniqlanmadi.",
-    historyEmptyTitle: "Tarix bo'sh",
-    historyEmptyText: "Bu sanada o'chiriladigan tarix mavjud emas.",
-    clearedTitle: "Tarix o'chirildi",
-    clearedText: "{date} sanasining tarixi o'chirildi.",
-    pdfLoading: "📄 PDF TAYYORLANMOQDA...",
-    pdfLoadingSub: "Iltimos kuting, 1-2 soniya",
-    pdfDoneTitle: "PDF yuklandi",
-    pdfDoneText: '📄 Fayl: "{filename}"\n\n📁 Papka: Yuklamalar (Downloads)',
-    pdfErrorTitle: "Xatolik",
-    pdfErrorText: "PDF yaratishda xatolik yuz berdi.",
-    chekKassa: "KASSA CHEKI",
-    chekDaily: "KUNLIK HISOBOT",
-    chekAllHistory: "UMUMIY TARIX HISOBOTI",
-    chekDebtors: "QARZDORLAR RO'YXATI",
-    chekDebt: "QARZ CHEKI",
-    chekReport: "KASSA HISOBOTI",
-    chekNo: "Chek raqami:",
-    chekDate: "Sana:",
-    colNum: "#",
-    colTable: "Stol",
-    colTime: "Vaqt",
-    colStatus: "Holat",
-    colAmount: "Summa",
-    noData: "Ma'lumot yo'q",
-    totalGames: "Jami o'yinlar soni:",
-    paidSum: "🟢 To'langan summa:",
-    unpaidSum: "🔴 Qarz summa:",
-    grandTotal: "💰 UMUMIY SUMMA:",
-    totalDebtors: "Jami qarzdorlar:",
-    grandDebt: "💰 UMUMIY QARZ:",
-    client: "👤 Mijoz:",
-    phone: "📞 Telefon:",
-    tableShort: "🎱 Stol:",
-    timeShort: "⏱ Vaqt:",
-    debtSum: "💰 QARZ SUMMA:",
-    todayGames: "🎱 Bugungi o'yinlar:",
-    todayPaid: "🟢 Bugun to'langan:",
-    todayUnpaid: "🔴 Bugun qarz:",
-    todayTotal: "💰 BUGUNGI JAMI:",
-    totalDebtorsSmall: "👥 Umumiy qarzdorlar:",
-    totalDebtSmall: "💸 Umumiy qarz:",
-    paidStatusPdf: "✅ To'langan",
-    debtStatusPdf: "🔴 Qarz",
-    debtStatusNamePdf: "🔴 Qarz ({name})",
-    signatureClient: "MIJOZ IMZOSI",
-    signatureCashier: "KASSIR IMZOSI",
-    thanks: "XARIDINGIZ UCHUN RAHMAT! 🎱",
-    autoGenerated: "Bu chek avtomatik tarzda yaratilgan",
-    dailyReportFor: "{date} sanasi uchun",
-    allGamesList: "Barcha o'yinlar ro'yxati",
-    unpaidList: "To'lanmagan o'yinlar",
-    debtFor: "{name} uchun",
-    reportFor: "{date} sanasi",
-    payOnTime: "Iltimos, qarzlarni o'z vaqtida to'lang",
-    payAtCashier: "Qarzni to'lash uchun kassaga murojaat qiling",
-    dailyCashReport: "Kunlik kassa hisoboti",
-    allHistory: "Barcha o'yinlar tarixi",
-    adminLogin: "ADMIN KIRISH",
-    drawPattern: "Grafik parolni sichqoncha bilan chizing",
-    drawPatternMsg: "🔑 Grafik parolni chizing",
-    patternCorrect: "✅ Grafik parol to'g'ri!",
-    patternWrong: "❌ Grafik parol noto'g'ri!",
-    patternRetry: "🔑 Qaytadan chizing",
-    backEsc: "← ORQAGA (ESC)",
-    hintTables: "Stollar",
-    hintHome: "Asosiy",
-    hintAdmin: "Admin",
-    hintReports: "Hisobot",
-    hintDebtors: "Qarzdorlar",
-    hintHistory: "Tarix",
-    hintBooking: "Bron",
-    hintClose: "Yopish",
-    bookingTitle: "📅 BRON QILISH",
-    bookingSubtitle: "Stolni oldindan band qilish",
-    bookingTableLabel: "🎱 Stol raqami",
-    selectTable: "Stol tanlang",
-    bookingNameLabel: "👤 Mijoz ismi",
-    bookingNamePlaceholder: "Ismini yozing",
-    bookingPhoneLabel: "📞 Telefon",
-    bookingDateLabel: "📅 Sana",
-    bookingTimeLabel: "⏰ Vaqt",
-    bookingDurationLabel: "⏱ Davomiyligi (daqiqa)",
-    saveBookingBtn: "💾 BRONNI SAQLASH",
-    activeBookingsTitle: "🔔 Faol bronlar",
-    filterToday: "📆 Bugun",
-    filterAll: "📋 Barchasi",
-    bookingDateMissingTitle: "Sana/vaqt kiritilmagan",
-    bookingDateMissingText: "Iltimos, sanani va vaqtni tanlang.",
-    bookingTableMissingTitle: "Stol tanlanmagan",
-    bookingTableMissingText: "Iltimos, stol raqamini tanlang.",
-    bookingPastTitle: "O'tgan vaqt",
-    bookingPastText: "O'tgan vaqtga bron qilish mumkin emas.",
-    bookingConflictTitle: "Vaqt band",
-    bookingConflictText: "Bu vaqtda {time} da {name} tomonidan bron qilingan.",
-    bookingSavedTitle: "Bron saqlandi",
-    bookingSavedText: "Stol {table} • {name} • {time}",
-    bookingStatusActive: "🟢 FAOL",
-    bookingStatusSoon: "🟡 YAQINLASHDI",
-    bookingStatusFuture: "🔵 KUTILMOQDA",
-    bookingStatusExpired: "⚪ O'TGAN",
-    bookingStartBtn: "BOSHLASH",
-    bookingCancelBtn: "BEKOR",
-    bookingCancelTitle: "Bronni bekor qilish",
-    bookingCancelText: "{name}ning {time} dagi {table}-stol bronini bekor qilasizmi?",
-    bookingCancelYes: "🗑️ HA, BEKOR QILISH",
-    bookingCancelNo: "❌ YO'Q",
-    bookingStartedTitle: "O'yin boshlandi",
-    bookingStartedText: "Stol {table} • {name}",
-    bookingReminder: "⏰ Eslatma: {name} • Stol {table} • {time}",
-    noBookings: "📅 Hozircha bron qilinmagan",
-    som: "so'm",
-    table: "Stol",
-    minute: "daqiqa",
-    minutes: "daqiqa",
-    confirm: "TUSHUNDIM",
-    noTablesConfigured: "Stollar sozlanmagan",
-    tablesEditTitle: "Stollarni tahrirlash",
-    tablesEditSub: "Foydalanuvchi uchun stollar va narxlar",
-    tablesSavedTitle: "Stollar saqlandi",
-    tablesSavedText: "{name} uchun {count} ta stol belgilandi.",
-    tablePriceError: "Stol {n} uchun to'g'ri narx kiriting!",
-    tablesCountError: "Stol soni 1-20 orasida bo'lishi kerak!",
-    tablesCountRequired: "Kamida 1 ta stol belgilanishi kerak",
-    pricesRequired: "Har bir stol uchun narx kiritilishi kerak",
-    userTablesLabel: "Stollar",
-    userPricesLabel: "Narxlar",
-    editTablesBtn: "🎱 STOLLAR",
-    tablesNotConfigured: "Stollar sozlanmagan",
-    tablesBtn: "STOLLAR",
-    passwordBtn: "PAROL",
-    activateBtn: "FAOLLASHTIRISH",
-    blockBtn: "BLOKLASH",
-    deleteBtn: "O'CHIRISH",
-    cannotDelete: "O'CHIRILMAYDI",
-    createdLabel: "Yaratilgan",
-    startedLabel: "Boshlangan",
-    paymentLabel: "To'lov",
-    debtLabel: "Qarz",
-    loginLabelShort: "Kirish",
-    receivedLabel: "Olindi",
-    today: "BUGUN",
-    week7: "7 KUN",
-    totalLabelShort: "UMUMIY",
-    todayDebt: "Bugun qarz",
-    financialIndicators: "MOLIYAVIY KO'RSATKICHLAR",
-    userActive: "✅ FAOL",
-    userBlocked: "🚫 BLOKLANGAN",
-    usersPageTitle: "👥 FOYDALANUVCHILAR",
-    usersPageSubtitle: "Login/parollar, stollar va faoliyat",
-    createUserTitle: "➕ YANGI FOYDALANUVCHI YARATISH",
-    roleLabel: "🎭 Rol",
-    roleUser: "👤 Foydalanuvchi",
-    roleAdmin: "🛡️ Admin",
-    tablesSettingsTitle: "🎱 STOLLAR VA NARXLAR SOZLAMASI",
-    howManyTables: "Nechta stol?",
-    tablesRange: "ta stol (1-20)",
-    allFor40: "Hammasi 40k",
-    allFor50: "Hammasi 50k",
-    addUserBtn: "💾 FOYDALANUVCHI QO'SHISH",
-    existingUsersTitle: "📋 Mavjud foydalanuvchilar",
-    userActivityTitle: "📊 Foydalanuvchilar faoliyati (oxirgi 200 ta)",
-    userActivitySubtitle: "Kim, qachon, nima qilgan — Telegramga ham yuboriladi",
-    clearLogsBtn: "🗑️ LOGNI TOZALASH",
-    noUsers: "Foydalanuvchilar yo'q",
-    noActivity: "Hozircha faoliyat yo'q",
-    userCreatedTitle: "Foydalanuvchi qo'shildi",
-    pricesLabel: "Narxlar",
-    tablesShort: "ta",
-    pwdModalTitle: "Login va Parolni yangilash",
-    pwdModalSub: "Foydalanuvchi ma'lumotlarini o'zgartirish",
-    pwdNewLogin: "🔑 Login",
-    pwdNewLoginPlaceholder: "Yangi login (kamida 3 belgi)",
-    pwdNewPassword: "🔒 Yangi Parol",
-    pwdNewPasswordPlaceholder: "Yangi parol (kamida 3 belgi)",
-    saveBtn: "💾 SAQLASH",
-    cancelBtn: "❌ BEKOR QILISH",
-    loginErrorTitle: "Login xato",
-    passwordErrorTitle: "Parol xato",
-    loginMinLength: "Login kamida 3 ta belgi bo'lishi kerak.",
-    passwordMinLength: "Parol kamida 3 ta belgi bo'lishi kerak.",
-    loginTakenTitle: "Login band",
-    loginTakenText: "\"{login}\" logini allaqachon {name} tomonidan ishlatilmoqda.",
-    updatedTitle: "Muvaffaqiyatli yangilandi",
-    updatedText: "👤 {name}\n\n🔑 Yangi login: {login}\n🔒 Yangi parol: {password}",
-    clearLogsTitle: "Loglarni tozalash",
-    clearLogsText: "Barcha foydalanuvchi harakatlari tarixini o'chirishni xohlaysizmi?",
-    clearLogsWarning: "⚠️ Bu amalni qaytarib bo'lmaydi!",
-    clearLogsYes: "🗑️ HA, TOZALASH",
-    logsClearedTitle: "Loglar tozalandi",
-    logsClearedText: "{count} ta yozuv muvaffaqiyatli o'chirildi.",
-    entriesShort: "ta yozuv",
-    deleteUserTitle: "Foydalanuvchini o'chirish",
-    deleteUserText: "{name} (@{username}) ni butunlay o'chirishni xohlaysizmi?\n\nBu amalni qaytarib bo'lmaydi.",
-    deleteYes: "🗑️ HA, O'CHIRISH",
-    errorTitle: "Xatolik",
-    noAccessTitle: "Ruxsat yo'q",
-    noAccessText: "Bu bo'limga faqat Bosh admin kira oladi.",
-    errorOccurred: "Xatolik yuz berdi",
-    approveError: "So'rovni tasdiqlashda xatolik",
-    pendingTitle: "⏳ KUTILAYOTGAN SO'ROVLAR",
-    pendingNone: "Hozircha kutilayotgan so'rovlar yo'q",
-    pendingApproveTitle: "So'rovni tasdiqlash",
-    pendingApproveText: "{name} (@{username}) ni tasdiqlaysizmi?",
-    pendingApproveYes: "✅ HA, TASDIQLASH",
-    pendingRejectTitle: "So'rovni rad etish",
-    pendingRejectText: "{name} (@{username}) ning so'rovini rad etasizmi?",
-    pendingRejectYes: "❌ HA, RAD ETISH",
-    pendingRejectReason: "Rad etish sababini yozing (ixtiyoriy):",
-    pendingApprovedTitle: "Tasdiqlandi!",
-    pendingApprovedText: "👤 {name}\n\n🔑 Login: {username}\n🔒 Parol: {password}",
-    pendingRejectedTitle: "Rad etildi",
-    pendingRejectedText: "So'rov rad etildi.",
-    pendingBadge: "{count} ta",
-    pendingSent: "⏳ So'rovingiz yuborildi!",
-    pendingNewBadge: "YANGI SO'ROV",
-    newRequestLabel: "YANGI SO'ROV",
-    tablesCountLabelShort: "ta stol",
-    sentAtLabel: "Yuborilgan",
-    busyShort: "BAND",
-    freeShort: "BO'SH",
-    hourShort: "soat",
-    occupiedLabel: "hozir kutmoqda",
-    untilLabel: "gacha",
-    afterLabel: "dan keyin",
-    cancelRejectBtn: "❌ BEKOR QILISH",
-    rejectBtn: "❌ RAD ETISH",
-    approveBtn: "✅ TASDIQLASH"
+    loginSub:"WINDOWS EDITION",loginLabel:"👤 Login",loginPlaceholder:"Loginni kiriting",
+    passwordLabel:"🔒 Parol",passwordPlaceholder:"Parolni kiriting",rememberMe:"Meni eslab qol",
+    loginBtn:"🔓 KIRISH",loginFillAll:"⚠️ Login va parolni to'ldiring!",
+    loginSuccess:"✅ Kirish muvaffaqiyatli!",loginWrong:"❌ Login yoki parol noto'g'ri!",
+    loginPending:"⏳ So'rovingiz hali tasdiqlanmagan!\n\n👑 Admin tasdiqlashini kuting.",
+    loginRejected:"❌ So'rovingiz rad etilgan!",loginBlocked:"🚫 Sizning hisobingiz bloklangan!",
+    noAccount:"Hisobingiz yo'qmi?",registerNow:"Ro'yxatdan o'tish",
+    registerTitle:"RO'YXATDAN O'TISH",registerSub:"SO'ROV YUBORISH",
+    registerWarning:"⏳ <b>Diqqat!</b> Ro'yxatdan o'tganingizdan so'ng hisobingiz <b>avtomatik yaratilmaydi</b>.<br>👑 Glavniy Admin <b>tasdiqlashini</b> kutasiz.",
+    fullNameLabel:"👤 To'liq ism",fullNamePlaceholder:"Ism va familiya",
+    registerLoginPlaceholder:"Kamida 3 belgi",registerPasswordPlaceholder:"Kamida 3 belgi",
+    passwordConfirmLabel:"🔒 Parolni tasdiqlang",passwordConfirmPlaceholder:"Qayta kiriting",
+    phoneLabelReg:"📞 Telefon",tablesCountLabel:"🎱 Nechta stol?",
+    registerBtn:"📩 SO'ROV YUBORISH",backToLogin:"← KIRISHGA QAYTISH",
+    regSuccess:"⏳ So'rovingiz yuborildi!\n\n👑 Glavniy Admin tasdiqlashini kuting.",
+    regErrorFullName:"⚠️ To'liq ismingizni kiriting!",
+    regErrorUsername:"⚠️ Login kamida 3 ta belgi bo'lishi kerak!",
+    regErrorUsernameFormat:"⚠️ Login faqat harf, raqam va _ belgisidan iborat bo'lsin!",
+    regErrorPhone:"⚠️ To'g'ri telefon raqam kiriting!",
+    regErrorPassword:"⚠️ Parol kamida 3 ta belgi bo'lishi kerak!",
+    regErrorPasswordMatch:"⚠️ Parollar mos kelmadi!",
+    regErrorUsernameTaken:"⚠️ Bu login allaqachon band!",
+    regErrorPending:"⏳ Bu login bilan so'rov allaqachon yuborilgan.",
+    navHome:"Asosiy",navTables:"Stollar",navAdmin:"Admin panel",
+    tipHome:"H tugmasi",tipTables:"1-9 tugmalari",tipAdmin:"A tugmasi",
+    logoutBtn:"CHIQISH",logoutTitle:"Tizimdan chiqish",
+    logoutText:"Rostdan ham tizimdan chiqmoqchimisiz?",logoutYes:"🚪 HA, CHIQISH",logoutNo:"❌ BEKOR QILISH",
+    modalOk:"TUSHUNDIM",tablesTitle:"🎱 STOLLAR",tablesSubtitle:"Barcha stollar bir ekranda",
+    tableLabel:"🎱 STOL",statusFree:"🔵 BO'SH",statusBusy:"🔴 BAND",statusFinished:"⏸ TUGADI",
+    priceLabel:"1 SOAT NARXI",currentBill:"💰 Hozirgi hisob:",
+    startBtn:"▶️ O'YINNI BOSHLASH",finishBtn:"⏹️ O'YINNI TUGATISH",totalLabel:"💰 JAMI:",
+    paidBtn:"🟢 PUL OLINDI",debtBtn:"🔴 PUL OLINMADI",nameLabel:"👤 Ismi",
+    namePlaceholder:"Ismini yozing",phoneLabel:"📞 Telefon",phonePlaceholder:"Telefon raqami",
+    saveDebtBtn:"💾 QARZDORNI SAQLASH",tableBusyTitle:"Stol band",
+    tableBusyText:"Bu stol hozir o'ynatilmoqda.",paidTitle:"Pul olindi",
+    paidText:"{amount} qabul qilindi.",nameMissingTitle:"Ism kiritilmagan",
+    nameMissingText:"Iltimos, ismni yozing.",phoneMissingTitle:"Telefon kiritilmagan",
+    phoneMissingText:"Iltimos, telefon raqamini yozing.",debtSavedTitle:"Qarzdor saqlandi",
+    debtSavedText:"{name} — {amount}",paidLaterTitle:"To'lov olindi",
+    paidLaterText:"{name}ning {amount} qarzi yopildi.",
+    adminTitle:"🔐 ADMIN PANEL",adminSubtitle:"Boshqaruv menyusi",backToMain:"🏠 ASOSIY MENYUGA",
+    reportsCard:"Hisobot",reportsCardSub:"Tushum va o'yinlar",debtorsCard:"Qarzdor",
+    debtorsCardSub:"Olinmagan pullar",historyCard:"Tarix",historyCardSub:"Barcha o'yinlar",
+    bookingCard:"Bron qilish",bookingCardSub:"Stol band qilish",
+    usersCard:"Foydalanuvchilar",usersCardSub:"Login/parol va stollar",
+    pendingCardTitle:"Kutilayotgan so'rovlar",pendingCardSub:"Tasdiqlash kutilmoqda",
+    backToAdmin:"← ADMIN MENYUSIGA QAYTISH",reportsTitle:"📊 HISOBOT",
+    reportsSubtitle:"Bugungi tushum va statistika",statGames:"🎱 Bugungi o'yinlar",
+    statPaid:"🟢 Pul olingan",statUnpaid:"🔴 Pul olinmagan",statDebtors:"👥 Qarzdorlar",
+    statBookings:"📅 Faol bronlar",downloadReportPdf:"📄 UMUMIY HISOBOTNI PDF YUKLASH",
+    debtorsTitle:"🔴 QARZDORLAR",debtorsSubtitle:"To'lanmagan o'yinlar ro'yxati",
+    downloadAllDebtorsPdf:"📄 BARCHA QARZDORLAR PDF YUKLASH",noDebtors:"🎉 Qarzdorlar yo'q",
+    noDebtorsPdf:"Barcha pullar to'langan!",debtStatus:"🔴 PUL OLINMAGAN",
+    payNowBtn:"🟢 PULNI OLDIM",pdfBtn:"📄 PDF",historyTitle:"📋 TARIX",
+    historySubtitle:"Sanalar bo'yicha o'yinlar",allDatesTotal:"💰 BARCHA SANALARNING UMUMIY SUMMASI",
+    downloadAllHistoryPdf:"📄 BARCHA TARIXNI PDF YUKLASH",backToDates:"← SANALARGA QAYTISH",
+    dateLabel:"📅 Sana",dailyGames:"Kunlik o'yinlar",downloadPdf:"📄 PDF YUKLASH",
+    clearDate:"🗑️ SANANI TOZALASH",noHistory:"📋 Hozircha saqlangan tarix yo'q",
+    noHistoryDate:"Bu sanada saqlangan ma'lumot yo'q.",gamesCount:"ta o'yin",gamesShort:"o'yin",
+    dateTotal:"💰 SHU SANANING UMUMIY SUMMASI",gamesSmall:"🎱 O'YINLAR",
+    paidSmall:"🟢 OLINAN",unpaidSmall:"🔴 OLINMAGAN",paidStatus:"🟢 PUL OLINDI",
+    unpaidStatus:"🔴 PUL OLINMAGAN",paidAt:"✅ Pul olingan:",clearHistoryTitle:"Tarixni tozalash",
+    clearHistoryText:"{date} sanasidagi {count} ta o'yin tarixini ({amount}) o'chirishni xohlaysizmi?",
+    clearYes:"🗑️ HA, O'CHIRISH",clearNo:"❌ BEKOR QILISH",dateNotSelected:"Sana tanlanmagan",
+    dateNotSelectedText:"O'chiriladigan sana aniqlanmadi.",historyEmptyTitle:"Tarix bo'sh",
+    historyEmptyText:"Bu sanada o'chiriladigan tarix mavjud emas.",clearedTitle:"Tarix o'chirildi",
+    clearedText:"{date} sanasining tarixi o'chirildi.",pdfLoading:"📄 PDF TAYYORLANMOQDA...",
+    pdfLoadingSub:"Iltimos kuting, 1-2 soniya",pdfDoneTitle:"PDF yuklandi",
+    pdfDoneText:'📄 Fayl: "{filename}"\n\n📁 Papka: Yuklamalar (Downloads)',
+    pdfErrorTitle:"Xatolik",pdfErrorText:"PDF yaratishda xatolik yuz berdi.",
+    chekKassa:"KASSA CHEKI",chekDaily:"KUNLIK HISOBOT",chekAllHistory:"UMUMIY TARIX HISOBOTI",
+    chekDebtors:"QARZDORLAR RO'YXATI",chekDebt:"QARZ CHEKI",chekReport:"KASSA HISOBOTI",
+    chekNo:"Chek raqami:",chekDate:"Sana:",colNum:"#",colTable:"Stol",colTime:"Vaqt",
+    colStatus:"Holat",colAmount:"Summa",noData:"Ma'lumot yo'q",totalGames:"Jami o'yinlar soni:",
+    paidSum:"🟢 To'langan summa:",unpaidSum:"🔴 Qarz summa:",grandTotal:"💰 UMUMIY SUMMA:",
+    totalDebtors:"Jami qarzdorlar:",grandDebt:"💰 UMUMIY QARZ:",client:"👤 Mijoz:",
+    phone:"📞 Telefon:",tableShort:"🎱 Stol:",timeShort:"⏱ Vaqt:",debtSum:"💰 QARZ SUMMA:",
+    todayGames:"🎱 Bugungi o'yinlar:",todayPaid:"🟢 Bugun to'langan:",todayUnpaid:"🔴 Bugun qarz:",
+    todayTotal:"💰 BUGUNGI JAMI:",totalDebtorsSmall:"👥 Umumiy qarzdorlar:",
+    totalDebtSmall:"💸 Umumiy qarz:",paidStatusPdf:"✅ To'langan",debtStatusPdf:"🔴 Qarz",
+    debtStatusNamePdf:"🔴 Qarz ({name})",signatureClient:"MIJOZ IMZOSI",
+    signatureCashier:"KASSIR IMZOSI",thanks:"XARIDINGIZ UCHUN RAHMAT! 🎱",
+    autoGenerated:"Bu chek avtomatik tarzda yaratilgan",dailyReportFor:"{date} sanasi uchun",
+    allGamesList:"Barcha o'yinlar ro'yxati",unpaidList:"To'lanmagan o'yinlar",
+    debtFor:"{name} uchun",reportFor:"{date} sanasi",payOnTime:"Iltimos, qarzlarni o'z vaqtida to'lang",
+    payAtCashier:"Qarzni to'lash uchun kassaga murojaat qiling",dailyCashReport:"Kunlik kassa hisoboti",
+    allHistory:"Barcha o'yinlar tarixi",adminLogin:"ADMIN KIRISH",
+    drawPattern:"Grafik parolni sichqoncha bilan chizing",drawPatternMsg:"🔑 Grafik parolni chizing",
+    patternCorrect:"✅ Grafik parol to'g'ri!",patternWrong:"❌ Grafik parol noto'g'ri!",
+    patternRetry:"🔑 Qaytadan chizing",backEsc:"← ORQAGA (ESC)",hintTables:"Stollar",
+    hintHome:"Asosiy",hintAdmin:"Admin",hintReports:"Hisobot",hintDebtors:"Qarzdorlar",
+    hintHistory:"Tarix",hintBooking:"Bron",hintClose:"Yopish",bookingTitle:"📅 BRON QILISH",
+    bookingSubtitle:"Stolni oldindan band qilish",bookingTableLabel:"🎱 Stol raqami",
+    selectTable:"Stol tanlang",bookingNameLabel:"👤 Mijoz ismi",bookingNamePlaceholder:"Ismini yozing",
+    bookingPhoneLabel:"📞 Telefon",bookingDateLabel:"📅 Sana",bookingTimeLabel:"⏰ Vaqt",
+    bookingDurationLabel:"⏱ Davomiyligi (daqiqa)",saveBookingBtn:"💾 BRONNI SAQLASH",
+    activeBookingsTitle:"🔔 Faol bronlar",filterToday:"📆 Bugun",filterAll:"📋 Barchasi",
+    bookingDateMissingTitle:"Sana/vaqt kiritilmagan",
+    bookingDateMissingText:"Iltimos, sanani va vaqtni tanlang.",
+    bookingTableMissingTitle:"Stol tanlanmagan",bookingTableMissingText:"Iltimos, stol raqamini tanlang.",
+    bookingPastTitle:"O'tgan vaqt",bookingPastText:"O'tgan vaqtga bron qilish mumkin emas.",
+    bookingConflictTitle:"Vaqt band",bookingConflictText:"Bu vaqtda {time} da {name} tomonidan bron qilingan.",
+    bookingSavedTitle:"Bron saqlandi",bookingSavedText:"Stol {table} • {name} • {time}",
+    bookingStatusActive:"🟢 FAOL",bookingStatusSoon:"🟡 YAQINLASHDI",bookingStatusFuture:"🔵 KUTILMOQDA",
+    bookingStatusExpired:"⚪ O'TGAN",bookingStartBtn:"BOSHLASH",bookingCancelBtn:"BEKOR",
+    bookingCancelTitle:"Bronni bekor qilish",bookingCancelText:"{name}ning {time} dagi {table}-stol bronini bekor qilasizmi?",
+    bookingCancelYes:"🗑️ HA, BEKOR QILISH",bookingCancelNo:"❌ YO'Q",
+    bookingStartedTitle:"O'yin boshlandi",bookingStartedText:"Stol {table} • {name}",
+    bookingReminder:"⏰ Eslatma: {name} • Stol {table} • {time}",noBookings:"📅 Hozircha bron qilinmagan",
+    som:"so'm",table:"Stol",minute:"daqiqa",minutes:"daqiqa",confirm:"TUSHUNDIM",
+    noTablesConfigured:"Stollar sozlanmagan",tablesEditTitle:"Stollarni tahrirlash",
+    tablesEditSub:"Foydalanuvchi uchun stollar va narxlar",tablesSavedTitle:"Stollar saqlandi",
+    tablesSavedText:"{name} uchun {count} ta stol belgilandi.",tablePriceError:"Stol {n} uchun to'g'ri narx kiriting!",
+    tablesCountError:"Stol soni 1-20 orasida bo'lishi kerak!",
+    tablesCountRequired:"Kamida 1 ta stol belgilanishi kerak",pricesRequired:"Har bir stol uchun narx kiritilishi kerak",
+    userTablesLabel:"Stollar",userPricesLabel:"Narxlar",editTablesBtn:"🎱 STOLLAR",
+    tablesNotConfigured:"Stollar sozlanmagan",tablesBtn:"STOLLAR",passwordBtn:"PAROL",
+    activateBtn:"FAOLLASHTIRISH",blockBtn:"BLOKLASH",deleteBtn:"O'CHIRISH",
+    cannotDelete:"O'CHIRILMAYDI",createdLabel:"Yaratilgan",startedLabel:"Boshlangan",
+    paymentLabel:"To'lov",debtLabel:"Qarz",loginLabelShort:"Kirish",receivedLabel:"Olindi",
+    today:"BUGUN",week7:"7 KUN",totalLabelShort:"UMUMIY",todayDebt:"Bugun qarz",
+    financialIndicators:"MOLIYAVIY KO'RSATKICHLAR",userActive:"✅ FAOL",userBlocked:"🚫 BLOKLANGAN",
+    usersPageTitle:"👥 FOYDALANUVCHILAR",usersPageSubtitle:"Login/parollar, stollar va faoliyat",
+    createUserTitle:"➕ YANGI FOYDALANUVCHI YARATISH",roleLabel:"🎭 Rol",
+    roleUser:"👤 Foydalanuvchi",roleAdmin:"🛡️ Admin",
+    tablesSettingsTitle:"🎱 STOLLAR VA NARXLAR SOZLAMASI",howManyTables:"Nechta stol?",
+    tablesRange:"ta stol (1-20)",allFor40:"Hammasi 40k",allFor50:"Hammasi 50k",
+    addUserBtn:"💾 FOYDALANUVCHI QO'SHISH",existingUsersTitle:"📋 Mavjud foydalanuvchilar",
+    userActivityTitle:"📊 Foydalanuvchilar faoliyati (oxirgi 200 ta)",
+    userActivitySubtitle:"Kim, qachon, nima qilgan — Telegramga ham yuboriladi",
+    clearLogsBtn:"🗑️ LOGNI TOZALASH",noUsers:"Foydalanuvchilar yo'q",
+    noActivity:"Hozircha faoliyat yo'q",userCreatedTitle:"Foydalanuvchi qo'shildi",
+    pricesLabel:"Narxlar",tablesShort:"ta",pwdModalTitle:"Login va Parolni yangilash",
+    pwdModalSub:"Foydalanuvchi ma'lumotlarini o'zgartirish",pwdNewLogin:"🔑 Login",
+    pwdNewLoginPlaceholder:"Yangi login (kamida 3 belgi)",pwdNewPassword:"🔒 Yangi Parol",
+    pwdNewPasswordPlaceholder:"Yangi parol (kamida 3 belgi)",saveBtn:"💾 SAQLASH",
+    cancelBtn:"❌ BEKOR QILISH",loginErrorTitle:"Login xato",passwordErrorTitle:"Parol xato",
+    loginMinLength:"Login kamida 3 ta belgi bo'lishi kerak.",
+    passwordMinLength:"Parol kamida 3 ta belgi bo'lishi kerak.",loginTakenTitle:"Login band",
+    loginTakenText:"\"{login}\" logini allaqachon {name} tomonidan ishlatilmoqda.",
+    updatedTitle:"Muvaffaqiyatli yangilandi",
+    updatedText:"👤 {name}\n\n🔑 Yangi login: {login}\n🔒 Yangi parol: {password}",
+    clearLogsTitle:"Loglarni tozalash",
+    clearLogsText:"Barcha foydalanuvchi harakatlari tarixini o'chirishni xohlaysizmi?",
+    clearLogsWarning:"⚠️ Bu amalni qaytarib bo'lmaydi!",clearLogsYes:"🗑️ HA, TOZALASH",
+    logsClearedTitle:"Loglar tozalandi",logsClearedText:"{count} ta yozuv muvaffaqiyatli o'chirildi.",
+    entriesShort:"ta yozuv",deleteUserTitle:"Foydalanuvchini o'chirish",
+    deleteUserText:"{name} (@{username}) ni butunlay o'chirishni xohlaysizmi?\n\nBu amalni qaytarib bo'lmaydi.",
+    deleteYes:"🗑️ HA, O'CHIRISH",errorTitle:"Xatolik",noAccessTitle:"Ruxsat yo'q",
+    noAccessText:"Bu bo'limga faqat Bosh admin kira oladi.",errorOccurred:"Xatolik yuz berdi",
+    approveError:"So'rovni tasdiqlashda xatolik",pendingTitle:"⏳ KUTILAYOTGAN SO'ROVLAR",
+    pendingNone:"Hozircha kutilayotgan so'rovlar yo'q",pendingApproveTitle:"So'rovni tasdiqlash",
+    pendingApproveText:"{name} (@{username}) ni tasdiqlaysizmi?",pendingApproveYes:"✅ HA, TASDIQLASH",
+    pendingRejectTitle:"So'rovni rad etish",pendingRejectText:"{name} (@{username}) ning so'rovini rad etasizmi?",
+    pendingRejectYes:"❌ HA, RAD ETISH",pendingRejectReason:"Rad etish sababini yozing (ixtiyoriy):",
+    pendingApprovedTitle:"Tasdiqlandi!",pendingApprovedText:"👤 {name}\n\n🔑 Login: {username}\n🔒 Parol: {password}",
+    pendingRejectedTitle:"Rad etildi",pendingRejectedText:"So'rov rad etildi.",
+    pendingBadge:"{count} ta",pendingSent:"⏳ So'rovingiz yuborildi!",pendingNewBadge:"YANGI SO'ROV",
+    newRequestLabel:"YANGI SO'ROV",tablesCountLabelShort:"ta stol",sentAtLabel:"Yuborilgan",
+    busyShort:"BAND",freeShort:"BO'SH",hourShort:"soat",occupiedLabel:"hozir kutmoqda",
+    untilLabel:"gacha",afterLabel:"dan keyin",cancelRejectBtn:"❌ BEKOR QILISH",
+    rejectBtn:"❌ RAD ETISH",approveBtn:"✅ TASDIQLASH"
   },
   ru: {
-    loginSub: "WINDOWS EDITION",
-    loginLabel: "👤 Логин",
-    loginPlaceholder: "Введите логин",
-    passwordLabel: "🔒 Пароль",
-    passwordPlaceholder: "Введите пароль",
-    rememberMe: "Запомнить меня",
-    loginBtn: "🔓 ВОЙТИ",
-    loginFillAll: "⚠️ Заполните логин и пароль!",
-    loginSuccess: "✅ Вход выполнен!",
-    loginWrong: "❌ Неверный логин или пароль!",
-    loginPending: "⏳ Ваш запрос ещё не одобрен!",
-    loginRejected: "❌ Ваш запрос отклонён!",
-    loginBlocked: "🚫 Ваш аккаунт заблокирован!",
-    noAccount: "Нет аккаунта?",
-    registerNow: "Зарегистрироваться",
-    registerTitle: "РЕГИСТРАЦИЯ",
-    registerSub: "ОТПРАВИТЬ ЗАПРОС",
-    registerWarning: "⏳ <b>Внимание!</b> После регистрации ваш аккаунт <b>не создаётся автоматически</b>.<br>👑 Ожидайте одобрения Главного админа.",
-    fullNameLabel: "👤 Полное имя",
-    fullNamePlaceholder: "Имя и фамилия",
-    registerLoginPlaceholder: "Минимум 3 символа",
-    registerPasswordPlaceholder: "Минимум 3 символа",
-    passwordConfirmLabel: "🔒 Подтвердите пароль",
-    passwordConfirmPlaceholder: "Повторите",
-    phoneLabelReg: "📞 Телефон",
-    tablesCountLabel: "🎱 Сколько столов?",
-    registerBtn: "📩 ОТПРАВИТЬ ЗАПРОС",
-    backToLogin: "← ВЕРНУТЬСЯ К ВХОДУ",
-    regSuccess: "⏳ Ваш запрос отправлен!",
-    regErrorFullName: "⚠️ Введите полное имя!",
-    regErrorUsername: "⚠️ Логин минимум 3 символа!",
-    regErrorUsernameFormat: "⚠️ Логин только буквы, цифры и _!",
-    regErrorPhone: "⚠️ Введите корректный телефон!",
-    regErrorPassword: "⚠️ Пароль минимум 3 символа!",
-    regErrorPasswordMatch: "⚠️ Пароли не совпадают!",
-    regErrorUsernameTaken: "⚠️ Этот логин уже занят!",
-    regErrorPending: "⏳ Запрос с этим логином уже отправлен.",
-    navHome: "Главная",
-    navTables: "Столы",
-    navAdmin: "Админ панель",
-    tipHome: "Клавиша H",
-    tipTables: "Клавиши 1-9",
-    tipAdmin: "Клавиша A",
-    logoutBtn: "ВЫЙТИ",
-    logoutTitle: "Выход из системы",
-    logoutText: "Вы действительно хотите выйти?",
-    logoutYes: "🚪 ДА, ВЫЙТИ",
-    logoutNo: "❌ ОТМЕНА",
-    modalOk: "ПОНЯТНО",
-    tablesTitle: "🎱 СТОЛЫ",
-    tablesSubtitle: "Все столы на одном экране",
-    tableLabel: "🎱 СТОЛ",
-    statusFree: "🔵 СВОБОДЕН",
-    statusBusy: "🔴 ЗАНЯТ",
-    statusFinished: "⏸ ЗАВЕРШЁН",
-    priceLabel: "ЦЕНА ЗА 1 ЧАС",
-    currentBill: "💰 Текущий счёт:",
-    startBtn: "▶️ НАЧАТЬ ИГРУ",
-    finishBtn: "⏹️ ЗАВЕРШИТЬ ИГРУ",
-    totalLabel: "💰 ИТОГО:",
-    paidBtn: "🟢 ДЕНЬГИ ПОЛУЧЕНЫ",
-    debtBtn: "🔴 ДЕНЬГИ НЕ ПОЛУЧЕНЫ",
-    nameLabel: "👤 Имя",
-    namePlaceholder: "Введите имя",
-    phoneLabel: "📞 Телефон",
-    phonePlaceholder: "Номер телефона",
-    saveDebtBtn: "💾 СОХРАНИТЬ ДОЛЖНИКА",
-    tableBusyTitle: "Стол занят",
-    tableBusyText: "Этот стол сейчас играет.",
-    paidTitle: "Деньги получены",
-    paidText: "{amount} принято.",
-    nameMissingTitle: "Имя не указано",
-    nameMissingText: "Пожалуйста, введите имя.",
-    phoneMissingTitle: "Телефон не указан",
-    phoneMissingText: "Пожалуйста, введите номер телефона.",
-    debtSavedTitle: "Должник сохранён",
-    debtSavedText: "{name} — {amount}",
-    paidLaterTitle: "Оплата получена",
-    paidLaterText: "Долг {name} на {amount} закрыт.",
-    adminTitle: "🔐 АДМИН ПАНЕЛЬ",
-    adminSubtitle: "Меню управления",
-    backToMain: "🏠 ГЛАВНОЕ МЕНЮ",
-    reportsCard: "Отчёт",
-    reportsCardSub: "Выручка и игры",
-    debtorsCard: "Должники",
-    debtorsCardSub: "Неоплаченные суммы",
-    historyCard: "История",
-    historyCardSub: "Все игры",
-    bookingCard: "Бронирование",
-    bookingCardSub: "Забронировать стол",
-    usersCard: "Пользователи",
-    usersCardSub: "Логин/пароль и столы",
-    pendingCardTitle: "Ожидающие запросы",
-    pendingCardSub: "Ожидают одобрения",
-    backToAdmin: "← НАЗАД В АДМИН МЕНЮ",
-    reportsTitle: "📊 ОТЧЁТ",
-    reportsSubtitle: "Сегодняшняя выручка и статистика",
-    statGames: "🎱 Игры за сегодня",
-    statPaid: "🟢 Оплачено",
-    statUnpaid: "🔴 Не оплачено",
-    statDebtors: "👥 Должники",
-    statBookings: "📅 Активные брони",
-    downloadReportPdf: "📄 СКАЧАТЬ ОБЩИЙ ОТЧЁТ PDF",
-    debtorsTitle: "🔴 ДОЛЖНИКИ",
-    debtorsSubtitle: "Список неоплаченных игр",
-    downloadAllDebtorsPdf: "📄 СКАЧАТЬ ВСЕХ ДОЛЖНИКОВ PDF",
-    noDebtors: "🎉 Должников нет",
-    noDebtorsPdf: "Все долги оплачены!",
-    debtStatus: "🔴 НЕ ОПЛАЧЕНО",
-    payNowBtn: "🟢 ОПЛАЧЕНО",
-    pdfBtn: "📄 PDF",
-    historyTitle: "📋 ИСТОРИЯ",
-    historySubtitle: "Игры по датам",
-    allDatesTotal: "💰 ОБЩАЯ СУММА ВСЕХ ДАТ",
-    downloadAllHistoryPdf: "📄 СКАЧАТЬ ВСЮ ИСТОРИЮ PDF",
-    backToDates: "← НАЗАД К ДАТАМ",
-    dateLabel: "📅 Дата",
-    dailyGames: "Игры за день",
-    downloadPdf: "📄 СКАЧАТЬ PDF",
-    clearDate: "🗑️ ОЧИСТИТЬ ДАТУ",
-    noHistory: "📋 История пока пуста",
-    noHistoryDate: "На эту дату нет данных.",
-    gamesCount: "игр",
-    gamesShort: "игр",
-    dateTotal: "💰 ОБЩАЯ СУММА ЗА ЭТУ ДАТУ",
-    gamesSmall: "🎱 ИГРЫ",
-    paidSmall: "🟢 ОПЛАЧЕНО",
-    unpaidSmall: "🔴 НЕ ОПЛАЧЕНО",
-    paidStatus: "🟢 ОПЛАЧЕНО",
-    unpaidStatus: "🔴 НЕ ОПЛАЧЕНО",
-    paidAt: "✅ Оплачено:",
-    clearHistoryTitle: "Очистка истории",
-    clearHistoryText: "Удалить {count} игр за {date} ({amount})?",
-    clearYes: "🗑️ ДА, УДАЛИТЬ",
-    clearNo: "❌ ОТМЕНА",
-    dateNotSelected: "Дата не выбрана",
-    dateNotSelectedText: "Дата для удаления не определена.",
-    historyEmptyTitle: "История пуста",
-    historyEmptyText: "На эту дату нет истории для удаления.",
-    clearedTitle: "История очищена",
-    clearedText: "История за {date} удалена.",
-    pdfLoading: "📄 PDF ГОТОВИТСЯ...",
-    pdfLoadingSub: "Пожалуйста, подождите",
-    pdfDoneTitle: "PDF загружен",
-    pdfDoneText: '📄 Файл: "{filename}"\n\n📁 Папка: Загрузки',
-    pdfErrorTitle: "Ошибка",
-    pdfErrorText: "Ошибка при создании PDF.",
-    chekKassa: "КАССОВЫЙ ЧЕК",
-    chekDaily: "ДНЕВНОЙ ОТЧЁТ",
-    chekAllHistory: "ОБЩИЙ ОТЧЁТ ИСТОРИИ",
-    chekDebtors: "СПИСОК ДОЛЖНИКОВ",
-    chekDebt: "ЧЕК ДОЛГА",
-    chekReport: "КАССОВЫЙ ОТЧЁТ",
-    chekNo: "Номер чека:",
-    chekDate: "Дата:",
-    colNum: "#",
-    colTable: "Стол",
-    colTime: "Время",
-    colStatus: "Статус",
-    colAmount: "Сумма",
-    noData: "Нет данных",
-    totalGames: "Всего игр:",
-    paidSum: "🟢 Оплаченная сумма:",
-    unpaidSum: "🔴 Сумма долга:",
-    grandTotal: "💰 ОБЩАЯ СУММА:",
-    totalDebtors: "Всего должников:",
-    grandDebt: "💰 ОБЩИЙ ДОЛГ:",
-    client: "👤 Клиент:",
-    phone: "📞 Телефон:",
-    tableShort: "🎱 Стол:",
-    timeShort: "⏱ Время:",
-    debtSum: "💰 СУММА ДОЛГА:",
-    todayGames: "🎱 Игры за сегодня:",
-    todayPaid: "🟢 Оплачено сегодня:",
-    todayUnpaid: "🔴 Долг сегодня:",
-    todayTotal: "💰 ИТОГО ЗА СЕГОДНЯ:",
-    totalDebtorsSmall: "👥 Всего должников:",
-    totalDebtSmall: "💸 Общий долг:",
-    paidStatusPdf: "✅ Оплачено",
-    debtStatusPdf: "🔴 Долг",
-    debtStatusNamePdf: "🔴 Долг ({name})",
-    signatureClient: "ПОДПИСЬ КЛИЕНТА",
-    signatureCashier: "ПОДПИСЬ КАССИРА",
-    thanks: "СПАСИБО ЗА ВИЗИТ! 🎱",
-    autoGenerated: "Этот чек создан автоматически",
-    dailyReportFor: "за {date}",
-    allGamesList: "Список всех игр",
-    unpaidList: "Неоплаченные игры",
-    debtFor: "для {name}",
-    reportFor: "за {date}",
-    payOnTime: "Пожалуйста, оплачивайте долги вовремя",
-    payAtCashier: "Для оплаты долга обратитесь в кассу",
-    dailyCashReport: "Дневной кассовый отчёт",
-    allHistory: "История всех игр",
-    adminLogin: "ВХОД В АДМИН",
-    drawPattern: "Нарисуйте графический пароль мышью",
-    drawPatternMsg: "🔑 Нарисуйте графический пароль",
-    patternCorrect: "✅ Пароль верный!",
-    patternWrong: "❌ Неверный пароль!",
-    patternRetry: "🔑 Попробуйте снова",
-    backEsc: "← НАЗАД (ESC)",
-    hintTables: "Столы",
-    hintHome: "Главная",
-    hintAdmin: "Админ",
-    hintReports: "Отчёт",
-    hintDebtors: "Должники",
-    hintHistory: "История",
-    hintBooking: "Бронь",
-    hintClose: "Закрыть",
-    bookingTitle: "📅 БРОНИРОВАНИЕ",
-    bookingSubtitle: "Забронировать стол заранее",
-    bookingTableLabel: "🎱 Номер стола",
-    selectTable: "Выберите стол",
-    bookingNameLabel: "👤 Имя клиента",
-    bookingNamePlaceholder: "Введите имя",
-    bookingPhoneLabel: "📞 Телефон",
-    bookingDateLabel: "📅 Дата",
-    bookingTimeLabel: "⏰ Время",
-    bookingDurationLabel: "⏱ Длительность (минут)",
-    saveBookingBtn: "💾 СОХРАНИТЬ БРОНЬ",
-    activeBookingsTitle: "🔔 Активные брони",
-    filterToday: "📆 Сегодня",
-    filterAll: "📋 Все",
-    bookingDateMissingTitle: "Дата/время не указаны",
-    bookingDateMissingText: "Пожалуйста, выберите дату и время.",
-    bookingTableMissingTitle: "Стол не выбран",
-    bookingTableMissingText: "Пожалуйста, выберите номер стола.",
-    bookingPastTitle: "Прошедшее время",
-    bookingPastText: "Нельзя бронировать на прошедшее время.",
-    bookingConflictTitle: "Время занято",
-    bookingConflictText: "В это время уже забронировано в {time} клиентом {name}.",
-    bookingSavedTitle: "Бронь сохранена",
-    bookingSavedText: "Стол {table} • {name} • {time}",
-    bookingStatusActive: "🟢 АКТИВНО",
-    bookingStatusSoon: "🟡 СКОРО",
-    bookingStatusFuture: "🔵 ОЖИДАЕТСЯ",
-    bookingStatusExpired: "⚪ ПРОШЛО",
-    bookingStartBtn: "НАЧАТЬ",
-    bookingCancelBtn: "ОТМЕНА",
-    bookingCancelTitle: "Отмена брони",
-    bookingCancelText: "Отменить бронь стола {table} на {time} для {name}?",
-    bookingCancelYes: "🗑️ ДА, ОТМЕНИТЬ",
-    bookingCancelNo: "❌ НЕТ",
-    bookingStartedTitle: "Игра началась",
-    bookingStartedText: "Стол {table} • {name}",
-    bookingReminder: "⏰ Напоминание: {name} • Стол {table} • {time}",
-    noBookings: "📅 Пока нет бронирований",
-    som: "сум",
-    table: "Стол",
-    minute: "минута",
-    minutes: "минут",
-    confirm: "ПОНЯТНО",
-    noTablesConfigured: "Столы не настроены",
-    tablesEditTitle: "Редактировать столы",
-    tablesEditSub: "Столы и цены для пользователя",
-    tablesSavedTitle: "Столы сохранены",
-    tablesSavedText: "Для {name} установлено {count} столов.",
-    tablePriceError: "Введите корректную цену для стола {n}!",
-    tablesCountError: "Количество столов должно быть от 1 до 20!",
-    tablesCountRequired: "Нужно указать минимум 1 стол",
-    pricesRequired: "Нужно указать цену для каждого стола",
-    userTablesLabel: "Столы",
-    userPricesLabel: "Цены",
-    editTablesBtn: "🎱 СТОЛЫ",
-    tablesNotConfigured: "Столы не настроены",
-    tablesBtn: "СТОЛЫ",
-    passwordBtn: "ПАРОЛЬ",
-    activateBtn: "АКТИВИРОВАТЬ",
-    blockBtn: "ЗАБЛОКИРОВАТЬ",
-    deleteBtn: "УДАЛИТЬ",
-    cannotDelete: "НЕ УДАЛЯЕТСЯ",
-    createdLabel: "Создан",
-    startedLabel: "Начато",
-    paymentLabel: "Оплата",
-    debtLabel: "Долг",
-    loginLabelShort: "Входы",
-    receivedLabel: "Получено",
-    today: "СЕГОДНЯ",
-    week7: "7 ДНЕЙ",
-    totalLabelShort: "ВСЕГО",
-    todayDebt: "Долг сегодня",
-    financialIndicators: "ФИНАНСОВЫЕ ПОКАЗАТЕЛИ",
-    userActive: "✅ АКТИВЕН",
-    userBlocked: "🚫 ЗАБЛОКИРОВАН",
-    usersPageTitle: "👥 ПОЛЬЗОВАТЕЛИ",
-    usersPageSubtitle: "Логины/пароли, столы и активность",
-    createUserTitle: "➕ СОЗДАТЬ НОВОГО ПОЛЬЗОВАТЕЛЯ",
-    roleLabel: "🎭 Роль",
-    roleUser: "👤 Пользователь",
-    roleAdmin: "🛡️ Админ",
-    tablesSettingsTitle: "🎱 НАСТРОЙКА СТОЛОВ И ЦЕН",
-    howManyTables: "Сколько столов?",
-    tablesRange: "столов (1-20)",
-    allFor40: "Все по 40к",
-    allFor50: "Все по 50к",
-    addUserBtn: "💾 ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ",
-    existingUsersTitle: "📋 Существующие пользователи",
-    userActivityTitle: "📊 Активность пользователей",
-    userActivitySubtitle: "Кто, когда, что сделал — отправляется в Telegram",
-    clearLogsBtn: "🗑️ ОЧИСТИТЬ ЛОГ",
-    noUsers: "Пользователей нет",
-    noActivity: "Пока нет активности",
-    userCreatedTitle: "Пользователь добавлен",
-    pricesLabel: "Цены",
-    tablesShort: "шт",
-    pwdModalTitle: "Обновить логин и пароль",
-    pwdModalSub: "Изменение данных пользователя",
-    pwdNewLogin: "🔑 Логин",
-    pwdNewLoginPlaceholder: "Новый логин (минимум 3 символа)",
-    pwdNewPassword: "🔒 Новый пароль",
-    pwdNewPasswordPlaceholder: "Новый пароль (минимум 3 символа)",
-    saveBtn: "💾 СОХРАНИТЬ",
-    cancelBtn: "❌ ОТМЕНА",
-    loginErrorTitle: "Ошибка логина",
-    passwordErrorTitle: "Ошибка пароля",
-    loginMinLength: "Логин должен быть минимум 3 символа.",
-    passwordMinLength: "Пароль должен быть минимум 3 символа.",
-    loginTakenTitle: "Логин занят",
-    loginTakenText: "Логин \"{login}\" уже используется пользователем {name}.",
-    updatedTitle: "Успешно обновлено",
-    updatedText: "👤 {name}\n\n🔑 Новый логин: {login}\n🔒 Новый пароль: {password}",
-    clearLogsTitle: "Очистка логов",
-    clearLogsText: "Удалить всю историю действий пользователей?",
-    clearLogsWarning: "⚠️ Это действие нельзя отменить!",
-    clearLogsYes: "🗑️ ДА, ОЧИСТИТЬ",
-    logsClearedTitle: "Логи очищены",
-    logsClearedText: "{count} записей успешно удалено.",
-    entriesShort: "записей",
-    deleteUserTitle: "Удалить пользователя",
-    deleteUserText: "Полностью удалить {name} (@{username})?\n\nЭто действие нельзя отменить.",
-    deleteYes: "🗑️ ДА, УДАЛИТЬ",
-    errorTitle: "Ошибка",
-    noAccessTitle: "Доступ запрещён",
-    noAccessText: "Этот раздел доступен только Главному админу.",
-    errorOccurred: "Произошла ошибка",
-    approveError: "Ошибка при одобрении запроса",
-    pendingTitle: "⏳ ОЖИДАЮЩИЕ ЗАПРОСЫ",
-    pendingNone: "Пока нет ожидающих запросов",
-    pendingApproveTitle: "Одобрить запрос",
-    pendingApproveText: "Одобрить {name} (@{username})?",
-    pendingApproveYes: "✅ ДА, ОДОБРИТЬ",
-    pendingRejectTitle: "Отклонить запрос",
-    pendingRejectText: "Отклонить запрос {name} (@{username})?",
-    pendingRejectYes: "❌ ДА, ОТКЛОНИТЬ",
-    pendingRejectReason: "Укажите причину отклонения (необязательно):",
-    pendingApprovedTitle: "Одобрено!",
-    pendingApprovedText: "👤 {name}\n\n🔑 Логин: {username}\n🔒 Пароль: {password}",
-    pendingRejectedTitle: "Отклонено",
-    pendingRejectedText: "Запрос отклонён.",
-    pendingBadge: "{count} шт",
-    pendingSent: "⏳ Ваш запрос отправлен!",
-    pendingNewBadge: "НОВЫЙ ЗАПРОС",
-    newRequestLabel: "НОВЫЙ ЗАПРОС",
-    tablesCountLabelShort: "столов",
-    sentAtLabel: "Отправлено",
-    busyShort: "ЗАНЯТ",
-    freeShort: "СВОБОДЕН",
-    hourShort: "час",
-    occupiedLabel: "ожидает",
-    untilLabel: "до",
-    afterLabel: "через",
-    cancelRejectBtn: "❌ ОТМЕНА",
-    rejectBtn: "❌ ОТКЛОНИТЬ",
-    approveBtn: "✅ ОДОБРИТЬ"
+    loginSub:"WINDOWS EDITION",loginLabel:"👤 Логин",loginPlaceholder:"Введите логин",
+    passwordLabel:"🔒 Пароль",passwordPlaceholder:"Введите пароль",rememberMe:"Запомнить меня",
+    loginBtn:"🔓 ВОЙТИ",loginFillAll:"⚠️ Заполните логин и пароль!",
+    loginSuccess:"✅ Вход выполнен!",loginWrong:"❌ Неверный логин или пароль!",
+    loginPending:"⏳ Ваш запрос ещё не одобрен!",loginRejected:"❌ Ваш запрос отклонён!",
+    loginBlocked:"🚫 Ваш аккаунт заблокирован!",noAccount:"Нет аккаунта?",
+    registerNow:"Зарегистрироваться",registerTitle:"РЕГИСТРАЦИЯ",registerSub:"ОТПРАВИТЬ ЗАПРОС",
+    registerWarning:"⏳ <b>Внимание!</b> После регистрации ваш аккаунт <b>не создаётся автоматически</b>.<br>👑 Ожидайте одобрения Главного админа.",
+    fullNameLabel:"👤 Полное имя",fullNamePlaceholder:"Имя и фамилия",
+    registerLoginPlaceholder:"Минимум 3 символа",registerPasswordPlaceholder:"Минимум 3 символа",
+    passwordConfirmLabel:"🔒 Подтвердите пароль",passwordConfirmPlaceholder:"Повторите",
+    phoneLabelReg:"📞 Телефон",tablesCountLabel:"🎱 Сколько столов?",
+    registerBtn:"📩 ОТПРАВИТЬ ЗАПРОС",backToLogin:"← ВЕРНУТЬСЯ К ВХОДУ",
+    regSuccess:"⏳ Ваш запрос отправлен!",regErrorFullName:"⚠️ Введите полное имя!",
+    regErrorUsername:"⚠️ Логин минимум 3 символа!",regErrorUsernameFormat:"⚠️ Логин только буквы, цифры и _!",
+    regErrorPhone:"⚠️ Введите корректный телефон!",regErrorPassword:"⚠️ Пароль минимум 3 символа!",
+    regErrorPasswordMatch:"⚠️ Пароли не совпадают!",regErrorUsernameTaken:"⚠️ Этот логин уже занят!",
+    regErrorPending:"⏳ Запрос с этим логином уже отправлен.",navHome:"Главная",navTables:"Столы",
+    navAdmin:"Админ панель",tipHome:"Клавиша H",tipTables:"Клавиши 1-9",tipAdmin:"Клавиша A",
+    logoutBtn:"ВЫЙТИ",logoutTitle:"Выход из системы",logoutText:"Вы действительно хотите выйти?",
+    logoutYes:"🚪 ДА, ВЫЙТИ",logoutNo:"❌ ОТМЕНА",modalOk:"ПОНЯТНО",
+    tablesTitle:"🎱 СТОЛЫ",tablesSubtitle:"Все столы на одном экране",tableLabel:"🎱 СТОЛ",
+    statusFree:"🔵 СВОБОДЕН",statusBusy:"🔴 ЗАНЯТ",statusFinished:"⏸ ЗАВЕРШЁН",
+    priceLabel:"ЦЕНА ЗА 1 ЧАС",currentBill:"💰 Текущий счёт:",startBtn:"▶️ НАЧАТЬ ИГРУ",
+    finishBtn:"⏹️ ЗАВЕРШИТЬ ИГРУ",totalLabel:"💰 ИТОГО:",paidBtn:"🟢 ДЕНЬГИ ПОЛУЧЕНЫ",
+    debtBtn:"🔴 ДЕНЬГИ НЕ ПОЛУЧЕНЫ",nameLabel:"👤 Имя",namePlaceholder:"Введите имя",
+    phoneLabel:"📞 Телефон",phonePlaceholder:"Номер телефона",
+    saveDebtBtn:"💾 СОХРАНИТЬ ДОЛЖНИКА",tableBusyTitle:"Стол занят",
+    tableBusyText:"Этот стол сейчас играет.",paidTitle:"Деньги получены",
+    paidText:"{amount} принято.",nameMissingTitle:"Имя не указано",
+    nameMissingText:"Пожалуйста, введите имя.",phoneMissingTitle:"Телефон не указан",
+    phoneMissingText:"Пожалуйста, введите номер телефона.",debtSavedTitle:"Должник сохранён",
+    debtSavedText:"{name} — {amount}",paidLaterTitle:"Оплата получена",
+    paidLaterText:"Долг {name} на {amount} закрыт.",adminTitle:"🔐 АДМИН ПАНЕЛЬ",
+    adminSubtitle:"Меню управления",backToMain:"🏠 ГЛАВНОЕ МЕНЮ",reportsCard:"Отчёт",
+    reportsCardSub:"Выручка и игры",debtorsCard:"Должники",debtorsCardSub:"Неоплаченные суммы",
+    historyCard:"История",historyCardSub:"Все игры",bookingCard:"Бронирование",
+    bookingCardSub:"Забронировать стол",usersCard:"Пользователи",usersCardSub:"Логин/пароль и столы",
+    pendingCardTitle:"Ожидающие запросы",pendingCardSub:"Ожидают одобрения",
+    backToAdmin:"← НАЗАД В АДМИН МЕНЮ",reportsTitle:"📊 ОТЧЁТ",
+    reportsSubtitle:"Сегодняшняя выручка и статистика",statGames:"🎱 Игры за сегодня",
+    statPaid:"🟢 Оплачено",statUnpaid:"🔴 Не оплачено",statDebtors:"👥 Должники",
+    statBookings:"📅 Активные брони",downloadReportPdf:"📄 СКАЧАТЬ ОБЩИЙ ОТЧЁТ PDF",
+    debtorsTitle:"🔴 ДОЛЖНИКИ",debtorsSubtitle:"Список неоплаченных игр",
+    downloadAllDebtorsPdf:"📄 СКАЧАТЬ ВСЕХ ДОЛЖНИКОВ PDF",noDebtors:"🎉 Должников нет",
+    noDebtorsPdf:"Все долги оплачены!",debtStatus:"🔴 НЕ ОПЛАЧЕНО",payNowBtn:"🟢 ОПЛАЧЕНО",
+    pdfBtn:"📄 PDF",historyTitle:"📋 ИСТОРИЯ",historySubtitle:"Игры по датам",
+    allDatesTotal:"💰 ОБЩАЯ СУММА ВСЕХ ДАТ",downloadAllHistoryPdf:"📄 СКАЧАТЬ ВСЮ ИСТОРИЮ PDF",
+    backToDates:"← НАЗАД К ДАТАМ",dateLabel:"📅 Дата",dailyGames:"Игры за день",
+    downloadPdf:"📄 СКАЧАТЬ PDF",clearDate:"🗑️ ОЧИСТИТЬ ДАТУ",noHistory:"📋 История пока пуста",
+    noHistoryDate:"На эту дату нет данных.",gamesCount:"игр",gamesShort:"игр",
+    dateTotal:"💰 ОБЩАЯ СУММА ЗА ЭТУ ДАТУ",gamesSmall:"🎱 ИГРЫ",paidSmall:"🟢 ОПЛАЧЕНО",
+    unpaidSmall:"🔴 НЕ ОПЛАЧЕНО",paidStatus:"🟢 ОПЛАЧЕНО",unpaidStatus:"🔴 НЕ ОПЛАЧЕНО",
+    paidAt:"✅ Оплачено:",clearHistoryTitle:"Очистка истории",
+    clearHistoryText:"Удалить {count} игр за {date} ({amount})?",clearYes:"🗑️ ДА, УДАЛИТЬ",
+    clearNo:"❌ ОТМЕНА",dateNotSelected:"Дата не выбрана",
+    dateNotSelectedText:"Дата для удаления не определена.",historyEmptyTitle:"История пуста",
+    historyEmptyText:"На эту дату нет истории для удаления.",clearedTitle:"История очищена",
+    clearedText:"История за {date} удалена.",pdfLoading:"📄 PDF ГОТОВИТСЯ...",
+    pdfLoadingSub:"Пожалуйста, подождите",pdfDoneTitle:"PDF загружен",
+    pdfDoneText:'📄 Файл: "{filename}"\n\n📁 Папка: Загрузки',pdfErrorTitle:"Ошибка",
+    pdfErrorText:"Ошибка при создании PDF.",chekKassa:"КАССОВЫЙ ЧЕК",chekDaily:"ДНЕВНОЙ ОТЧЁТ",
+    chekAllHistory:"ОБЩИЙ ОТЧЁТ ИСТОРИИ",chekDebtors:"СПИСОК ДОЛЖНИКОВ",
+    chekDebt:"ЧЕК ДОЛГА",chekReport:"КАССОВЫЙ ОТЧЁТ",chekNo:"Номер чека:",chekDate:"Дата:",
+    colNum:"#",colTable:"Стол",colTime:"Время",colStatus:"Статус",colAmount:"Сумма",
+    noData:"Нет данных",totalGames:"Всего игр:",paidSum:"🟢 Оплаченная сумма:",
+    unpaidSum:"🔴 Сумма долга:",grandTotal:"💰 ОБЩАЯ СУММА:",totalDebtors:"Всего должников:",
+    grandDebt:"💰 ОБЩИЙ ДОЛГ:",client:"👤 Клиент:",phone:"📞 Телефон:",tableShort:"🎱 Стол:",
+    timeShort:"⏱ Время:",debtSum:"💰 СУММА ДОЛГА:",todayGames:"🎱 Игры за сегодня:",
+    todayPaid:"🟢 Оплачено сегодня:",todayUnpaid:"🔴 Долг сегодня:",todayTotal:"💰 ИТОГО ЗА СЕГОДНЯ:",
+    totalDebtorsSmall:"👥 Всего должников:",totalDebtSmall:"💸 Общий долг:",
+    paidStatusPdf:"✅ Оплачено",debtStatusPdf:"🔴 Долг",debtStatusNamePdf:"🔴 Долг ({name})",
+    signatureClient:"ПОДПИСЬ КЛИЕНТА",signatureCashier:"ПОДПИСЬ КАССИРА",
+    thanks:"СПАСИБО ЗА ВИЗИТ! 🎱",autoGenerated:"Этот чек создан автоматически",
+    dailyReportFor:"за {date}",allGamesList:"Список всех игр",unpaidList:"Неоплаченные игры",
+    debtFor:"для {name}",reportFor:"за {date}",payOnTime:"Пожалуйста, оплачивайте долги вовремя",
+    payAtCashier:"Для оплаты долга обратитесь в кассу",dailyCashReport:"Дневной кассовый отчёт",
+    allHistory:"История всех игр",adminLogin:"ВХОД В АДМИН",
+    drawPattern:"Нарисуйте графический пароль мышью",drawPatternMsg:"🔑 Нарисуйте графический пароль",
+    patternCorrect:"✅ Пароль верный!",patternWrong:"❌ Неверный пароль!",
+    patternRetry:"🔑 Попробуйте снова",backEsc:"← НАЗАД (ESC)",hintTables:"Столы",
+    hintHome:"Главная",hintAdmin:"Админ",hintReports:"Отчёт",hintDebtors:"Должники",
+    hintHistory:"История",hintBooking:"Бронь",hintClose:"Закрыть",bookingTitle:"📅 БРОНИРОВАНИЕ",
+    bookingSubtitle:"Забронировать стол заранее",bookingTableLabel:"🎱 Номер стола",
+    selectTable:"Выберите стол",bookingNameLabel:"👤 Имя клиента",bookingNamePlaceholder:"Введите имя",
+    bookingPhoneLabel:"📞 Телефон",bookingDateLabel:"📅 Дата",bookingTimeLabel:"⏰ Время",
+    bookingDurationLabel:"⏱ Длительность (минут)",saveBookingBtn:"💾 СОХРАНИТЬ БРОНЬ",
+    activeBookingsTitle:"🔔 Активные брони",filterToday:"📆 Сегодня",filterAll:"📋 Все",
+    bookingDateMissingTitle:"Дата/время не указаны",bookingDateMissingText:"Пожалуйста, выберите дату и время.",
+    bookingTableMissingTitle:"Стол не выбран",bookingTableMissingText:"Пожалуйста, выберите номер стола.",
+    bookingPastTitle:"Прошедшее время",bookingPastText:"Нельзя бронировать на прошедшее время.",
+    bookingConflictTitle:"Время занято",bookingConflictText:"В это время уже забронировано в {time} клиентом {name}.",
+    bookingSavedTitle:"Бронь сохранена",bookingSavedText:"Стол {table} • {name} • {time}",
+    bookingStatusActive:"🟢 АКТИВНО",bookingStatusSoon:"🟡 СКОРО",bookingStatusFuture:"🔵 ОЖИДАЕТСЯ",
+    bookingStatusExpired:"⚪ ПРОШЛО",bookingStartBtn:"НАЧАТЬ",bookingCancelBtn:"ОТМЕНА",
+    bookingCancelTitle:"Отмена брони",bookingCancelText:"Отменить бронь стола {table} на {time} для {name}?",
+    bookingCancelYes:"🗑️ ДА, ОТМЕНИТЬ",bookingCancelNo:"❌ НЕТ",bookingStartedTitle:"Игра началась",
+    bookingStartedText:"Стол {table} • {name}",bookingReminder:"⏰ Напоминание: {name} • Стол {table} • {time}",
+    noBookings:"📅 Пока нет бронирований",som:"сум",table:"Стол",minute:"минута",minutes:"минут",
+    confirm:"ПОНЯТНО",noTablesConfigured:"Столы не настроены",tablesEditTitle:"Редактировать столы",
+    tablesEditSub:"Столы и цены для пользователя",tablesSavedTitle:"Столы сохранены",
+    tablesSavedText:"Для {name} установлено {count} столов.",tablePriceError:"Введите корректную цену для стола {n}!",
+    tablesCountError:"Количество столов должно быть от 1 до 20!",
+    tablesCountRequired:"Нужно указать минимум 1 стол",pricesRequired:"Нужно указать цену для каждого стола",
+    userTablesLabel:"Столы",userPricesLabel:"Цены",editTablesBtn:"🎱 СТОЛЫ",
+    tablesNotConfigured:"Столы не настроены",tablesBtn:"СТОЛЫ",passwordBtn:"ПАРОЛЬ",
+    activateBtn:"АКТИВИРОВАТЬ",blockBtn:"ЗАБЛОКИРОВАТЬ",deleteBtn:"УДАЛИТЬ",
+    cannotDelete:"НЕ УДАЛЯЕТСЯ",createdLabel:"Создан",startedLabel:"Начато",paymentLabel:"Оплата",
+    debtLabel:"Долг",loginLabelShort:"Входы",receivedLabel:"Получено",today:"СЕГОДНЯ",
+    week7:"7 ДНЕЙ",totalLabelShort:"ВСЕГО",todayDebt:"Долг сегодня",
+    financialIndicators:"ФИНАНСОВЫЕ ПОКАЗАТЕЛИ",userActive:"✅ АКТИВЕН",userBlocked:"🚫 ЗАБЛОКИРОВАН",
+    usersPageTitle:"👥 ПОЛЬЗОВАТЕЛИ",usersPageSubtitle:"Логины/пароли, столы и активность",
+    createUserTitle:"➕ СОЗДАТЬ НОВОГО ПОЛЬЗОВАТЕЛЯ",roleLabel:"🎭 Роль",
+    roleUser:"👤 Пользователь",roleAdmin:"🛡️ Админ",
+    tablesSettingsTitle:"🎱 НАСТРОЙКА СТОЛОВ И ЦЕН",howManyTables:"Сколько столов?",
+    tablesRange:"столов (1-20)",allFor40:"Все по 40к",allFor50:"Все по 50к",
+    addUserBtn:"💾 ДОБАВИТЬ ПОЛЬЗОВАТЕЛЯ",existingUsersTitle:"📋 Существующие пользователи",
+    userActivityTitle:"📊 Активность пользователей",
+    userActivitySubtitle:"Кто, когда, что сделал — отправляется в Telegram",
+    clearLogsBtn:"🗑️ ОЧИСТИТЬ ЛОГ",noUsers:"Пользователей нет",noActivity:"Пока нет активности",
+    userCreatedTitle:"Пользователь добавлен",pricesLabel:"Цены",tablesShort:"шт",
+    pwdModalTitle:"Обновить логин и пароль",pwdModalSub:"Изменение данных пользователя",
+    pwdNewLogin:"🔑 Логин",pwdNewLoginPlaceholder:"Новый логин (минимум 3 символа)",
+    pwdNewPassword:"🔒 Новый пароль",pwdNewPasswordPlaceholder:"Новый пароль (минимум 3 символа)",
+    saveBtn:"💾 СОХРАНИТЬ",cancelBtn:"❌ ОТМЕНА",loginErrorTitle:"Ошибка логина",
+    passwordErrorTitle:"Ошибка пароля",loginMinLength:"Логин должен быть минимум 3 символа.",
+    passwordMinLength:"Пароль должен быть минимум 3 символа.",loginTakenTitle:"Логин занят",
+    loginTakenText:"Логин \"{login}\" уже используется пользователем {name}.",
+    updatedTitle:"Успешно обновлено",
+    updatedText:"👤 {name}\n\n🔑 Новый логин: {login}\n🔒 Новый пароль: {password}",
+    clearLogsTitle:"Очистка логов",clearLogsText:"Удалить всю историю действий пользователей?",
+    clearLogsWarning:"⚠️ Это действие нельзя отменить!",clearLogsYes:"🗑️ ДА, ОЧИСТИТЬ",
+    logsClearedTitle:"Логи очищены",logsClearedText:"{count} записей успешно удалено.",
+    entriesShort:"записей",deleteUserTitle:"Удалить пользователя",
+    deleteUserText:"Полностью удалить {name} (@{username})?\n\nЭто действие нельзя отменить.",
+    deleteYes:"🗑️ ДА, УДАЛИТЬ",errorTitle:"Ошибка",noAccessTitle:"Доступ запрещён",
+    noAccessText:"Этот раздел доступен только Главному админу.",errorOccurred:"Произошла ошибка",
+    approveError:"Ошибка при одобрении запроса",pendingTitle:"⏳ ОЖИДАЮЩИЕ ЗАПРОСЫ",
+    pendingNone:"Пока нет ожидающих запросов",pendingApproveTitle:"Одобрить запрос",
+    pendingApproveText:"Одобрить {name} (@{username})?",pendingApproveYes:"✅ ДА, ОДОБРИТЬ",
+    pendingRejectTitle:"Отклонить запрос",pendingRejectText:"Отклонить запрос {name} (@{username})?",
+    pendingRejectYes:"❌ ДА, ОТКЛОНИТЬ",pendingRejectReason:"Укажите причину отклонения (необязательно):",
+    pendingApprovedTitle:"Одобрено!",pendingApprovedText:"👤 {name}\n\n🔑 Логин: {username}\n🔒 Пароль: {password}",
+    pendingRejectedTitle:"Отклонено",pendingRejectedText:"Запрос отклонён.",pendingBadge:"{count} шт",
+    pendingSent:"⏳ Ваш запрос отправлен!",pendingNewBadge:"НОВЫЙ ЗАПРОС",newRequestLabel:"НОВЫЙ ЗАПРОС",
+    tablesCountLabelShort:"столов",sentAtLabel:"Отправлено",busyShort:"ЗАНЯТ",freeShort:"СВОБОДЕН",
+    hourShort:"час",occupiedLabel:"ожидает",untilLabel:"до",afterLabel:"через",
+    cancelRejectBtn:"❌ ОТМЕНА",rejectBtn:"❌ ОТКЛОНИТЬ",approveBtn:"✅ ОДОБРИТЬ"
   }
 };
 
@@ -3140,7 +2717,7 @@ function setLanguage(lang){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   FIREBASE AUTH
+   AUTH — LOGIN / REGISTER / LOGOUT
    ═══════════════════════════════════════════════════════════════ */
 
 function togglePasswordVisibility(inputId, btn){
@@ -3190,20 +2767,18 @@ async function checkLogin(){
 
   try{
     const email = userInput.toLowerCase() + "@billiard.local";
-
     let userCredential;
+
     try{
       userCredential = await auth.signInWithEmailAndPassword(email, passInput);
     }catch(authErr){
       const usersSnap = await db.collection("users")
-        .where("username", "==", userInput)
-        .limit(1).get();
+        .where("username", "==", userInput).limit(1).get();
 
       if(usersSnap.empty){
         const pendingSnap = await db.collection("pendingRequests")
           .where("username", "==", userInput)
-          .where("status", "==", "pending")
-          .limit(1).get();
+          .where("status", "==", "pending").limit(1).get();
 
         if(!pendingSnap.empty){
           errorEl.innerText = t("loginPending");
@@ -3214,8 +2789,7 @@ async function checkLogin(){
 
         const rejectedSnap = await db.collection("pendingRequests")
           .where("username", "==", userInput)
-          .where("status", "==", "rejected")
-          .limit(1).get();
+          .where("status", "==", "rejected").limit(1).get();
 
         if(!rejectedSnap.empty){
           errorEl.innerText = t("loginRejected");
@@ -3248,8 +2822,7 @@ async function checkLogin(){
       try{
         userCredential = await auth.createUserWithEmailAndPassword(email, passInput);
         await db.collection("users").doc(userCredential.user.uid).set({
-          ...userData,
-          uid: userCredential.user.uid
+          ...userData, uid: userCredential.user.uid
         }, { merge: true });
       }catch(createErr){
         console.error("Auth yaratishda xato:", createErr);
@@ -3261,7 +2834,6 @@ async function checkLogin(){
     }
 
     currentUser = userCredential.user;
-
     const userData = await loadUserData(currentUser.uid);
 
     if(!userData){
@@ -3284,11 +2856,8 @@ async function checkLogin(){
     errorEl.style.color = "#42e979";
     beep("money");
 
-    if(remember){
-      localStorage.setItem("billiardRemember", "true");
-    } else {
-      localStorage.removeItem("billiardRemember");
-    }
+    if(remember) localStorage.setItem("billiardRemember", "true");
+    else localStorage.removeItem("billiardRemember");
 
     await logUserAction("login", "Tizimga kirdi");
 
@@ -3334,38 +2903,31 @@ async function doRegister(){
     errorEl.classList.remove("shake");
     void errorEl.offsetWidth;
     errorEl.classList.add("shake");
-    beep("error");
-    return;
+    beep("error"); return;
   }
   if(!username || username.length < 3){
     errorEl.innerText = t("regErrorUsername");
-    beep("error");
-    return;
+    beep("error"); return;
   }
   if(!/^[a-zA-Z0-9_]+$/.test(username)){
     errorEl.innerText = t("regErrorUsernameFormat");
-    beep("error");
-    return;
+    beep("error"); return;
   }
   if(!phone || phone.length < 7){
     errorEl.innerText = t("regErrorPhone");
-    beep("error");
-    return;
+    beep("error"); return;
   }
   if(!password || password.length < 3){
     errorEl.innerText = t("regErrorPassword");
-    beep("error");
-    return;
+    beep("error"); return;
   }
   if(password !== passwordConfirm){
     errorEl.innerText = t("regErrorPasswordMatch");
-    beep("error");
-    return;
+    beep("error"); return;
   }
   if(tablesCount < 1 || tablesCount > 20){
     errorEl.innerText = t("tablesCountError");
-    beep("error");
-    return;
+    beep("error"); return;
   }
 
   errorEl.innerText = "⏳ Tekshirilmoqda...";
@@ -3373,26 +2935,22 @@ async function doRegister(){
 
   try{
     const usersSnap = await db.collection("users")
-      .where("username", "==", username)
-      .limit(1).get();
+      .where("username", "==", username).limit(1).get();
 
     if(!usersSnap.empty){
       errorEl.innerText = t("regErrorUsernameTaken");
       errorEl.style.color = "#ff6878";
-      beep("error");
-      return;
+      beep("error"); return;
     }
 
     const pendingSnap = await db.collection("pendingRequests")
       .where("username", "==", username)
-      .where("status", "==", "pending")
-      .limit(1).get();
+      .where("status", "==", "pending").limit(1).get();
 
     if(!pendingSnap.empty){
       errorEl.innerText = t("regErrorPending");
       errorEl.style.color = "#ff6878";
-      beep("error");
-      return;
+      beep("error"); return;
     }
 
     const defaultPrice = 40000;
@@ -3403,21 +2961,14 @@ async function doRegister(){
       Math.random().toString(36).slice(2,7);
 
     const request = {
-      id: requestId,
-      fullName: fullName,
-      username: username,
-      phone: phone,
-      password: password,
-      role: "user",
-      tablesCount: tablesCount,
-      tablePrices: prices,
+      id: requestId, fullName, username, phone, password,
+      role: "user", tablesCount, tablePrices: prices,
       status: "pending",
       createdAt: new Date().toISOString(),
       requestedAt: new Date().toISOString()
     };
 
     await db.collection("pendingRequests").doc(requestId).set(request);
-
     sendApprovalRequestToAdmin(request);
 
     errorEl.style.color = "#ffd23f";
@@ -3478,9 +3029,7 @@ function logout(){
 
 async function confirmLogout(){
   try{
-    if(currentUserData){
-      await logUserAction("logout", "Tizimdan chiqdi");
-    }
+    if(currentUserData) await logUserAction("logout", "Tizimdan chiqdi");
     await auth.signOut();
 
     Object.keys(unsubscribers).forEach(key=>{
@@ -3492,9 +3041,7 @@ async function confirmLogout(){
 
     currentUser = null;
     currentUserData = null;
-    games = {};
-    bookings = [];
-    history = [];
+    games = {}; bookings = []; history = [];
 
     closeModal();
     beep("end");
@@ -3562,7 +3109,7 @@ function startRealtimeListeners(){
       renderReports();
     }, err => console.warn("bookings listener:", err));
 
-  /* HISTORY — orderBy olib tashlandi (index talab qilmasligi uchun) */
+  /* HISTORY — client-side sort */
   unsubscribers.history = db.collection("history")
     .where("ownerId", "==", ownerId)
     .onSnapshot(snap=>{
@@ -3570,14 +3117,13 @@ function startRealtimeListeners(){
       snap.forEach(doc=>{
         history.push({ id: doc.id, ...doc.data() });
       });
-      /* Client-side sort */
       history.sort((a,b) => {
         const aT = a.savedAt ? new Date(a.savedAt).getTime() : 0;
         const bT = b.savedAt ? new Date(b.savedAt).getTime() : 0;
         return bT - aT;
       });
       if(history.length > 500) history = history.slice(0, 500);
-      
+
       renderReports();
       renderAdminDebtors();
       renderAdminHistory();
@@ -3612,7 +3158,6 @@ function startRealtimeListeners(){
         snap.forEach(doc=>{
           userLogs.push({ id: doc.id, ...doc.data() });
         });
-        /* Client-side sort */
         userLogs.sort((a,b) => {
           const aT = a.timestamp ? new Date(a.timestamp).getTime() : 0;
           const bT = b.timestamp ? new Date(b.timestamp).getTime() : 0;
@@ -3625,7 +3170,7 @@ function startRealtimeListeners(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TELEGRAM — RO'YXATDAN O'TISH
+   TELEGRAM — SO'ROVLAR
    ═══════════════════════════════════════════════════════════════ */
 
 async function sendApprovalRequestToAdmin(req){
@@ -3719,32 +3264,22 @@ async function logUserAction(type, description, extra){
     await db.collection("userLogs").add(logEntry);
 
     const icons = {
-      login: "🚪", logout: "👋",
-      start_game: "▶️", finish_game: "⏹️",
-      paid: "💰", debt: "🔴", debt_paid: "💵",
-      booking: "📅", booking_start: "🎱", booking_cancel: "❌",
-      user_create: "➕", user_delete: "🗑️", user_toggle: "🔁",
-      user_password_change: "🔒", user_tables_edit: "🎱",
-      register: "✨"
+      login:"🚪",logout:"👋",start_game:"▶️",finish_game:"⏹️",
+      paid:"💰",debt:"🔴",debt_paid:"💵",booking:"📅",
+      booking_start:"🎱",booking_cancel:"❌",user_create:"➕",
+      user_delete:"🗑️",user_toggle:"🔁",user_password_change:"🔒",
+      user_tables_edit:"🎱",register:"✨"
     };
 
     const titles = {
-      login: "TIZIMGA KIRISH",
-      logout: "TIZIMDAN CHIQISH",
-      start_game: "O'YIN BOSHLANDI",
-      finish_game: "O'YIN TUGADI",
-      paid: "PUL OLINDI",
-      debt: "QARZGA YOZILDI",
-      debt_paid: "QARZ YOPILDI",
-      booking: "YANGI BRON",
-      booking_start: "BRON BOSHLANDI",
-      booking_cancel: "BRON BEKOR QILINDI",
-      user_create: "YANGI FOYDALANUVCHI",
-      user_delete: "FOYDALANUVCHI O'CHIRILDI",
-      user_toggle: "HOLAT O'ZGARDI",
-      user_password_change: "PAROL/LOGIN O'ZGARDI",
-      user_tables_edit: "STOLLAR TAHRIRLANDI",
-      register: "RO'YXATDAN O'TISH"
+      login:"TIZIMGA KIRISH",logout:"TIZIMDAN CHIQISH",
+      start_game:"O'YIN BOSHLANDI",finish_game:"O'YIN TUGADI",
+      paid:"PUL OLINDI",debt:"QARZGA YOZILDI",debt_paid:"QARZ YOPILDI",
+      booking:"YANGI BRON",booking_start:"BRON BOSHLANDI",
+      booking_cancel:"BRON BEKOR QILINDI",user_create:"YANGI FOYDALANUVCHI",
+      user_delete:"FOYDALANUVCHI O'CHIRILDI",user_toggle:"HOLAT O'ZGARDI",
+      user_password_change:"PAROL/LOGIN O'ZGARDI",
+      user_tables_edit:"STOLLAR TAHRIRLANDI",register:"RO'YXATDAN O'TISH"
     };
 
     const icon = icons[type] || "📌";
@@ -3792,8 +3327,7 @@ function applyRoleUI(){
                   : u.role === "admin" ? "🛡️ ADMIN"
                   : "👤 " + (currentLang === "ru" ? "ПОЛЬЗОВАТЕЛЬ" : "FOYDALANUVCHI");
   const roleColor = u.role === "main_admin" ? "#ffd23f"
-                  : u.role === "admin" ? "#42e979"
-                  : "#35c9ff";
+                  : u.role === "admin" ? "#42e979" : "#35c9ff";
 
   const tablesInfo = u.tablesCount
     ? `<div style="font-size:10px;color:#8aa0b8;margin-top:6px">
@@ -3830,8 +3364,7 @@ function applyRoleUI(){
       if(icon) icon.innerText = "👥";
       if(label){
         label.innerText = currentLang === "ru"
-          ? "ПОЛЬЗОВАТЕЛИ"
-          : "FOYDALANUVCHILAR";
+          ? "ПОЛЬЗОВАТЕЛИ" : "FOYDALANUVCHILAR";
         label.removeAttribute("data-i18n");
       }
       adminBtn.setAttribute("onclick", "openAdminUsersDirect()");
@@ -3889,9 +3422,7 @@ function openAdminUsersDirect(){
 function showWelcomeToast(user){
   const roleLabel = user.role === "main_admin" ? "👑 Bosh admin"
                   : user.role === "admin" ? "🛡️ Admin"
-                  : "👤 " + (currentLang === "ru"
-                      ? "Пользователь"
-                      : "Foydalanuvchi");
+                  : "👤 " + (currentLang === "ru" ? "Пользователь" : "Foydalanuvchi");
 
   const toast = document.createElement("div");
   toast.style.cssText = `
@@ -3989,7 +3520,6 @@ function openPage(page, button){
       if(onclick.includes("'" + page + "'")) b.classList.add("active");
     });
   }
-
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -4194,7 +3724,7 @@ async function startGame(id){
   }catch(e){
     console.error("❌ startGame xatosi:", e);
     beep("error");
-    
+
     let errMsg = "Xatolik yuz berdi";
     if(e.code === "permission-denied"){
       errMsg = "⚠️ Firestore ruxsat xatosi!";
@@ -4203,7 +3733,6 @@ async function startGame(id){
     } else if(e.message){
       errMsg = e.message;
     }
-    
     showModal("❌", "Xatolik", errMsg);
   }
 }
@@ -4286,10 +3815,7 @@ async function finishGame(id){
   const ownerId = getOwnerId();
   try{
     await db.collection("games").doc(ownerId + "_" + id).update({
-      finished: true,
-      minutes: minutes,
-      amount: amount,
-      finishedAt: Date.now()
+      finished: true, minutes: minutes, amount: amount, finishedAt: Date.now()
     });
 
     document.getElementById("sum" + id).innerText = money(amount);
@@ -4333,24 +3859,15 @@ async function savePaid(id){
   const bookingId = g.bookingId;
 
   if(bookingId){
-    try{
-      await db.collection("bookings").doc(bookingId)
-        .update({ status: "completed" });
-    }catch(e){}
+    try{ await db.collection("bookings").doc(bookingId)
+      .update({ status: "completed" }); }catch(e){}
   }
 
   const date = todayDate();
   const historyDoc = {
-    ownerId: ownerId,
-    table: id,
-    minutes: g.minutes,
-    amount: amount,
-    paid: true,
-    name: g.clientName || "",
-    phone: g.clientPhone || "",
-    paymentDate: "",
-    gameDate: date,
-    saveDate: date,
+    ownerId: ownerId, table: id, minutes: g.minutes, amount: amount,
+    paid: true, name: g.clientName || "", phone: g.clientPhone || "",
+    paymentDate: "", gameDate: date, saveDate: date,
     savedAt: new Date().toISOString(),
     userId: currentUserData.uid,
     username: currentUserData.username,
@@ -4363,9 +3880,7 @@ async function savePaid(id){
 
     beep("money");
     logUserAction("paid", `Stol ${id} — ${money(amount)} olindi`);
-
-    showModal("🟢", t("paidTitle"),
-      t("paidText", { amount: money(amount) }));
+    showModal("🟢", t("paidTitle"), t("paidText", { amount: money(amount) }));
 
   }catch(e){
     console.error("savePaid xatosi:", e);
@@ -4398,24 +3913,15 @@ async function saveDebt(id){
   const bookingId = g.bookingId;
 
   if(bookingId){
-    try{
-      await db.collection("bookings").doc(bookingId)
-        .update({ status: "completed" });
-    }catch(e){}
+    try{ await db.collection("bookings").doc(bookingId)
+      .update({ status: "completed" }); }catch(e){}
   }
 
   const date = todayDate();
   const historyDoc = {
-    ownerId: ownerId,
-    table: id,
-    minutes: g.minutes,
-    amount: amount,
-    paid: false,
-    name: name,
-    phone: phone,
-    paymentDate: "",
-    gameDate: date,
-    saveDate: date,
+    ownerId: ownerId, table: id, minutes: g.minutes, amount: amount,
+    paid: false, name: name, phone: phone,
+    paymentDate: "", gameDate: date, saveDate: date,
     savedAt: new Date().toISOString(),
     userId: currentUserData.uid,
     username: currentUserData.username,
@@ -4428,7 +3934,6 @@ async function saveDebt(id){
 
     beep("error");
     logUserAction("debt", `Stol ${id} — ${name} ${money(amount)} qarz`);
-
     showModal("🔴", t("debtSavedTitle"),
       t("debtSavedText", { name: name, amount: money(amount) }));
 
@@ -4614,31 +4119,22 @@ async function saveBooking(){
     beep("error");
     showModal("⚠️", t("bookingConflictTitle"),
       t("bookingConflictText", {
-        time: formatTime(conflict.startTime),
-        name: conflict.name
+        time: formatTime(conflict.startTime), name: conflict.name
       }));
     return;
   }
 
   const ownerId = getOwnerId();
   const booking = {
-    ownerId: ownerId,
-    table: table,
-    name: name,
-    phone: phone,
-    startTime: bookingStart,
-    endTime: bookingEnd,
-    duration: duration,
-    status: "pending",
-    createdAt: new Date().toISOString(),
-    date: date,
+    ownerId: ownerId, table: table, name: name, phone: phone,
+    startTime: bookingStart, endTime: bookingEnd, duration: duration,
+    status: "pending", createdAt: new Date().toISOString(), date: date,
     createdByUserId: currentUserData.uid,
     createdByFullName: currentUserData.fullName
   };
 
   try{
     await db.collection("bookings").add(booking);
-
     beep("money");
 
     document.getElementById("bookingName").value = "";
@@ -4654,9 +4150,7 @@ async function saveBooking(){
 
     showModal("✅", t("bookingSavedTitle"),
       t("bookingSavedText", {
-        table: table,
-        name: name,
-        time: formatTime(bookingStart)
+        table: table, name: name, time: formatTime(bookingStart)
       }));
 
   }catch(e){
@@ -4710,11 +4204,11 @@ function renderBookings(){
   list.forEach(b=>{
     const status = getBookingStatus(b);
     const statusInfo = {
-      active:  { label: t("bookingStatusActive"),  cls: "active"  },
-      soon:    { label: t("bookingStatusSoon"),    cls: "soon"    },
-      future:  { label: t("bookingStatusFuture"),  cls: "future"  },
-      expired: { label: t("bookingStatusExpired"), cls: "expired" }
-    }[status] || { label: "—", cls: "future" };
+      active:{label:t("bookingStatusActive"),cls:"active"},
+      soon:{label:t("bookingStatusSoon"),cls:"soon"},
+      future:{label:t("bookingStatusFuture"),cls:"future"},
+      expired:{label:t("bookingStatusExpired"),cls:"expired"}
+    }[status] || { label:"—", cls:"future" };
 
     const item = document.createElement("div");
     item.className = "booking-item " +
@@ -4762,14 +4256,10 @@ async function startFromBooking(id){
 
   const ownerId = getOwnerId();
   const gameData = {
-    ownerId: ownerId,
-    start: Date.now(),
-    finished: false,
-    minutes: 0,
-    amount: 0,
+    ownerId: ownerId, start: Date.now(), finished: false,
+    minutes: 0, amount: 0,
     bookingId: b.id,
-    clientName: b.name,
-    clientPhone: b.phone
+    clientName: b.name, clientPhone: b.phone
   };
 
   try{
@@ -4806,9 +4296,7 @@ function cancelBooking(id){
   document.getElementById("modalIcon").innerText = "🗑️";
   document.getElementById("modalTitle").innerText = t("bookingCancelTitle");
   document.getElementById("modalText").innerText = t("bookingCancelText", {
-    name: b.name,
-    time: formatTime(b.startTime),
-    table: b.table
+    name: b.name, time: formatTime(b.startTime), table: b.table
   });
   document.getElementById("modalButtons").innerHTML =
     '<button class="modal-danger" onclick="confirmCancelBooking(\'' +
@@ -4824,8 +4312,7 @@ async function confirmCancelBooking(id){
 
   try{
     await db.collection("bookings").doc(id).update({
-      status: "cancelled",
-      cancelledAt: new Date().toISOString()
+      status: "cancelled", cancelledAt: new Date().toISOString()
     });
 
     closeModal();
@@ -4915,14 +4402,9 @@ function generateTablePriceInputs(){
       <div class="form-title" style="margin-top:0;color:#42e979">
         🎱 ${t("table")} ${i}
       </div>
-      <input type="number"
-             id="tablePrice_${i}"
+      <input type="number" id="tablePrice_${i}"
              class="login-input table-price-input"
-             value="${val}"
-             min="0"
-             step="5000"
-             placeholder="40000"
-             data-table="${i}">
+             value="${val}" min="0" step="5000" placeholder="40000">
     `;
     container.appendChild(div);
   }
@@ -4948,28 +4430,23 @@ async function handleCreateUser(){
   const prices = [];
 
   if(!fullName || fullName.length < 2){
-    beep("error");
-    showModal("⚠️", t("errorTitle"), t("regErrorFullName"));
+    beep("error"); showModal("⚠️", t("errorTitle"), t("regErrorFullName"));
     return;
   }
   if(!username || username.length < 3){
-    beep("error");
-    showModal("⚠️", t("errorTitle"), t("regErrorUsername"));
+    beep("error"); showModal("⚠️", t("errorTitle"), t("regErrorUsername"));
     return;
   }
   if(!/^[a-zA-Z0-9_]+$/.test(username)){
-    beep("error");
-    showModal("⚠️", t("errorTitle"), t("regErrorUsernameFormat"));
+    beep("error"); showModal("⚠️", t("errorTitle"), t("regErrorUsernameFormat"));
     return;
   }
   if(!password || password.length < 3){
-    beep("error");
-    showModal("⚠️", t("errorTitle"), t("regErrorPassword"));
+    beep("error"); showModal("⚠️", t("errorTitle"), t("regErrorPassword"));
     return;
   }
   if(!tablesCount || tablesCount < 1 || tablesCount > 20){
-    beep("error");
-    showModal("⚠️", t("errorTitle"), t("tablesCountError"));
+    beep("error"); showModal("⚠️", t("errorTitle"), t("tablesCountError"));
     return;
   }
 
@@ -4977,9 +4454,7 @@ async function handleCreateUser(){
     const inp = document.getElementById("tablePrice_" + i);
     const price = Number(inp.value);
     if(!price || price < 0){
-      beep("error");
-      showModal("⚠️", t("errorTitle"),
-        t("tablePriceError", { n: i }));
+      beep("error"); showModal("⚠️", t("errorTitle"), t("tablePriceError", { n: i }));
       return;
     }
     prices.push(price);
@@ -4987,32 +4462,23 @@ async function handleCreateUser(){
 
   try{
     const checkSnap = await db.collection("users")
-      .where("username", "==", username)
-      .limit(1).get();
+      .where("username", "==", username).limit(1).get();
 
     if(!checkSnap.empty){
-      beep("error");
-      showModal("⚠️", t("errorTitle"), t("regErrorUsernameTaken"));
+      beep("error"); showModal("⚠️", t("errorTitle"), t("regErrorUsernameTaken"));
       return;
     }
 
     const email = username.toLowerCase() + "@billiard.local";
     const tempPass = password + "_temp_" + Date.now();
 
-    const userCredential = await auth.createUserWithEmailAndPassword(
-      email, tempPass
-    );
+    const userCredential = await auth.createUserWithEmailAndPassword(email, tempPass);
     const newUid = userCredential.user.uid;
 
     await db.collection("users").doc(newUid).set({
-      uid: newUid,
-      username: username,
-      password: password,
-      fullName: fullName,
-      role: role,
-      active: true,
-      tablesCount: tablesCount,
-      tablePrices: prices,
+      uid: newUid, username: username, password: password,
+      fullName: fullName, role: role, active: true,
+      tablesCount: tablesCount, tablePrices: prices,
       createdAt: new Date().toISOString(),
       createdBy: currentUserData.username
     });
@@ -5033,11 +4499,8 @@ async function handleCreateUser(){
       `Yangi foydalanuvchi: ${username} (${fullName}) — ${tablesCount} ta stol`);
 
     const pricesList = prices
-      .map((p,i) => `   🎱 ${t("table")} ${i+1}: ${money(p)}`)
-      .join("\n");
-    const roleText = role === "admin"
-      ? t("roleAdmin")
-      : t("roleUser");
+      .map((p,i) => `   🎱 ${t("table")} ${i+1}: ${money(p)}`).join("\n");
+    const roleText = role === "admin" ? t("roleAdmin") : t("roleUser");
 
     showModal("✅", t("userCreatedTitle"),
       `👤 ${fullName}\n` +
@@ -5052,13 +4515,9 @@ async function handleCreateUser(){
     beep("error");
 
     let errMsg = t("errorOccurred");
-    if(e.code === "auth/email-already-in-use"){
-      errMsg = t("regErrorUsernameTaken");
-    } else if(e.code === "auth/weak-password"){
-      errMsg = t("regErrorPassword");
-    } else if(e.message){
-      errMsg = e.message;
-    }
+    if(e.code === "auth/email-already-in-use") errMsg = t("regErrorUsernameTaken");
+    else if(e.code === "auth/weak-password") errMsg = t("regErrorPassword");
+    else if(e.message) errMsg = e.message;
     showModal("❌", t("errorTitle"), errMsg);
   }
 }
@@ -5081,17 +4540,12 @@ function renderUsers(){
     const isMain = u.role === "main_admin";
     const roleLabel = isMain ? "👑 BOSH ADMIN"
                     : u.role === "admin" ? "🛡️ ADMIN"
-                    : "👤 " + (currentLang === "ru"
-                        ? "ПОЛЬЗОВАТЕЛЬ"
-                        : "FOYDALANUVCHI");
+                    : "👤 " + (currentLang === "ru" ? "ПОЛЬЗОВАТЕЛЬ" : "FOYDALANUVCHI");
     const roleColor = isMain ? "#ffd23f"
-                    : u.role === "admin" ? "#42e979"
-                    : "#35c9ff";
+                    : u.role === "admin" ? "#42e979" : "#35c9ff";
     const status = u.active === false
-      ? '<span style="color:#ff6878;font-weight:900">' +
-        t("userBlocked") + '</span>'
-      : '<span style="color:#42e979;font-weight:900">' +
-        t("userActive") + '</span>';
+      ? '<span style="color:#ff6878;font-weight:900">' + t("userBlocked") + '</span>'
+      : '<span style="color:#42e979;font-weight:900">' + t("userActive") + '</span>';
 
     const userHistory = allHistory.filter(h => h.userId === u.uid);
     const todayItems = userHistory.filter(h =>
@@ -5106,13 +4560,11 @@ function renderUsers(){
 
     const weekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
     const weekItems = userHistory.filter(h=>{
-      const d = h.savedAt
-        ? new Date(h.savedAt).getTime()
-        : convertDate(h.saveDate || h.gameDate);
+      const d = h.savedAt ? new Date(h.savedAt).getTime()
+              : convertDate(h.saveDate || h.gameDate);
       return d >= weekAgo;
     });
-    const weekTotal = weekItems
-      .reduce((s,i) => s + Number(i.amount||0), 0);
+    const weekTotal = weekItems.reduce((s,i) => s + Number(i.amount||0), 0);
 
     const totalPaid = userHistory.filter(h => h.paid)
       .reduce((s,i) => s + Number(i.amount||0), 0);
@@ -5138,16 +4590,14 @@ function renderUsers(){
                     border:1px dashed rgba(53,201,255,.3)">
           🎱 <b style="color:#42e979">${u.tablesCount} ${t("tablesShort")}</b><br>
           <span style="font-size:11px;color:#8aa0b8">💰 ${pricesStr}</span>
-        </div>
-      `;
+        </div>`;
     } else {
       tablesInfo = `
         <div style="margin-top:8px;padding:10px;border-radius:10px;
                     background:rgba(136,152,168,.08);
                     border:1px dashed rgba(136,152,168,.3);color:#8aa0b8">
           🎱 ${t("tablesNotConfigured")}
-        </div>
-      `;
+        </div>`;
     }
 
     const financeBlock = `
@@ -5163,41 +4613,32 @@ function renderUsers(){
           <div style="text-align:center;padding:8px 4px;
                       border-radius:8px;background:rgba(0,0,0,.2)">
             <div style="font-size:9px;color:#8aa0b8;font-weight:800">
-              ${t("today")}
-            </div>
+              ${t("today")}</div>
             <div style="font-size:13px;font-weight:900;
                         color:#42e979;margin-top:3px">
-              ${money(todayTotal)}
-            </div>
+              ${money(todayTotal)}</div>
             <div style="font-size:9px;color:#5f7691;margin-top:2px">
-              ${todayGames} ${t("gamesShort")}
-            </div>
+              ${todayGames} ${t("gamesShort")}</div>
           </div>
           <div style="text-align:center;padding:8px 4px;
                       border-radius:8px;background:rgba(0,0,0,.2)">
             <div style="font-size:9px;color:#8aa0b8;font-weight:800">
-              ${t("week7")}
-            </div>
+              ${t("week7")}</div>
             <div style="font-size:13px;font-weight:900;
                         color:#35c9ff;margin-top:3px">
-              ${money(weekTotal)}
-            </div>
+              ${money(weekTotal)}</div>
             <div style="font-size:9px;color:#5f7691;margin-top:2px">
-              ${weekItems.length} ${t("gamesShort")}
-            </div>
+              ${weekItems.length} ${t("gamesShort")}</div>
           </div>
           <div style="text-align:center;padding:8px 4px;
                       border-radius:8px;background:rgba(0,0,0,.2)">
             <div style="font-size:9px;color:#8aa0b8;font-weight:800">
-              ${t("totalLabelShort")}
-            </div>
+              ${t("totalLabelShort")}</div>
             <div style="font-size:13px;font-weight:900;
                         color:#ffd23f;margin-top:3px">
-              ${money(totalAll)}
-            </div>
+              ${money(totalAll)}</div>
             <div style="font-size:9px;color:#5f7691;margin-top:2px">
-              ${totalGames} ${t("gamesShort")}
-            </div>
+              ${totalGames} ${t("gamesShort")}</div>
           </div>
         </div>
         <div style="display:flex;gap:8px;font-size:11px;font-weight:800">
@@ -5220,15 +4661,12 @@ function renderUsers(){
                       color:#ffd23f;font-size:10px;
                       font-weight:800;text-align:center">
             ⚠️ ${t("todayDebt")}: ${money(todayUnpaid)}
-          </div>
-        ` : ''}
-      </div>
-    `;
+          </div>` : ''}
+      </div>`;
 
     const div = document.createElement("div");
     div.className = "history-item";
-    div.style.borderLeftColor = isMain
-      ? "#ffd23f"
+    div.style.borderLeftColor = isMain ? "#ffd23f"
       : u.role === "admin" ? "#42e979" : "#35c9ff";
 
     div.innerHTML = `
@@ -5286,10 +4724,8 @@ function renderUsers(){
                     onclick="confirmDeleteUser('${u.uid}')"
                     style="background:linear-gradient(135deg,#e04456,#8f1e2d)">
               🗑️ ${t("deleteBtn")}
-            </button>
-          `}
-      </div>
-    `;
+            </button>`}
+      </div>`;
     box.appendChild(div);
   });
 
@@ -5309,20 +4745,18 @@ function renderUserLogs(){
   box.innerHTML = "";
   logs.forEach(l=>{
     const icons = {
-      login: "🚪", logout: "👋",
-      start_game: "▶️", finish_game: "⏹️",
-      paid: "🟢", debt: "🔴", debt_paid: "💵",
-      booking: "📅", booking_start: "🎱", booking_cancel: "❌",
-      user_create: "➕", user_delete: "🗑️", user_toggle: "🔁",
-      user_password_change: "🔒", user_tables_edit: "🎱",
-      register: "✨"
+      login:"🚪",logout:"👋",start_game:"▶️",finish_game:"⏹️",
+      paid:"🟢",debt:"🔴",debt_paid:"💵",booking:"📅",
+      booking_start:"🎱",booking_cancel:"❌",user_create:"➕",
+      user_delete:"🗑️",user_toggle:"🔁",user_password_change:"🔒",
+      user_tables_edit:"🎱",register:"✨"
     };
     const colors = {
-      paid: "#42e979", debt: "#ff6878", debt_paid: "#42e979",
-      login: "#35c9ff", logout: "#8aa0b8",
-      user_create: "#ffd23f", user_delete: "#e04456",
-      user_toggle: "#e8a826", user_password_change: "#0a8ee8",
-      user_tables_edit: "#0dbb85", register: "#985cff"
+      paid:"#42e979",debt:"#ff6878",debt_paid:"#42e979",
+      login:"#35c9ff",logout:"#8aa0b8",user_create:"#ffd23f",
+      user_delete:"#e04456",user_toggle:"#e8a826",
+      user_password_change:"#0a8ee8",user_tables_edit:"#0dbb85",
+      register:"#985cff"
     };
 
     const div = document.createElement("div");
@@ -5335,34 +4769,29 @@ function renderUserLogs(){
           ${icons[l.type] || "•"} ${escapeHTML(l.fullName)}
         </b>
         <span style="color:#5f7691;font-size:11px;margin-left:8px">
-          @${escapeHTML(l.username)}
-        </span>
+          @${escapeHTML(l.username)}</span>
         <br>
-        <span style="color:#c0d0e0">
-          ${escapeHTML(l.description)}
-        </span>
+        <span style="color:#c0d0e0">${escapeHTML(l.description)}</span>
         <br>
         <span style="color:#5f7691;font-size:11px">
-          🕐 ${l.date} ${l.time}
-        </span>
-      </div>
-    `;
+          🕐 ${l.date} ${l.time}</span>
+      </div>`;
     box.appendChild(div);
   });
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   EDIT TABLES
+   EDIT TABLES / PASSWORD / DELETE / CLEAR LOGS
    ═══════════════════════════════════════════════════════════════ */
 
 let editingTablesUserId = null;
+let pwdModalTargetId = null;
 
 function editUserTables(uid){
   const u = (window._allUsers || []).find(x => x.uid === uid);
   if(!u) return;
 
   editingTablesUserId = uid;
-
   const currentCount = u.tablesCount || 3;
   const currentPrices = u.tablePrices || [40000, 40000, 40000];
 
@@ -5371,10 +4800,7 @@ function editUserTables(uid){
   document.getElementById("editTablesCount").value = currentCount;
 
   document.getElementById("tablesEditBg").classList.add("active");
-
-  setTimeout(()=>{
-    regenerateEditPrices(currentPrices);
-  }, 50);
+  setTimeout(()=>regenerateEditPrices(currentPrices), 50);
 }
 
 function regenerateEditPrices(existingPrices){
@@ -5400,13 +4826,9 @@ function regenerateEditPrices(existingPrices){
   container.innerHTML = "";
   for(let i = 1; i <= count; i++){
     let val;
-    if(existingPrices && existingPrices[i-1] !== undefined){
-      val = existingPrices[i-1];
-    } else if(oldValues[i] !== undefined){
-      val = oldValues[i];
-    } else {
-      val = 40000;
-    }
+    if(existingPrices && existingPrices[i-1] !== undefined) val = existingPrices[i-1];
+    else if(oldValues[i] !== undefined) val = oldValues[i];
+    else val = 40000;
 
     const div = document.createElement("div");
     div.innerHTML = `
@@ -5415,8 +4837,7 @@ function regenerateEditPrices(existingPrices){
       </div>
       <input type="number" id="editTablePrice_${i}"
              class="pwd-field-input"
-             value="${val}" min="0" step="5000">
-    `;
+             value="${val}" min="0" step="5000">`;
     container.appendChild(div);
   }
 }
@@ -5438,20 +4859,15 @@ async function saveUserTables(){
   const count = Number(document.getElementById("editTablesCount").value);
 
   if(count < 1 || count > 20){
-    beep("error");
-    showModal("⚠️", t("errorTitle"), t("tablesCountError"));
+    beep("error"); showModal("⚠️", t("errorTitle"), t("tablesCountError"));
     return;
   }
 
   const prices = [];
   for(let i = 1; i <= count; i++){
-    const price = Number(
-      document.getElementById("editTablePrice_" + i).value
-    );
+    const price = Number(document.getElementById("editTablePrice_" + i).value);
     if(!price || price < 0){
-      beep("error");
-      showModal("⚠️", t("errorTitle"),
-        t("tablePriceError", { n: i }));
+      beep("error"); showModal("⚠️", t("errorTitle"), t("tablePriceError", { n: i }));
       return;
     }
     prices.push(price);
@@ -5459,14 +4875,11 @@ async function saveUserTables(){
 
   try{
     await db.collection("users").doc(editingTablesUserId).update({
-      tablesCount: count,
-      tablePrices: prices,
+      tablesCount: count, tablePrices: prices,
       updatedAt: new Date().toISOString()
     });
 
-    const u = (window._allUsers || [])
-      .find(x => x.uid === editingTablesUserId);
-
+    const u = (window._allUsers || []).find(x => x.uid === editingTablesUserId);
     logUserAction("user_tables_edit",
       `${u ? u.username : editingTablesUserId} stollari: ${count} ta`);
 
@@ -5476,8 +4889,7 @@ async function saveUserTables(){
     setTimeout(()=>{
       showModal("✅", t("tablesSavedTitle"),
         t("tablesSavedText", {
-          name: u ? u.fullName : "",
-          count: count
+          name: u ? u.fullName : "", count: count
         }));
     }, 200);
 
@@ -5493,26 +4905,16 @@ function closeEditTablesModal(){
   editingTablesUserId = null;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   PASSWORD CHANGE
-   ═══════════════════════════════════════════════════════════════ */
-
-let pwdModalTargetId = null;
-
 function changeUserPasswordPrompt(uid){
   const u = (window._allUsers || []).find(x => x.uid === uid);
   if(!u) return;
 
   pwdModalTargetId = uid;
-
   const roleLabel = u.role === "main_admin" ? "👑 BOSH ADMIN"
                   : u.role === "admin" ? "🛡️ ADMIN"
-                  : "👤 " + (currentLang === "ru"
-                      ? "ПОЛЬЗОВАТЕЛЬ"
-                      : "FOYDALANUVCHI");
+                  : "👤 " + (currentLang === "ru" ? "ПОЛЬЗОВАТЕЛЬ" : "FOYDALANUVCHI");
   const roleColor = u.role === "main_admin" ? "#ffd23f"
-                  : u.role === "admin" ? "#42e979"
-                  : "#35c9ff";
+                  : u.role === "admin" ? "#42e979" : "#35c9ff";
 
   document.getElementById("pwdModalUserInfo").innerHTML = `
     <div><b>👤 ${escapeHTML(u.fullName)}</b></div>
@@ -5522,10 +4924,7 @@ function changeUserPasswordPrompt(uid){
     </div>
     <span class="role-tag"
           style="color:${roleColor};border:1px solid ${roleColor};
-                 background:${roleColor}22">
-      ${roleLabel}
-    </span>
-  `;
+                 background:${roleColor}22">${roleLabel}</span>`;
 
   document.getElementById("pwdModalLogin").value = u.username;
   document.getElementById("pwdModalPassword").value = u.password;
@@ -5543,32 +4942,22 @@ function closePwdModal(){
 }
 
 async function saveUserCredentials(){
-  if(!pwdModalTargetId){
-    closePwdModal();
-    return;
-  }
+  if(!pwdModalTargetId){ closePwdModal(); return; }
 
   const newLogin = document.getElementById("pwdModalLogin").value.trim();
   const newPass = document.getElementById("pwdModalPassword").value.trim();
 
   if(!newLogin || newLogin.length < 3){
-    beep("error");
-    showModal("⚠️", t("loginErrorTitle"), t("loginMinLength"));
+    beep("error"); showModal("⚠️", t("loginErrorTitle"), t("loginMinLength"));
     return;
   }
   if(!newPass || newPass.length < 3){
-    beep("error");
-    showModal("⚠️", t("passwordErrorTitle"), t("passwordMinLength"));
+    beep("error"); showModal("⚠️", t("passwordErrorTitle"), t("passwordMinLength"));
     return;
   }
 
-  const targetUser = (window._allUsers || [])
-    .find(x => x.uid === pwdModalTargetId);
-  if(!targetUser){
-    closePwdModal();
-    beep("error");
-    return;
-  }
+  const targetUser = (window._allUsers || []).find(x => x.uid === pwdModalTargetId);
+  if(!targetUser){ closePwdModal(); beep("error"); return; }
 
   const duplicate = (window._allUsers || []).find(x =>
     x.uid !== pwdModalTargetId &&
@@ -5578,10 +4967,7 @@ async function saveUserCredentials(){
   if(duplicate){
     beep("error");
     showModal("⚠️", t("loginTakenTitle"),
-      t("loginTakenText", {
-        login: newLogin,
-        name: duplicate.fullName
-      }));
+      t("loginTakenText", { login: newLogin, name: duplicate.fullName }));
     return;
   }
 
@@ -5589,13 +4975,11 @@ async function saveUserCredentials(){
     const oldLogin = targetUser.username;
 
     await db.collection("users").doc(pwdModalTargetId).update({
-      username: newLogin,
-      password: newPass,
+      username: newLogin, password: newPass,
       updatedAt: new Date().toISOString()
     });
 
-    logUserAction("user_password_change",
-      `${oldLogin} → ${newLogin}`);
+    logUserAction("user_password_change", `${oldLogin} → ${newLogin}`);
 
     beep("money");
     closePwdModal();
@@ -5603,9 +4987,7 @@ async function saveUserCredentials(){
     setTimeout(()=>{
       showModal("✅", t("updatedTitle"),
         t("updatedText", {
-          name: targetUser.fullName,
-          login: newLogin,
-          password: newPass
+          name: targetUser.fullName, login: newLogin, password: newPass
         }));
     }, 300);
 
@@ -5616,25 +4998,18 @@ async function saveUserCredentials(){
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   USER DELETE / TOGGLE
-   ═══════════════════════════════════════════════════════════════ */
-
 async function toggleUserActiveUI(uid){
   const u = (window._allUsers || []).find(x => x.uid === uid);
   if(!u) return;
 
   try{
     const newActive = !(u.active !== false);
-
     await db.collection("users").doc(uid).update({
-      active: newActive,
-      updatedAt: new Date().toISOString()
+      active: newActive, updatedAt: new Date().toISOString()
     });
 
     logUserAction("user_toggle",
       `${u.username} ${newActive ? "faollashtirildi" : "bloklandi"}`);
-
     beep("money");
 
   }catch(e){
@@ -5650,8 +5025,7 @@ function confirmDeleteUser(uid){
   document.getElementById("modalIcon").innerText = "🗑️";
   document.getElementById("modalTitle").innerText = t("deleteUserTitle");
   document.getElementById("modalText").innerText = t("deleteUserText", {
-    name: u.fullName,
-    username: u.username
+    name: u.fullName, username: u.username
   });
   document.getElementById("modalButtons").innerHTML =
     '<button class="modal-danger" onclick="doDeleteUser(\'' + uid +
@@ -5692,10 +5066,6 @@ async function doDeleteUser(uid){
     showModal("❌", t("errorTitle"), t("errorOccurred"));
   }
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   CLEAR LOGS
-   ═══════════════════════════════════════════════════════════════ */
 
 function clearUserLogs(){
   document.getElementById("clearModalCount").innerText =
@@ -5747,8 +5117,7 @@ function renderPendingRequests(){
   const list = pendingRequests.filter(r => r.status === "pending");
 
   if(badge){
-    badge.innerText = list.length + " " +
-      (currentLang === "ru" ? "шт" : "ta");
+    badge.innerText = list.length + " " + (currentLang === "ru" ? "шт" : "ta");
   }
 
   if(!list.length){
@@ -5793,9 +5162,7 @@ function renderPendingRequests(){
                     border:1px dashed rgba(53,201,255,.3)">
           🎱 <b style="color:#42e979">${req.tablesCount}
             ${t("tablesShort")}</b><br>
-          <span style="font-size:11px;color:#8aa0b8">
-            💰 ${pricesStr}
-          </span>
+          <span style="font-size:11px;color:#8aa0b8">💰 ${pricesStr}</span>
         </div>
       </div>
       <div class="history-item-actions"
@@ -5810,8 +5177,7 @@ function renderPendingRequests(){
                 style="background:linear-gradient(135deg,#e04456,#8f1e2d)">
           ${t("rejectBtn")}
         </button>
-      </div>
-    `;
+      </div>`;
     box.appendChild(div);
   });
 
@@ -5838,8 +5204,7 @@ function updatePendingBadge(){
 
   const countBadge = document.getElementById("pendingCountBadge");
   if(countBadge){
-    countBadge.innerText = count + " " +
-      (currentLang === "ru" ? "шт" : "ta");
+    countBadge.innerText = count + " " + (currentLang === "ru" ? "шт" : "ta");
   }
 
   const card = document.getElementById("pendingAdminCard");
@@ -5853,8 +5218,7 @@ function confirmApproveRequest(id){
   document.getElementById("modalIcon").innerText = "✅";
   document.getElementById("modalTitle").innerText = t("pendingApproveTitle");
   document.getElementById("modalText").innerText = t("pendingApproveText", {
-    name: req.fullName,
-    username: req.username
+    name: req.fullName, username: req.username
   });
   document.getElementById("modalButtons").innerHTML =
     '<button class="modal-btn" ' +
@@ -5874,11 +5238,10 @@ async function doApproveRequest(id){
     const email = req.username.toLowerCase() + "@billiard.local";
     const tempPass = req.password + "_temp_" + Date.now();
 
-    /* 1. Eski userni Firestore'dan o'chirish */
+    /* Eski userni Firestore'dan o'chirish */
     try {
       const oldUsersSnap = await db.collection("users")
-        .where("username", "==", req.username)
-        .get();
+        .where("username", "==", req.username).get();
       if(!oldUsersSnap.empty){
         for(const doc of oldUsersSnap.docs){
           await doc.ref.delete();
@@ -5886,7 +5249,7 @@ async function doApproveRequest(id){
       }
     } catch(e){ console.log("Firestore cleanup:", e.code); }
 
-    /* 2. Eski userni Auth'dan o'chirish */
+    /* Eski userni Auth'dan o'chirish */
     try {
       const cred = await auth.signInWithEmailAndPassword(email, tempPass)
         .catch(err => {
@@ -5901,25 +5264,17 @@ async function doApproveRequest(id){
       }
     } catch(e){ console.log("Auth cleanup:", e.code); }
 
-    /* 3. Admin ma'lumotini saqlash */
     const adminEmail = currentUserData.username.toLowerCase() + "@billiard.local";
     const adminPassword = currentUserData.password;
 
-    /* 4. Yangi user yaratish */
     const userCredential = await auth.createUserWithEmailAndPassword(email, tempPass);
     const newUid = userCredential.user.uid;
 
-    /* 5. Firestore'ga yozish */
     await db.collection("users").doc(newUid).set({
-      uid: newUid,
-      username: req.username,
-      password: req.password,
-      fullName: req.fullName,
-      phone: req.phone,
-      role: req.role || "user",
-      active: true,
-      tablesCount: req.tablesCount,
-      tablePrices: req.tablePrices,
+      uid: newUid, username: req.username, password: req.password,
+      fullName: req.fullName, phone: req.phone,
+      role: req.role || "user", active: true,
+      tablesCount: req.tablesCount, tablePrices: req.tablePrices,
       email: email,
       createdAt: new Date().toISOString(),
       registeredAt: req.createdAt,
@@ -5927,27 +5282,20 @@ async function doApproveRequest(id){
       approvedBy: currentUserData.username
     });
 
-    /* 6. Admin'ni qayta tiklash */
     await auth.signOut();
     await auth.signInWithEmailAndPassword(adminEmail, adminPassword);
 
-    /* 7. So'rovni o'chirish */
     await db.collection("pendingRequests").doc(id).delete();
 
     closeModal();
     beep("money");
-
-    logUserAction("user_create",
-      `${req.username} tasdiqlandi`);
-
+    logUserAction("user_create", `${req.username} tasdiqlandi`);
     sendApprovalNotification(req, true);
 
     setTimeout(()=>{
       showModal("✅", t("pendingApprovedTitle"),
         t("pendingApprovedText", {
-          name: req.fullName,
-          username: req.username,
-          password: req.password
+          name: req.fullName, username: req.username, password: req.password
         }));
     }, 200);
 
@@ -5971,8 +5319,7 @@ function confirmRejectRequest(id){
   document.getElementById("modalIcon").innerText = "❌";
   document.getElementById("modalTitle").innerText = t("pendingRejectTitle");
   document.getElementById("modalText").innerText = t("pendingRejectText", {
-    name: req.fullName,
-    username: req.username
+    name: req.fullName, username: req.username
   });
   document.getElementById("modalButtons").innerHTML =
     '<button class="modal-danger" onclick="doRejectRequest(\'' +
@@ -6043,12 +5390,10 @@ function openAdminPage(page){
     document.getElementById("adminReports").classList.add("active");
     renderReports();
   }
-
   if(page === "debtors"){
     document.getElementById("adminDebtors").classList.add("active");
     renderAdminDebtors();
   }
-
   if(page === "history"){
     const hp = document.getElementById("historyDayPage");
     const dp = document.getElementById("historyDatesPage");
@@ -6058,7 +5403,6 @@ function openAdminPage(page){
     document.getElementById("adminHistory").classList.add("active");
     renderAdminHistory();
   }
-
   if(page === "booking"){
     document.getElementById("adminBooking").classList.add("active");
     const today = new Date().toISOString().split("T")[0];
@@ -6070,7 +5414,6 @@ function openAdminPage(page){
     renderBookingTableOptions();
     renderBookings();
   }
-
   if(page === "users"){
     const usersPage = document.getElementById("adminUsers");
     if(usersPage) usersPage.classList.add("active");
@@ -6260,32 +5603,23 @@ function renderReports(){
     .reduce((a, b) => a + Number(b.amount || 0), 0);
   const unpaid = todayData.filter(x => !x.paid)
     .reduce((a, b) => a + Number(b.amount || 0), 0);
-
   const debtors = history.filter(x => !x.paid);
 
   const now = Date.now();
   const activeBookings = bookings.filter(b =>
-    b.status !== "cancelled" &&
-    b.status !== "completed" &&
-    b.endTime >= now
+    b.status !== "cancelled" && b.status !== "completed" && b.endTime >= now
   );
 
   const el1 = document.getElementById("statGames");
   if(el1) el1.innerText = todayData.length;
-
   const el2 = document.getElementById("statPaid");
   if(el2) el2.innerText = money(paid);
-
   const el3 = document.getElementById("statUnpaid");
   if(el3) el3.innerText = money(unpaid);
-
   const el4 = document.getElementById("statDebtors");
-  if(el4) el4.innerText = debtors.length + " " +
-    (currentLang === "ru" ? "шт" : "ta");
-
+  if(el4) el4.innerText = debtors.length + " " + (currentLang === "ru" ? "шт" : "ta");
   const sb = document.getElementById("statBookings");
-  if(sb) sb.innerText = activeBookings.length + " " +
-    (currentLang === "ru" ? "шт" : "ta");
+  if(sb) sb.innerText = activeBookings.length + " " + (currentLang === "ru" ? "шт" : "ta");
 }
 
 function renderAdminDebtors(){
@@ -6331,8 +5665,7 @@ async function markPaid(id){
 
   try{
     await db.collection("history").doc(id).update({
-      paid: true,
-      paidDate: todayDate(),
+      paid: true, paidDate: todayDate(),
       paidAt: new Date().toISOString(),
       paidByUserId: currentUserData.uid,
       paidByFullName: currentUserData.fullName
@@ -6344,8 +5677,7 @@ async function markPaid(id){
 
     showModal("🟢", t("paidLaterTitle"),
       t("paidLaterText", {
-        name: item.name,
-        amount: money(item.amount)
+        name: item.name, amount: money(item.amount)
       }));
 
   }catch(e){
@@ -6375,8 +5707,7 @@ function renderAdminHistory(){
   const dates = Object.keys(dateGroups)
     .sort((a, b) => convertDate(b) - convertDate(a));
 
-  const allTotal = history
-    .reduce((s, i) => s + Number(i.amount || 0), 0);
+  const allTotal = history.reduce((s, i) => s + Number(i.amount || 0), 0);
 
   const totalEl = document.getElementById("historyTotalAmount");
   if(totalEl) totalEl.innerText = money(allTotal);
@@ -6512,9 +5843,7 @@ function confirmClearSelectedHistory(){
   document.getElementById("modalIcon").innerText = "🗑️";
   document.getElementById("modalTitle").innerText = t("clearHistoryTitle");
   document.getElementById("modalText").innerText = t("clearHistoryText", {
-    date: date,
-    count: items.length,
-    amount: money(total)
+    date: date, count: items.length, amount: money(total)
   });
   document.getElementById("modalButtons").innerHTML =
     '<button class="modal-danger" onclick="clearSelectedHistory()">' +
@@ -6531,8 +5860,7 @@ async function clearSelectedHistory(){
   try{
     const snap = await db.collection("history")
       .where("ownerId", "==", getOwnerId())
-      .where("saveDate", "==", date)
-      .get();
+      .where("saveDate", "==", date).get();
 
     const batch = db.batch();
     let count = 0;
@@ -6601,13 +5929,8 @@ function showPdfLoading(show){
 
 function buildChekElement(options){
   const {
-    title = t("chekKassa"),
-    subtitle = "",
-    headerInfo = "",
-    items = [],
-    totals = [],
-    footer = "",
-    showSignature = true
+    title = t("chekKassa"), subtitle = "", headerInfo = "",
+    items = [], totals = [], footer = "", showSignature = true
   } = options;
 
   const chekNo = "CHK-" + Date.now().toString().slice(-8);
@@ -6674,17 +5997,12 @@ function buildChekElement(options){
 
   const wrapper = document.createElement("div");
   wrapper.style.cssText = `
-    width:780px;
-    background:#ffffff;
-    color:#1a2433;
-    font-family:'Segoe UI',Arial,sans-serif;
-    padding:0;
-    margin:0;
+    width:780px; background:#ffffff; color:#1a2433;
+    font-family:'Segoe UI',Arial,sans-serif; padding:0; margin:0;
   `;
 
   wrapper.innerHTML = `
-    <div style="background:#0a2540;color:#ffffff;
-                padding:26px 30px">
+    <div style="background:#0a2540;color:#ffffff;padding:26px 30px">
       <div style="display:flex;align-items:center;gap:12px">
         <div style="font-size:40px">🎱</div>
         <div>
@@ -6707,8 +6025,7 @@ function buildChekElement(options){
         </h1>
         ${subtitle
           ? '<p style="font-size:12px;color:#9cb8d0;margin-top:6px">' +
-            subtitle + '</p>'
-          : ''}
+            subtitle + '</p>' : ''}
       </div>
     </div>
 
@@ -6783,20 +6100,16 @@ function buildChekElement(options){
           </div>
         </div>
       </div>
-    </div>
-    ` : ''}
+    </div>` : ''}
 
     <div style="padding:22px 30px;background:#f4f7fb;
                 border-top:1px dashed #c8d4e0;
                 text-align:center;font-size:11px;color:#5a6a7d">
       <div style="font-weight:800;color:#1a2433;
-                  font-size:13px;margin-bottom:6px">
-        ${t("thanks")}
-      </div>
+                  font-size:13px;margin-bottom:6px">${t("thanks")}</div>
       <div>📞 Tel: ${CLUB_PHONE} &nbsp;•&nbsp; 📍 ${CLUB_ADDRESS}</div>
       <div style="margin-top:8px;color:#8896a8">${footer}</div>
-    </div>
-  `;
+    </div>`;
 
   return wrapper;
 }
@@ -6815,12 +6128,8 @@ async function downloadPDF(element, filename){
     document.body.appendChild(tempContainer);
 
     const canvas = await html2canvas(element, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-      windowWidth: 780,
-      width: 780
+      scale: 2, useCORS: true, backgroundColor: "#ffffff",
+      logging: false, windowWidth: 780, width: 780
     });
 
     const imgData = canvas.toDataURL("image/jpeg", 0.95);
@@ -6830,10 +6139,7 @@ async function downloadPDF(element, filename){
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF({
-      unit: "mm",
-      format: "a4",
-      orientation: "portrait",
-      compress: true
+      unit: "mm", format: "a4", orientation: "portrait", compress: true
     });
 
     let heightLeft = imgHeight;
@@ -6888,8 +6194,7 @@ function printDateChek(date){
   const tableItems = items.map(it=>({
     col1: t("table") + " " + it.table,
     col2: it.minutes + " " + t("minutes"),
-    col3: it.paid
-      ? t("paidStatusPdf")
+    col3: it.paid ? t("paidStatusPdf")
       : t("debtStatusNamePdf", { name: it.name || "—" }),
     col4: money(it.amount)
   }));
@@ -6906,9 +6211,7 @@ function printDateChek(date){
     subtitle: t("dailyReportFor", { date: date }),
     headerInfo: '<div><span>' + t("chekDate") + '</span><span>' +
       date + '</span></div>',
-    items: tableItems,
-    totals: totals,
-    footer: t("autoGenerated")
+    items: tableItems, totals: totals, footer: t("autoGenerated")
   });
 
   downloadPDF(el, "BILLIARD_KUNLIK_" + date.replace(/\./g,"-") + ".pdf");
@@ -6951,11 +6254,8 @@ function printAllHistoryChek(){
   ];
 
   const el = buildChekElement({
-    title: t("chekAllHistory"),
-    subtitle: t("allGamesList"),
-    items: tableItems,
-    totals: totals,
-    footer: t("allHistory")
+    title: t("chekAllHistory"), subtitle: t("allGamesList"),
+    items: tableItems, totals: totals, footer: t("allHistory")
   });
 
   downloadPDF(el, "BILLIARD_TARIX_" + fileDate() + ".pdf");
@@ -6980,17 +6280,13 @@ function printDebtorsChek(){
 
   const totals = [
     { label: t("totalDebtors"),
-      value: debtors.length + " " +
-        (currentLang === "ru" ? "шт" : "ta") },
+      value: debtors.length + " " + (currentLang === "ru" ? "шт" : "ta") },
     { label: t("grandDebt"), value: money(total), highlight: true }
   ];
 
   const el = buildChekElement({
-    title: t("chekDebtors"),
-    subtitle: t("unpaidList"),
-    items: tableItems,
-    totals: totals,
-    footer: t("payOnTime")
+    title: t("chekDebtors"), subtitle: t("unpaidList"),
+    items: tableItems, totals: totals, footer: t("payOnTime")
   });
 
   downloadPDF(el, "BILLIARD_QARZDORLAR_" + fileDate() + ".pdf");
@@ -7017,10 +6313,8 @@ function printSingleDebtChek(id){
   ];
 
   const el = buildChekElement({
-    title: t("chekDebt"),
-    items: tableItems,
-    totals: totals,
-    footer: t("payAtCashier")
+    title: t("chekDebt"), items: tableItems,
+    totals: totals, footer: t("payAtCashier")
   });
 
   downloadPDF(el, "BILLIARD_QARZ_" + safeFilename(item.name) + ".pdf");
@@ -7056,17 +6350,14 @@ function printReportChek(){
     { label: t("todayUnpaid"), value: money(todayUnpaid) },
     { label: t("todayTotal"), value: money(todayTotal), highlight: true },
     { label: t("totalDebtorsSmall"),
-      value: allDebtors.length + " " +
-        (currentLang === "ru" ? "шт" : "ta") },
+      value: allDebtors.length + " " + (currentLang === "ru" ? "шт" : "ta") },
     { label: t("totalDebtSmall"), value: money(allDebt) }
   ];
 
   const el = buildChekElement({
     title: t("chekReport"),
     subtitle: t("reportFor", { date: today }),
-    items: tableItems,
-    totals: totals,
-    footer: t("dailyCashReport")
+    items: tableItems, totals: totals, footer: t("dailyCashReport")
   });
 
   downloadPDF(el, "BILLIARD_HISOBOT_" + fileDate() + ".pdf");
@@ -7083,20 +6374,14 @@ document.addEventListener("keydown", function(e){
       const regBox = document.getElementById("registerBox");
       if(regBox && regBox.style.display !== "none"){
         const tag = (e.target.tagName || "").toLowerCase();
-        if(tag === "input"){
-          e.preventDefault();
-          doRegister();
-        }
+        if(tag === "input"){ e.preventDefault(); doRegister(); }
       } else {
-        e.preventDefault();
-        checkLogin();
+        e.preventDefault(); checkLogin();
       }
     }
     if(e.key === "Escape"){
       const regBox = document.getElementById("registerBox");
-      if(regBox && regBox.style.display !== "none"){
-        showLogin();
-      }
+      if(regBox && regBox.style.display !== "none") showLogin();
     }
     return;
   }
@@ -7118,8 +6403,7 @@ document.addEventListener("keydown", function(e){
     if(pwdModal.classList.contains("active")){ closePwdModal(); return; }
     if(clearModal.classList.contains("active")){ closeClearModal(); return; }
     if(tablesEditModal.classList.contains("active")){
-      closeEditTablesModal();
-      return;
+      closeEditTablesModal(); return;
     }
     document.querySelectorAll(".custom-select.open")
       .forEach(el=>el.classList.remove("open"));
@@ -7130,8 +6414,7 @@ document.addEventListener("keydown", function(e){
     e.preventDefault();
     if(document.getElementById("adminReports").classList.contains("active")){
       printReportChek();
-    } else if(document.getElementById("adminDebtors")
-                .classList.contains("active")){
+    } else if(document.getElementById("adminDebtors").classList.contains("active")){
       printDebtorsChek();
     }
     return;
@@ -7144,10 +6427,7 @@ document.addEventListener("keydown", function(e){
   if(document.getElementById("tablesEditBg").classList.contains("active")) return;
 
   if(isMainAdmin()){
-    if(key === "u"){
-      e.preventDefault();
-      openAdminUsersDirect();
-    }
+    if(key === "u"){ e.preventDefault(); openAdminUsersDirect(); }
     return;
   }
 
@@ -7171,44 +6451,23 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  if(key === "h"){
-    e.preventDefault();
-    openPage('home');
-    return;
-  }
-
-  if(key === "a"){
-    e.preventDefault();
-    openPattern();
-    return;
-  }
-
+  if(key === "h"){ e.preventDefault(); openPage('home'); return; }
+  if(key === "a"){ e.preventDefault(); openPattern(); return; }
   if(key === "r"){
-    e.preventDefault();
-    openAdmin();
-    setTimeout(()=>openAdminPage('reports'), 50);
-    return;
+    e.preventDefault(); openAdmin();
+    setTimeout(()=>openAdminPage('reports'), 50); return;
   }
-
   if(key === "d"){
-    e.preventDefault();
-    openAdmin();
-    setTimeout(()=>openAdminPage('debtors'), 50);
-    return;
+    e.preventDefault(); openAdmin();
+    setTimeout(()=>openAdminPage('debtors'), 50); return;
   }
-
   if(key === "t"){
-    e.preventDefault();
-    openAdmin();
-    setTimeout(()=>openAdminPage('history'), 50);
-    return;
+    e.preventDefault(); openAdmin();
+    setTimeout(()=>openAdminPage('history'), 50); return;
   }
-
   if(key === "b"){
-    e.preventDefault();
-    openAdmin();
-    setTimeout(()=>openAdminPage('booking'), 50);
-    return;
+    e.preventDefault(); openAdmin();
+    setTimeout(()=>openAdminPage('booking'), 50); return;
   }
 });
 
