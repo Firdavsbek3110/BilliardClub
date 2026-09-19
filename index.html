@@ -7,6 +7,7 @@
 <title>🎱 BILLIARD CLUB — Windows</title>
 <link rel="icon" type="image/png" href="https://m6061.myxvest.ru/Billiard/logo.png">
 
+<!-- ERUDA CONSOLE (DEBUG) -->
 <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script>eruda.init();</script>
 
@@ -1271,6 +1272,7 @@ input:focus{
 }
 </style>
 </head>
+
 <body>
 
 <!-- ═══════════════════════════════════════════════════════
@@ -2136,7 +2138,8 @@ input:focus{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   FIREBASE CONFIG + INITIALIZATION
+   FIREBASE CONFIG — TUZATILDI
+   (enablePersistence va db.settings olib tashlandi)
    ═══════════════════════════════════════════════════════════════ */
 
 const firebaseConfig = {
@@ -2152,16 +2155,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-db.settings({ cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED });
-
-db.enablePersistence({ synchronizeTabs: true })
-  .catch((err) => {
-    if(err.code === 'failed-precondition'){
-      console.warn('Firestore persistence: bir nechta tab ochilgan');
-    } else if(err.code === 'unimplemented'){
-      console.warn('Firestore persistence: brauzer qo\'llamaydi');
-    }
-  });
+console.log("🔥 Firebase initialized");
 
 /* ═══════════════════════════════════════════════════════════════
    TELEGRAM SOZLAMALARI
@@ -2352,7 +2346,7 @@ function beep(type){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   i18n TIZIMI — BARCHA KALITLAR
+   i18n TIZIMI
    ═══════════════════════════════════════════════════════════════ */
 
 const I18N = {
@@ -3146,7 +3140,7 @@ function setLanguage(lang){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   FIREBASE AUTH — LOGIN / REGISTER / LOGOUT
+   FIREBASE AUTH
    ═══════════════════════════════════════════════════════════════ */
 
 function togglePasswordVisibility(inputId, btn){
@@ -3525,7 +3519,7 @@ async function confirmLogout(){
   }
 }
 /* ═══════════════════════════════════════════════════════════════
-   REALTIME LISTENERS — Firestore'dan ma'lumotlarni tinglash
+   REALTIME LISTENERS
    ═══════════════════════════════════════════════════════════════ */
 
 function startRealtimeListeners(){
@@ -3568,16 +3562,22 @@ function startRealtimeListeners(){
       renderReports();
     }, err => console.warn("bookings listener:", err));
 
-  /* HISTORY */
+  /* HISTORY — orderBy olib tashlandi (index talab qilmasligi uchun) */
   unsubscribers.history = db.collection("history")
     .where("ownerId", "==", ownerId)
-    .orderBy("savedAt", "desc")
-    .limit(500)
     .onSnapshot(snap=>{
       history = [];
       snap.forEach(doc=>{
         history.push({ id: doc.id, ...doc.data() });
       });
+      /* Client-side sort */
+      history.sort((a,b) => {
+        const aT = a.savedAt ? new Date(a.savedAt).getTime() : 0;
+        const bT = b.savedAt ? new Date(b.savedAt).getTime() : 0;
+        return bT - aT;
+      });
+      if(history.length > 500) history = history.slice(0, 500);
+      
       renderReports();
       renderAdminDebtors();
       renderAdminHistory();
@@ -3607,20 +3607,25 @@ function startRealtimeListeners(){
       }, err => console.warn("pendingRequests listener:", err));
 
     unsubscribers.userLogs = db.collection("userLogs")
-      .orderBy("timestamp", "desc")
-      .limit(200)
       .onSnapshot(snap=>{
         userLogs = [];
         snap.forEach(doc=>{
           userLogs.push({ id: doc.id, ...doc.data() });
         });
+        /* Client-side sort */
+        userLogs.sort((a,b) => {
+          const aT = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+          const bT = b.timestamp ? new Date(b.timestamp).getTime() : 0;
+          return bT - aT;
+        });
+        if(userLogs.length > 200) userLogs = userLogs.slice(0, 200);
         renderUserLogs();
       }, err => console.warn("userLogs listener:", err));
   }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   TELEGRAM — RO'YXATDAN O'TISH XABARLARI
+   TELEGRAM — RO'YXATDAN O'TISH
    ═══════════════════════════════════════════════════════════════ */
 
 async function sendApprovalRequestToAdmin(req){
@@ -3634,12 +3639,7 @@ async function sendApprovalRequestToAdmin(req){
     `🔒 <b>Parol:</b> <code>${escapeHTML(req.password)}</code>\n` +
     `📞 <b>Telefon:</b> ${escapeHTML(req.phone)}\n` +
     `🎱 <b>Stollar:</b> ${req.tablesCount} ta\n` +
-    `💰 <b>Narxlar:</b> ${req.tablePrices.map((p,i)=>
-      `S${i+1}: ${p.toLocaleString()}`).join(", ")}\n` +
-    `🕐 <b>Vaqt:</b> ${new Date(req.createdAt).toLocaleString("uz-UZ")}\n` +
-    `━━━━━━━━━━━━━━━━━━━━━\n` +
-    `✅ <b>Tasdiqlash</b> uchun ilovadagi\n` +
-    `<b>Admin Panel → Foydalanuvchilar</b> bo'limiga o'ting.`;
+    `🕐 <b>Vaqt:</b> ${new Date(req.createdAt).toLocaleString("uz-UZ")}`;
 
   try{
     await fetch(
@@ -3672,11 +3672,7 @@ async function sendApprovalNotification(req, approved){
     `👤 <b>Ism:</b> ${escapeHTML(req.fullName)}\n` +
     `🔑 <b>Login:</b> <code>${escapeHTML(req.username)}</code>\n` +
     `📞 <b>Telefon:</b> ${escapeHTML(req.phone)}\n` +
-    `${icon} <b>Holat:</b> ${status}\n` +
-    (req.rejectReason
-      ? `📝 <b>Sabab:</b> ${escapeHTML(req.rejectReason)}\n`
-      : "") +
-    `🕐 <b>Vaqt:</b> ${new Date().toLocaleString("uz-UZ")}`;
+    `${icon} <b>Holat:</b> ${status}`;
 
   try{
     await fetch(
@@ -3697,7 +3693,7 @@ async function sendApprovalNotification(req, approved){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   USER LOGS — faoliyat jurnali
+   USER LOGS
    ═══════════════════════════════════════════════════════════════ */
 
 async function logUserAction(type, description, extra){
@@ -3767,7 +3763,6 @@ async function logUserAction(type, description, extra){
       `🎭 ${roleLabel}\n` +
       `━━━━━━━━━━━━━━━━━━━━━\n` +
       `📝 ${escapeHTML(logEntry.description)}\n` +
-      `━━━━━━━━━━━━━━━━━━━━━\n` +
       `🕐 <code>${logEntry.date}  ${logEntry.time}</code>`;
 
     sendTelegramLog(tgMessage);
@@ -3778,7 +3773,7 @@ async function logUserAction(type, description, extra){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ROL UI — foydalanuvchi rolini aniqlab, interfeysni sozlash
+   ROLE UI
    ═══════════════════════════════════════════════════════════════ */
 
 function applyRoleUI(){
@@ -3920,7 +3915,7 @@ function showWelcomeToast(user){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SOAT VA SANA
+   SOAT
    ═══════════════════════════════════════════════════════════════ */
 
 function updateClock(){
@@ -3961,7 +3956,7 @@ setInterval(updateClock, 1000);
 updateClock();
 
 /* ═══════════════════════════════════════════════════════════════
-   MODAL
+   MODAL / NAVIGATION
    ═══════════════════════════════════════════════════════════════ */
 
 function showModal(icon, title, text){
@@ -3977,10 +3972,6 @@ function showModal(icon, title, text){
 function closeModal(){
   document.getElementById("modalBg").style.display = "none";
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   SAHIFA NAVIGATSIYASI
-   ═══════════════════════════════════════════════════════════════ */
 
 function openPage(page, button){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
@@ -4057,7 +4048,7 @@ window.addEventListener("beforeunload", ()=>{
 });
 
 /* ═══════════════════════════════════════════════════════════════
-   GAMES (STOLLAR)
+   GAMES — STOLLAR
    ═══════════════════════════════════════════════════════════════ */
 
 function getOwnerId(){
@@ -4167,6 +4158,12 @@ async function startGame(id){
   }
 
   const ownerId = getOwnerId();
+  if(!ownerId){
+    beep("error");
+    showModal("❌", "Xatolik", "Foydalanuvchi aniqlanmadi. Qayta kiring.");
+    return;
+  }
+
   const data = {
     ownerId: ownerId,
     start: Date.now(),
@@ -4178,7 +4175,9 @@ async function startGame(id){
   };
 
   try{
+    console.log("🎱 O'yin boshlanmoqda:", data);
     await db.collection("games").doc(ownerId + "_" + id).set(data);
+    console.log("✅ Firestore'ga saqlandi");
     beep("start");
     logUserAction("start_game", `Stol ${id} boshlandi`);
 
@@ -4193,9 +4192,19 @@ async function startGame(id){
       }, 800);
     }
   }catch(e){
-    console.error("startGame xatosi:", e);
+    console.error("❌ startGame xatosi:", e);
     beep("error");
-    showModal("❌", t("errorTitle"), t("errorOccurred"));
+    
+    let errMsg = "Xatolik yuz berdi";
+    if(e.code === "permission-denied"){
+      errMsg = "⚠️ Firestore ruxsat xatosi!";
+    } else if(e.code === "unavailable"){
+      errMsg = "⚠️ Internet aloqasi yo'q!";
+    } else if(e.message){
+      errMsg = e.message;
+    }
+    
+    showModal("❌", "Xatolik", errMsg);
   }
 }
 
@@ -4445,8 +4454,9 @@ function updateActiveTablesBadge(){
   badge.classList.toggle("hidden", active === 0);
   badge.classList.toggle("green", active > 0);
 }
+
 /* ═══════════════════════════════════════════════════════════════
-   BOOKING (BRON QILISH)
+   BOOKING
    ═══════════════════════════════════════════════════════════════ */
 
 function toggleBookingFilter(){
@@ -4871,40 +4881,10 @@ function updateAllBookingIndicators(){
 setInterval(()=>{
   renderBookings();
   updateAllBookingIndicators();
-
-  const now = Date.now();
-  bookings.forEach(b=>{
-    if(b.status === "pending"){
-      const diffMin = (b.startTime - now) / 60000;
-      if(diffMin > 0 && diffMin <= 5 && !b.notified){
-        try{
-          db.collection("bookings").doc(b.id)
-            .update({ notified: true });
-        }catch(e){}
-
-        beep("start");
-        if("Notification" in window && Notification.permission === "granted"){
-          try{
-            new Notification("🎱 Billiard Club", {
-              body: t("bookingReminder", {
-                name: b.name,
-                table: b.table,
-                time: formatTime(b.startTime)
-              })
-            });
-          }catch(err){}
-        }
-      }
-    }
-  });
 }, 30000);
 
-if("Notification" in window && Notification.permission === "default"){
-  try{ Notification.requestPermission(); }catch(e){}
-}
-
 /* ═══════════════════════════════════════════════════════════════
-   USERS MANAGEMENT — Foydalanuvchilar boshqaruvi
+   USERS MANAGEMENT
    ═══════════════════════════════════════════════════════════════ */
 
 function generateTablePriceInputs(){
@@ -5488,8 +5468,7 @@ async function saveUserTables(){
       .find(x => x.uid === editingTablesUserId);
 
     logUserAction("user_tables_edit",
-      `${u ? u.username : editingTablesUserId} stollari: ${count} ta, ` +
-      `narxlar: ${prices.map(p => money(p)).join(", ")}`);
+      `${u ? u.username : editingTablesUserId} stollari: ${count} ta`);
 
     beep("money");
     closeEditTablesModal();
@@ -5536,13 +5515,9 @@ function changeUserPasswordPrompt(uid){
                   : "#35c9ff";
 
   document.getElementById("pwdModalUserInfo").innerHTML = `
-    <div style="color:#8aa0b8;font-size:11px;font-weight:800;
-                letter-spacing:1.5px;margin-bottom:6px">
-      ${currentLang === "ru" ? "ПОЛЬЗОВАТЕЛЬ" : "FOYDALANUVCHI"}
-    </div>
     <div><b>👤 ${escapeHTML(u.fullName)}</b></div>
     <div style="color:#8aa0b8;font-size:12px;margin-top:4px">
-      ${currentLang === "ru" ? "Текущий логин" : "Hozirgi login"}:
+      Hozirgi login:
       <b style="color:#35c9ff">${escapeHTML(u.username)}</b>
     </div>
     <span class="role-tag"
@@ -5620,7 +5595,7 @@ async function saveUserCredentials(){
     });
 
     logUserAction("user_password_change",
-      `${oldLogin} → ${newLogin} (login/parol o'zgartirildi)`);
+      `${oldLogin} → ${newLogin}`);
 
     beep("money");
     closePwdModal();
@@ -5804,19 +5779,14 @@ function renderPendingRequests(){
         <div style="font-size:16px;font-weight:900;
                     color:#ffd23f;margin-bottom:8px">
           ⏳ ${escapeHTML(req.fullName)}
-          <span style="font-size:10px;font-weight:900;
-                       color:#ffd23f;margin-left:8px;
-                       letter-spacing:1px">
-            ${t("newRequestLabel")}
-          </span>
         </div>
-        <div>🔑 ${t("pwdNewLogin")}:
+        <div>🔑 Login:
           <b style="color:#35c9ff">${escapeHTML(req.username)}</b>
           &nbsp;•&nbsp;
-          🔒 ${t("pwdNewPassword")}:
+          🔒 Parol:
           <b style="color:#ffd23f">${escapeHTML(req.password)}</b></div>
-        <div>📞 ${t("phone")} <b>${escapeHTML(req.phone)}</b></div>
-        <div>🕐 ${t("sentAtLabel")}: ${createdDate}</div>
+        <div>📞 Telefon: <b>${escapeHTML(req.phone)}</b></div>
+        <div>🕐 Yuborilgan: ${createdDate}</div>
         <div style="margin-top:8px;padding:10px;
                     border-radius:10px;
                     background:rgba(53,201,255,.08);
@@ -5876,10 +5846,6 @@ function updatePendingBadge(){
   if(card) card.style.display = count > 0 ? "flex" : "none";
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   APPROVE / REJECT
-   ═══════════════════════════════════════════════════════════════ */
-
 function confirmApproveRequest(id){
   const req = pendingRequests.find(r => r.id === id);
   if(!req) return;
@@ -5888,8 +5854,7 @@ function confirmApproveRequest(id){
   document.getElementById("modalTitle").innerText = t("pendingApproveTitle");
   document.getElementById("modalText").innerText = t("pendingApproveText", {
     name: req.fullName,
-    username: req.username,
-    password: req.password
+    username: req.username
   });
   document.getElementById("modalButtons").innerHTML =
     '<button class="modal-btn" ' +
@@ -5903,29 +5868,25 @@ function confirmApproveRequest(id){
 
 async function doApproveRequest(id){
   const req = pendingRequests.find(r => r.id === id);
-  if(!req){
-    closeModal();
-    return;
-  }
+  if(!req){ closeModal(); return; }
 
   try{
     const email = req.username.toLowerCase() + "@billiard.local";
     const tempPass = req.password + "_temp_" + Date.now();
 
-    /* Firestore'dan eski userni o'chirish */
+    /* 1. Eski userni Firestore'dan o'chirish */
     try {
       const oldUsersSnap = await db.collection("users")
         .where("username", "==", req.username)
         .get();
-
       if(!oldUsersSnap.empty){
         for(const doc of oldUsersSnap.docs){
           await doc.ref.delete();
         }
       }
-    } catch(e){ console.log("Firestore:", e.code); }
+    } catch(e){ console.log("Firestore cleanup:", e.code); }
 
-    /* Auth'dan eski userni o'chirish */
+    /* 2. Eski userni Auth'dan o'chirish */
     try {
       const cred = await auth.signInWithEmailAndPassword(email, tempPass)
         .catch(err => {
@@ -5934,22 +5895,21 @@ async function doApproveRequest(id){
           if(err.code === "auth/invalid-credential") return null;
           throw err;
         });
-
       if(cred && cred.user){
         await cred.user.delete();
         await auth.signOut();
       }
-    } catch(e){ console.log("Auth:", e.code); }
+    } catch(e){ console.log("Auth cleanup:", e.code); }
 
-    /* Admin'ni saqlab qolamiz */
+    /* 3. Admin ma'lumotini saqlash */
     const adminEmail = currentUserData.username.toLowerCase() + "@billiard.local";
     const adminPassword = currentUserData.password;
 
-    /* Yangi user yaratish */
+    /* 4. Yangi user yaratish */
     const userCredential = await auth.createUserWithEmailAndPassword(email, tempPass);
     const newUid = userCredential.user.uid;
 
-    /* Firestore'ga yozish */
+    /* 5. Firestore'ga yozish */
     await db.collection("users").doc(newUid).set({
       uid: newUid,
       username: req.username,
@@ -5967,18 +5927,18 @@ async function doApproveRequest(id){
       approvedBy: currentUserData.username
     });
 
-    /* Admin'ni qayta tiklash */
+    /* 6. Admin'ni qayta tiklash */
     await auth.signOut();
     await auth.signInWithEmailAndPassword(adminEmail, adminPassword);
 
-    /* So'rovni o'chirish */
+    /* 7. So'rovni o'chirish */
     await db.collection("pendingRequests").doc(id).delete();
 
     closeModal();
     beep("money");
 
     logUserAction("user_create",
-      `${req.username} tasdiqlandi (${req.tablesCount} ta stol)`);
+      `${req.username} tasdiqlandi`);
 
     sendApprovalNotification(req, true);
 
@@ -5992,15 +5952,14 @@ async function doApproveRequest(id){
     }, 200);
 
   }catch(e){
-    console.error("doApproveRequest:", e);
+    console.error("doApproveRequest xatosi:", e);
     closeModal();
     beep("error");
 
     let errMsg = e.message || t("approveError");
     if(e.code === "auth/email-already-in-use"){
-      errMsg = "⚠️ Email band. Firebase Console'dan eski userni o'chiring.";
+      errMsg = "⚠️ Email band. Firebase Console → Authentication → Users'dan eski userni o'chiring.";
     }
-
     showModal("❌", t("errorTitle"), errMsg);
   }
 }
@@ -6026,7 +5985,6 @@ function confirmRejectRequest(id){
 async function doRejectRequest(id){
   const req = pendingRequests.find(r => r.id === id);
   closeModal();
-
   if(!req) return;
 
   const reason = prompt(t("pendingRejectReason")) || "";
@@ -6039,7 +5997,6 @@ async function doRejectRequest(id){
     });
 
     beep("end");
-
     sendApprovalNotification(req, false);
 
     setTimeout(()=>{
@@ -6047,9 +6004,8 @@ async function doRejectRequest(id){
     }, 200);
 
   }catch(e){
-    console.error("doRejectRequest:", e);
+    console.error("doRejectRequest xatosi:", e);
     beep("error");
-    showModal("❌", t("errorTitle"), t("errorOccurred"));
   }
 }
 
@@ -6125,8 +6081,9 @@ function openAdminPage(page){
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
 /* ═══════════════════════════════════════════════════════════════
-   PATTERN LOCK (Grafik parol)
+   PATTERN LOCK
    ═══════════════════════════════════════════════════════════════ */
 
 const patternCanvas = document.getElementById("patternCanvas");
@@ -6290,7 +6247,7 @@ function closePattern(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   HISOBOT (Reports)
+   REPORTS / DEBTORS / HISTORY
    ═══════════════════════════════════════════════════════════════ */
 
 function renderReports(){
@@ -6331,10 +6288,6 @@ function renderReports(){
     (currentLang === "ru" ? "шт" : "ta");
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   QARZDORLAR (Debtors)
-   ═══════════════════════════════════════════════════════════════ */
-
 function renderAdminDebtors(){
   const box = document.getElementById("adminDebtorList");
   if(!box) return;
@@ -6359,9 +6312,6 @@ function renderAdminDebtors(){
         ' &nbsp;•&nbsp; 💰 <b>' + money(item.amount) + '</b><br>' +
         '<span style="color:#ffc34e;font-weight:800">' +
         t("debtStatus") + '</span>' +
-        (item.fullName
-          ? ' &nbsp;•&nbsp; 👨‍💼 ' + escapeHTML(item.fullName)
-          : '') +
       '</div>' +
       '<div class="history-item-actions">' +
         '<button class="paid-later" ' +
@@ -6401,13 +6351,8 @@ async function markPaid(id){
   }catch(e){
     console.error("markPaid xatosi:", e);
     beep("error");
-    showModal("❌", t("errorTitle"), t("errorOccurred"));
   }
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   TARIX (History)
-   ═══════════════════════════════════════════════════════════════ */
 
 function renderAdminHistory(){
   const datesPage = document.getElementById("historyDatesPage");
@@ -6532,13 +6477,6 @@ function openHistoryDate(date){
           '</b> &nbsp;•&nbsp; <span class="unpaid">' +
           t("unpaidStatus") + '</span>'
       ) +
-      (item.paidDate
-        ? ' &nbsp;•&nbsp; ' + t("paidAt") +
-          ' <b>' + escapeHTML(item.paidDate) + '</b>'
-        : '') +
-      (item.fullName
-        ? ' &nbsp;•&nbsp; 👨‍💼 <b>' + escapeHTML(item.fullName) + '</b>'
-        : '') +
     '</div>';
   });
 
@@ -6588,10 +6526,7 @@ function confirmClearSelectedHistory(){
 
 async function clearSelectedHistory(){
   const date = selectedHistoryDateValue;
-  if(!date){
-    closeModal();
-    return;
-  }
+  if(!date){ closeModal(); return; }
 
   try{
     const snap = await db.collection("history")
@@ -6622,13 +6557,8 @@ async function clearSelectedHistory(){
     console.error("clearSelectedHistory xatosi:", e);
     closeModal();
     beep("error");
-    showModal("❌", t("errorTitle"), t("errorOccurred"));
   }
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   DINAMIK KONTENTNI YANGILASH
-   ═══════════════════════════════════════════════════════════════ */
 
 function refreshDynamicContent(){
   if(!currentUserData || !currentUserData.tablesCount) return;
@@ -6662,7 +6592,7 @@ function refreshDynamicContent(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PDF CHEK — Umumiy chek elementi yaratish
+   PDF CHEKLAR
    ═══════════════════════════════════════════════════════════════ */
 
 function showPdfLoading(show){
@@ -6704,11 +6634,6 @@ function buildChekElement(options){
 
   let totalsHTML = "";
   totals.forEach(tObj=>{
-    if(tObj.value === "" && tObj.label.includes("━")){
-      totalsHTML +=
-        '<div style="border-top:1px dashed #c8d4e0;margin:10px 0"></div>';
-      return;
-    }
     const bg = tObj.highlight ? "#e8f8f0" : "#f4f7fb";
     const border = tObj.highlight ? "#0aa978" : "#0a8ee8";
     const fontSize = tObj.highlight ? "16px" : "14px";
@@ -6759,7 +6684,7 @@ function buildChekElement(options){
 
   wrapper.innerHTML = `
     <div style="background:#0a2540;color:#ffffff;
-                padding:26px 30px;position:relative">
+                padding:26px 30px">
       <div style="display:flex;align-items:center;gap:12px">
         <div style="font-size:40px">🎱</div>
         <div>
@@ -6876,10 +6801,6 @@ function buildChekElement(options){
   return wrapper;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   PDF YUKLASH
-   ═══════════════════════════════════════════════════════════════ */
-
 async function downloadPDF(element, filename){
   showPdfLoading(true);
   beep("money");
@@ -6947,10 +6868,6 @@ async function downloadPDF(element, filename){
     }
   }
 }
-
-/* ═══════════════════════════════════════════════════════════════
-   PDF CHEKLAR
-   ═══════════════════════════════════════════════════════════════ */
 
 function printDateChek(date){
   const items = history.filter(i =>
@@ -7036,8 +6953,6 @@ function printAllHistoryChek(){
   const el = buildChekElement({
     title: t("chekAllHistory"),
     subtitle: t("allGamesList"),
-    headerInfo: '<div><span>' + t("totalGames") + '</span><span>' +
-      history.length + ' ' + t("gamesCount") + '</span></div>',
     items: tableItems,
     totals: totals,
     footer: t("allHistory")
@@ -7059,8 +6974,7 @@ function printDebtorsChek(){
   const tableItems = debtors.map(it=>({
     col1: escapeHTML(it.name || "—"),
     col2: escapeHTML(it.phone || "—"),
-    col3: t("table") + " " + it.table + " • " +
-          it.minutes + " " + t("minutes"),
+    col3: t("table") + " " + it.table,
     col4: money(it.amount)
   }));
 
@@ -7074,9 +6988,6 @@ function printDebtorsChek(){
   const el = buildChekElement({
     title: t("chekDebtors"),
     subtitle: t("unpaidList"),
-    headerInfo: '<div><span>' + t("totalDebtors") + '</span><span>' +
-      debtors.length + ' ' + (currentLang === "ru" ? "шт" : "ta") +
-      '</span></div>',
     items: tableItems,
     totals: totals,
     footer: t("payOnTime")
@@ -7102,16 +7013,11 @@ function printSingleDebtChek(id){
   const totals = [
     { label: t("client"), value: escapeHTML(item.name || "—") },
     { label: t("phone"), value: escapeHTML(item.phone || "—") },
-    { label: t("tableShort"), value: t("table") + " " + item.table },
-    { label: t("timeShort"), value: item.minutes + " " + t("minutes") },
     { label: t("debtSum"), value: money(item.amount), highlight: true }
   ];
 
   const el = buildChekElement({
     title: t("chekDebt"),
-    subtitle: t("debtFor", { name: escapeHTML(item.name || "") }),
-    headerInfo: '<div><span>' + t("chekDate") + '</span><span>' +
-      (item.saveDate || item.gameDate || "—") + '</span></div>',
     items: tableItems,
     totals: totals,
     footer: t("payAtCashier")
@@ -7149,7 +7055,6 @@ function printReportChek(){
     { label: t("todayPaid"), value: money(todayPaid) },
     { label: t("todayUnpaid"), value: money(todayUnpaid) },
     { label: t("todayTotal"), value: money(todayTotal), highlight: true },
-    { label: "━━━━━━━━━━━━", value: "" },
     { label: t("totalDebtorsSmall"),
       value: allDebtors.length + " " +
         (currentLang === "ru" ? "шт" : "ta") },
@@ -7159,8 +7064,6 @@ function printReportChek(){
   const el = buildChekElement({
     title: t("chekReport"),
     subtitle: t("reportFor", { date: today }),
-    headerInfo: '<div><span>' + t("chekDate") + '</span><span>' +
-      today + '</span></div>',
     items: tableItems,
     totals: totals,
     footer: t("dailyCashReport")
@@ -7230,13 +7133,6 @@ document.addEventListener("keydown", function(e){
     } else if(document.getElementById("adminDebtors")
                 .classList.contains("active")){
       printDebtorsChek();
-    } else if(document.getElementById("adminHistory")
-                .classList.contains("active")){
-      if(document.getElementById("historyDayPage").style.display === "block"){
-        printDayChek();
-      } else {
-        printAllHistoryChek();
-      }
     }
     return;
   }
@@ -7278,10 +7174,6 @@ document.addEventListener("keydown", function(e){
   if(key === "h"){
     e.preventDefault();
     openPage('home');
-    document.querySelectorAll(".sidebar-nav .nav-item")
-      .forEach(b=>b.classList.remove("active"));
-    const homeBtn = document.querySelector('.sidebar-nav .nav-item[data-key="H"]');
-    if(homeBtn) homeBtn.classList.add("active");
     return;
   }
 
@@ -7319,23 +7211,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 });
-
-/* ═══════════════════════════════════════════════════════════════
-   PENDING REQUESTS POLLING
-   ═══════════════════════════════════════════════════════════════ */
-
-setInterval(()=>{
-  if(!isMainAdmin()) return;
-  updatePendingBadge();
-  const usersPage = document.getElementById("adminUsers");
-  if(usersPage && usersPage.classList.contains("active")){
-    renderPendingRequests();
-  }
-}, 15000);
-
-if("Notification" in window && Notification.permission === "default"){
-  try{ Notification.requestPermission(); }catch(e){}
-}
 
 /* ═══════════════════════════════════════════════════════════════
    GLOBAL XATOLARNI USHLASH
@@ -7377,6 +7252,7 @@ console.log("🌐 Auth Domain:", firebaseConfig.authDomain);
 
 /* ═══════════════════════════════════════════════════════════════
    BOSH ADMINNI TIKLASH (URL orqali)
+   URL ga ?reset_admin=1 qo'shib, 3 sekund kuting
    ═══════════════════════════════════════════════════════════════ */
 
 async function resetMainAdmin(){
