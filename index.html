@@ -7,9 +7,10 @@
 <title>🎱 BILLIARD CLUB — Windows</title>
 <link rel="icon" type="image/png" href="https://m6061.myxvest.ru/Billiard/logo.png">
 
-<!-- ═══════════════════════════════════════════════════════
-     FIREBASE SDK — CDN'dan yuklanadi
-     ═══════════════════════════════════════════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script>eruda.init();</script>
+
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
@@ -250,6 +251,7 @@ input,select{outline:none;font-family:inherit}
   animation:logoColor 6s linear infinite;
 }
 @keyframes logoColor{0%{background-position:0}100%{background-position:200%}}
+@keyframes titleShine{from{background-position:0}to{background-position:200%}}
 .sidebar-logo-sub{font-size:9px;color:#5f7691;letter-spacing:1.5px;margin-top:3px}
 
 .sidebar-clock{
@@ -346,7 +348,6 @@ input,select{outline:none;font-family:inherit}
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   animation:titleShine 5s linear infinite;
 }
-@keyframes titleShine{from{background-position:0}to{background-position:200%}}
 .page-subtitle{color:#7d93ab;font-size:13px;margin-top:6px;letter-spacing:.3px}
 .page-actions{display:flex;gap:10px;flex-wrap:wrap}
 
@@ -729,11 +730,6 @@ input:focus{
   border:1px solid rgba(255,210,63,.5) !important;
   border-left:5px solid #ffd23f !important;
 }
-.pending-badge-gold{
-  background:rgba(255,210,63,.2) !important;
-  color:#ffd23f !important;
-  border-color:rgba(255,210,63,.5) !important;
-}
 
 .booking-form-card{
   padding:22px;border-radius:20px;
@@ -754,7 +750,7 @@ input:focus{
 }
 .booking-form-grid select:focus{border-color:#35c9ff;box-shadow:0 0 0 3px rgba(53,201,255,.15)}
 .booking-form-grid select option{background:#0a1a2c;color:#fff}
-/* CUSTOM SELECT */
+
 .custom-select{position:relative;width:100%;user-select:none}
 .custom-select-trigger{
   width:100%;min-height:52px;padding:12px 18px;border-radius:14px;
@@ -921,6 +917,7 @@ input:focus{
 .booking-start-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(10,169,120,.5)}
 .booking-cancel-btn{background:linear-gradient(135deg,rgba(224,68,86,.2),rgba(169,35,53,.2));color:#ff6878;border:1px solid rgba(224,68,86,.4)}
 .booking-cancel-btn:hover{background:linear-gradient(135deg,#e04456,#a92335);color:#fff}
+
 .modal-bg{
   display:none;position:fixed;inset:0;z-index:30000;
   background:rgba(0,0,0,.85);backdrop-filter:blur(12px);
@@ -1479,238 +1476,226 @@ input:focus{
   </aside>
 
   <main class="main-content">
-<!-- ═══════════════════════════════════════════════════
-     HOME PAGE
-     ═══════════════════════════════════════════════════ -->
-<div id="home" class="page active">
-  <div class="home-center">
-    <div class="page-title" style="font-size:clamp(28px,3vw,42px)">
-      🎱 BILLIARD CLUB
-    </div>
-    <div class="clock color1" id="clock">00:00:00</div>
-    <div class="date" id="date"></div>
-  </div>
-</div>
 
-<!-- ═══════════════════════════════════════════════════
-     TABLES PAGE
-     ═══════════════════════════════════════════════════ -->
-<div id="tables" class="page">
-  <div class="page-header">
-    <div>
-      <div class="page-title" data-i18n="tablesTitle">🎱 STOLLAR</div>
-      <div class="page-subtitle" id="tablesSubtitle" 
-           data-i18n="tablesSubtitle">Barcha stollar bir ekranda</div>
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+      <div class="home-center">
+        <div class="page-title" style="font-size:clamp(28px,3vw,42px)">
+          🎱 BILLIARD CLUB
+        </div>
+        <div class="clock color1" id="clock">00:00:00</div>
+        <div class="date" id="date"></div>
+      </div>
     </div>
-  </div>
-  <div class="tables-grid" id="tablesGrid"></div>
-</div>
 
-<!-- ═══════════════════════════════════════════════════
-     ADMIN PAGE
-     ═══════════════════════════════════════════════════ -->
-<div id="admin" class="page">
-  <div class="page-header">
-    <div>
-      <div class="page-title" data-i18n="adminTitle">🔐 ADMIN PANEL</div>
-      <div class="page-subtitle" data-i18n="adminSubtitle">Boshqaruv menyusi</div>
+    <!-- TABLES PAGE -->
+    <div id="tables" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title" data-i18n="tablesTitle">🎱 STOLLAR</div>
+          <div class="page-subtitle" id="tablesSubtitle" 
+               data-i18n="tablesSubtitle">Barcha stollar bir ekranda</div>
+        </div>
+      </div>
+      <div class="tables-grid" id="tablesGrid"></div>
     </div>
-    <div class="page-actions">
-      <button class="back-btn" onclick="backToMain()" data-i18n="backToMain">
-        🏠 ASOSIY MENYUGA
+
+    <!-- ADMIN PAGE -->
+    <div id="admin" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title" data-i18n="adminTitle">🔐 ADMIN PANEL</div>
+          <div class="page-subtitle" data-i18n="adminSubtitle">Boshqaruv menyusi</div>
+        </div>
+        <div class="page-actions">
+          <button class="back-btn" onclick="backToMain()" data-i18n="backToMain">
+            🏠 ASOSIY MENYUGA
+          </button>
+        </div>
+      </div>
+
+      <div class="admin-menu-grid">
+        <button class="admin-card" onclick="openAdminPage('reports')">
+          <div class="admin-card-icon">📊</div>
+          <div>
+            <b data-i18n="reportsCard">Hisobot</b><br>
+            <small data-i18n="reportsCardSub">Tushum va o'yinlar</small>
+          </div>
+        </button>
+        
+        <button class="admin-card" onclick="openAdminPage('debtors')">
+          <div class="admin-card-icon">🔴</div>
+          <div>
+            <b data-i18n="debtorsCard">Qarzdor</b><br>
+            <small data-i18n="debtorsCardSub">Olinmagan pullar</small>
+          </div>
+        </button>
+        
+        <button class="admin-card" onclick="openAdminPage('history')">
+          <div class="admin-card-icon">📋</div>
+          <div>
+            <b data-i18n="historyCard">Tarix</b><br>
+            <small data-i18n="historyCardSub">Barcha o'yinlar</small>
+          </div>
+        </button>
+        
+        <button class="admin-card" onclick="openAdminPage('booking')">
+          <div class="admin-card-icon">📅</div>
+          <div>
+            <b data-i18n="bookingCard">Bron qilish</b><br>
+            <small data-i18n="bookingCardSub">Stol band qilish</small>
+          </div>
+        </button>
+        
+        <button class="admin-card" id="usersAdminCard" 
+                onclick="openAdminPage('users')" style="display:none">
+          <div class="admin-card-icon">👥</div>
+          <div>
+            <b data-i18n="usersCard">Foydalanuvchilar</b><br>
+            <small data-i18n="usersCardSub">Login/parol va stollar</small>
+          </div>
+        </button>
+        
+        <button class="admin-card" id="pendingAdminCard" 
+                onclick="openAdminPage('users')" 
+                style="display:none;border-color:rgba(255,210,63,.6);
+                       background:linear-gradient(155deg,rgba(50,42,20,.95),rgba(30,24,10,.98))">
+          <div class="admin-card-icon" 
+               style="background:linear-gradient(135deg,rgba(255,210,63,.25),rgba(232,168,38,.25));
+                      border-color:rgba(255,210,63,.5)">⏳</div>
+          <div>
+            <b style="color:#ffd23f" data-i18n="pendingCardTitle">
+              Kutilayotgan so'rovlar
+            </b><br>
+            <small style="color:#ffd23f" data-i18n="pendingCardSub">
+              Tasdiqlash kutilmoqda
+            </small>
+          </div>
+          <span id="pendingCardBadge" 
+                style="position:absolute;top:12px;right:12px;background:#ffd23f;
+                       color:#1a1a1a;font-weight:900;font-size:11px;
+                       padding:4px 10px;border-radius:20px">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ADMIN REPORTS PAGE -->
+    <div id="adminReports" class="page">
+      <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
+        ← ADMIN MENYUSIGA QAYTISH
+      </button>
+      <div class="page-header">
+        <div>
+          <div class="page-title" data-i18n="reportsTitle">📊 HISOBOT</div>
+          <div class="page-subtitle" data-i18n="reportsSubtitle">
+            Bugungi tushum va statistika
+          </div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <small data-i18n="statGames">🎱 Bugungi o'yinlar</small>
+          <h2 id="statGames">0</h2>
+        </div>
+        <div class="stat green">
+          <small data-i18n="statPaid">🟢 Pul olingan</small>
+          <h2 id="statPaid">0</h2>
+        </div>
+        <div class="stat red">
+          <small data-i18n="statUnpaid">🔴 Pul olinmagan</small>
+          <h2 id="statUnpaid">0</h2>
+        </div>
+        <div class="stat orange">
+          <small data-i18n="statDebtors">👥 Qarzdorlar</small>
+          <h2 id="statDebtors">0</h2>
+        </div>
+        <div class="stat blue">
+          <small data-i18n="statBookings">📅 Faol bronlar</small>
+          <h2 id="statBookings">0</h2>
+        </div>
+      </div>
+      <button class="report-chek-btn" onclick="printReportChek()" 
+              data-i18n="downloadReportPdf">
+        📄 UMUMIY HISOBOTNI PDF YUKLASH
       </button>
     </div>
-  </div>
 
-  <div class="admin-menu-grid">
-    <button class="admin-card" onclick="openAdminPage('reports')">
-      <div class="admin-card-icon">📊</div>
-      <div>
-        <b data-i18n="reportsCard">Hisobot</b><br>
-        <small data-i18n="reportsCardSub">Tushum va o'yinlar</small>
+    <!-- ADMIN DEBTORS PAGE -->
+    <div id="adminDebtors" class="page">
+      <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
+        ← ADMIN MENYUSIGA QAYTISH
+      </button>
+      <div class="page-header">
+        <div>
+          <div class="page-title" data-i18n="debtorsTitle">🔴 QARZDORLAR</div>
+          <div class="page-subtitle" data-i18n="debtorsSubtitle">
+            To'lanmagan o'yinlar ro'yxati
+          </div>
+        </div>
       </div>
-    </button>
-    
-    <button class="admin-card" onclick="openAdminPage('debtors')">
-      <div class="admin-card-icon">🔴</div>
-      <div>
-        <b data-i18n="debtorsCard">Qarzdor</b><br>
-        <small data-i18n="debtorsCardSub">Olinmagan pullar</small>
-      </div>
-    </button>
-    
-    <button class="admin-card" onclick="openAdminPage('history')">
-      <div class="admin-card-icon">📋</div>
-      <div>
-        <b data-i18n="historyCard">Tarix</b><br>
-        <small data-i18n="historyCardSub">Barcha o'yinlar</small>
-      </div>
-    </button>
-    
-    <button class="admin-card" onclick="openAdminPage('booking')">
-      <div class="admin-card-icon">📅</div>
-      <div>
-        <b data-i18n="bookingCard">Bron qilish</b><br>
-        <small data-i18n="bookingCardSub">Stol band qilish</small>
-      </div>
-    </button>
-    
-    <button class="admin-card" id="usersAdminCard" 
-            onclick="openAdminPage('users')" style="display:none">
-      <div class="admin-card-icon">👥</div>
-      <div>
-        <b data-i18n="usersCard">Foydalanuvchilar</b><br>
-        <small data-i18n="usersCardSub">Login/parol va stollar</small>
-      </div>
-    </button>
-    
-    <button class="admin-card" id="pendingAdminCard" 
-            onclick="openAdminPage('users')" 
-            style="display:none;border-color:rgba(255,210,63,.6);
-                   background:linear-gradient(155deg,rgba(50,42,20,.95),rgba(30,24,10,.98))">
-      <div class="admin-card-icon" 
-           style="background:linear-gradient(135deg,rgba(255,210,63,.25),rgba(232,168,38,.25));
-                  border-color:rgba(255,210,63,.5)">⏳</div>
-      <div>
-        <b style="color:#ffd23f" data-i18n="pendingCardTitle">
-          Kutilayotgan so'rovlar
-        </b><br>
-        <small style="color:#ffd23f" data-i18n="pendingCardSub">
-          Tasdiqlash kutilmoqda
-        </small>
-      </div>
-      <span id="pendingCardBadge" 
-            style="position:absolute;top:12px;right:12px;background:#ffd23f;
-                   color:#1a1a1a;font-weight:900;font-size:11px;
-                   padding:4px 10px;border-radius:20px">0</span>
-    </button>
-  </div>
-</div>
+      <div id="adminDebtorList"></div>
+      <button class="report-chek-btn" onclick="printDebtorsChek()" 
+              data-i18n="downloadAllDebtorsPdf">
+        📄 BARCHA QARZDORLAR PDF YUKLASH
+      </button>
+    </div>
 
-<!-- ═══════════════════════════════════════════════════
-     ADMIN REPORTS PAGE
-     ═══════════════════════════════════════════════════ -->
-<div id="adminReports" class="page">
-  <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
-    ← ADMIN MENYUSIGA QAYTISH
-  </button>
-  <div class="page-header">
-    <div>
-      <div class="page-title" data-i18n="reportsTitle">📊 HISOBOT</div>
-      <div class="page-subtitle" data-i18n="reportsSubtitle">
-        Bugungi tushum va statistika
+    <!-- ADMIN HISTORY PAGE -->
+    <div id="adminHistory" class="page">
+      <div id="historyDatesPage">
+        <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
+          ← ADMIN MENYUSIGA QAYTISH
+        </button>
+        <div class="page-header">
+          <div>
+            <div class="page-title" data-i18n="historyTitle">📋 TARIX</div>
+            <div class="page-subtitle" data-i18n="historySubtitle">
+              Sanalar bo'yicha o'yinlar
+            </div>
+          </div>
+        </div>
+        <div id="historyDatesList"></div>
+        <div id="historyTotalBox" class="history-total-box">
+          <small data-i18n="allDatesTotal">
+            💰 BARCHA SANALARNING UMUMIY SUMMASI
+          </small>
+          <b id="historyTotalAmount">0</b>
+        </div>
+        <button class="report-chek-btn" onclick="printAllHistoryChek()" 
+                data-i18n="downloadAllHistoryPdf">
+          📄 BARCHA TARIXNI PDF YUKLASH
+        </button>
       </div>
-    </div>
-  </div>
-  <div class="stats">
-    <div class="stat">
-      <small data-i18n="statGames">🎱 Bugungi o'yinlar</small>
-      <h2 id="statGames">0</h2>
-    </div>
-    <div class="stat green">
-      <small data-i18n="statPaid">🟢 Pul olingan</small>
-      <h2 id="statPaid">0</h2>
-    </div>
-    <div class="stat red">
-      <small data-i18n="statUnpaid">🔴 Pul olinmagan</small>
-      <h2 id="statUnpaid">0</h2>
-    </div>
-    <div class="stat orange">
-      <small data-i18n="statDebtors">👥 Qarzdorlar</small>
-      <h2 id="statDebtors">0</h2>
-    </div>
-    <div class="stat blue">
-      <small data-i18n="statBookings">📅 Faol bronlar</small>
-      <h2 id="statBookings">0</h2>
-    </div>
-  </div>
-  <button class="report-chek-btn" onclick="printReportChek()" 
-          data-i18n="downloadReportPdf">
-    📄 UMUMIY HISOBOTNI PDF YUKLASH
-  </button>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     ADMIN DEBTORS PAGE
-     ═══════════════════════════════════════════════════ -->
-<div id="adminDebtors" class="page">
-  <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
-    ← ADMIN MENYUSIGA QAYTISH
-  </button>
-  <div class="page-header">
-    <div>
-      <div class="page-title" data-i18n="debtorsTitle">🔴 QARZDORLAR</div>
-      <div class="page-subtitle" data-i18n="debtorsSubtitle">
-        To'lanmagan o'yinlar ro'yxati
-      </div>
-    </div>
-  </div>
-  <div id="adminDebtorList"></div>
-  <button class="report-chek-btn" onclick="printDebtorsChek()" 
-          data-i18n="downloadAllDebtorsPdf">
-    📄 BARCHA QARZDORLAR PDF YUKLASH
-  </button>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     ADMIN HISTORY PAGE
-     ═══════════════════════════════════════════════════ -->
-<div id="adminHistory" class="page">
-  <div id="historyDatesPage">
-    <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
-      ← ADMIN MENYUSIGA QAYTISH
-    </button>
-    <div class="page-header">
-      <div>
-        <div class="page-title" data-i18n="historyTitle">📋 TARIX</div>
-        <div class="page-subtitle" data-i18n="historySubtitle">
-          Sanalar bo'yicha o'yinlar
+      
+      <div id="historyDayPage" style="display:none">
+        <button class="inner-back" onclick="backToHistoryDates()" 
+                data-i18n="backToDates">
+          ← SANALARGA QAYTISH
+        </button>
+        <div class="page-header">
+          <div>
+            <div class="page-title" id="selectedHistoryDate" 
+                 data-i18n="dateLabel">📅 Sana</div>
+            <div class="page-subtitle" data-i18n="dailyGames">
+              Kunlik o'yinlar
+            </div>
+          </div>
+        </div>
+        <div id="selectedDayHistory"></div>
+        <div class="chek-actions-grid">
+          <button class="chek-print-btn" onclick="printDayChek()" 
+                  data-i18n="downloadPdf">
+            📄 PDF YUKLASH
+          </button>
+          <button class="clear-btn" onclick="confirmClearSelectedHistory()" 
+                  data-i18n="clearDate">
+            🗑️ SANANI TOZALASH
+          </button>
         </div>
       </div>
     </div>
-    <div id="historyDatesList"></div>
-    <div id="historyTotalBox" class="history-total-box">
-      <small data-i18n="allDatesTotal">
-        💰 BARCHA SANALARNING UMUMIY SUMMASI
-      </small>
-      <b id="historyTotalAmount">0</b>
-    </div>
-    <button class="report-chek-btn" onclick="printAllHistoryChek()" 
-            data-i18n="downloadAllHistoryPdf">
-      📄 BARCHA TARIXNI PDF YUKLASH
-    </button>
-  </div>
-  
-  <div id="historyDayPage" style="display:none">
-    <button class="inner-back" onclick="backToHistoryDates()" 
-            data-i18n="backToDates">
-      ← SANALARGA QAYTISH
-    </button>
-    <div class="page-header">
-      <div>
-        <div class="page-title" id="selectedHistoryDate" 
-             data-i18n="dateLabel">📅 Sana</div>
-        <div class="page-subtitle" data-i18n="dailyGames">
-          Kunlik o'yinlar
-        </div>
-      </div>
-    </div>
-    <div id="selectedDayHistory"></div>
-    <div class="chek-actions-grid">
-      <button class="chek-print-btn" onclick="printDayChek()" 
-              data-i18n="downloadPdf">
-        📄 PDF YUKLASH
-      </button>
-      <button class="clear-btn" onclick="confirmClearSelectedHistory()" 
-              data-i18n="clearDate">
-        🗑️ SANANI TOZALASH
-      </button>
-    </div>
-  </div>
-</div>
-    <!-- ═══════════════════════════════════════════════════
-         ADMIN BOOKING PAGE
-         ═══════════════════════════════════════════════════ -->
+
+    <!-- ADMIN BOOKING PAGE -->
     <div id="adminBooking" class="page">
       <button class="inner-back" onclick="openAdmin()" data-i18n="backToAdmin">
         ← ADMIN MENYUSIGA QAYTISH
@@ -1805,9 +1790,7 @@ input:focus{
       <div id="bookingList"></div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════
-         ADMIN USERS PAGE
-         ═══════════════════════════════════════════════════ -->
+    <!-- ADMIN USERS PAGE -->
     <div id="adminUsers" class="page">
       <div class="page-header">
         <div>
@@ -1969,9 +1952,8 @@ input:focus{
 
   </main>
 </div>
-<!-- ═══════════════════════════════════════════════════════
-     MODAL (Xabar oynasi)
-     ═══════════════════════════════════════════════════════ -->
+
+<!-- MODAL -->
 <div id="modalBg" class="modal-bg">
   <div class="modal">
     <div id="modalIcon" class="modal-icon">⚠️</div>
@@ -1985,9 +1967,7 @@ input:focus{
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PWD MODAL (Login/Parol yangilash)
-     ═══════════════════════════════════════════════════════ -->
+<!-- PWD MODAL -->
 <div id="pwdModalBg" class="pwd-modal-bg">
   <div class="pwd-modal">
     <div class="pwd-modal-header">
@@ -2031,9 +2011,7 @@ input:focus{
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     TABLES EDIT MODAL (Stollarni tahrirlash)
-     ═══════════════════════════════════════════════════════ -->
+<!-- TABLES EDIT MODAL -->
 <div id="tablesEditBg" class="tables-edit-bg">
   <div class="tables-edit-modal">
     <div class="pwd-modal-header">
@@ -2088,9 +2066,7 @@ input:focus{
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     CLEAR LOG MODAL (Loglarni tozalash)
-     ═══════════════════════════════════════════════════════ -->
+<!-- CLEAR LOG MODAL -->
 <div id="clearModalBg" class="clear-modal-bg">
   <div class="clear-modal">
     <div class="clear-modal-icon">🗑️</div>
@@ -2113,9 +2089,7 @@ input:focus{
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PATTERN LOCK (Grafik parol)
-     ═══════════════════════════════════════════════════════ -->
+<!-- PATTERN LOCK -->
 <div id="patternBg" class="pattern-bg">
   <div class="pattern-box">
     <div class="pattern-icon">🔐</div>
@@ -2132,9 +2106,7 @@ input:focus{
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     PDF LOADING (Yuklanmoqda oynasi)
-     ═══════════════════════════════════════════════════════ -->
+<!-- PDF LOADING -->
 <div id="pdfLoading" class="pdf-loading">
   <div class="pdf-loading-box">
     <div class="pdf-spinner"></div>
@@ -2147,9 +2119,7 @@ input:focus{
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     KEYBOARD HINTS (Klaviatura ko'rsatkichi)
-     ═══════════════════════════════════════════════════════ -->
+<!-- KEYBOARD HINTS -->
 <div class="keyboard-hints" id="keyboardHints">
   <b>1..9</b> <span data-i18n="hintTables">Stollar</span> •
   <b>H</b> <span data-i18n="hintHome">Asosiy</span> •
@@ -2161,9 +2131,7 @@ input:focus{
   <b>Esc</b> <span data-i18n="hintClose">Yopish</span>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     EXTERNAL LIBRARIES
-     ═══════════════════════════════════════════════════════ -->
+<!-- EXTERNAL LIBRARIES -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
@@ -2184,12 +2152,8 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-/* Firestore sozlamalari */
-db.settings({
-  cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
-});
+db.settings({ cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED });
 
-/* Offline persistence yoqish */
 db.enablePersistence({ synchronizeTabs: true })
   .catch((err) => {
     if(err.code === 'failed-precondition'){
@@ -2231,41 +2195,26 @@ async function sendTelegramLog(htmlMessage){
 
 /* ═══════════════════════════════════════════════════════════════
    GLOBAL O'ZGARUVCHILAR
-
-const MAIN_ADMIN = {
-  id: "main_admin_001",
-  username: "Firdavsbek",
-  password: "311010",
-  fullName: "Firdavsbek",
-  role: "main_admin",
-  createdAt: new Date().toISOString(),
-  active: true,
-  tablesCount: 3,
-  tablePrices: [40000, 40000, 40000]
-};
    ═══════════════════════════════════════════════════════════════ */
-
-
 
 const ADMIN_PATTERN = [2,4,5,3];
 const CLUB_NAME = "BILLIARD CLUB";
 const CLUB_PHONE = "+998 97 757 31 10";
 const CLUB_ADDRESS = "Firdavsbek";
 
-let currentUser = null;        // Firebase Auth user
-let currentUserData = null;    // Firestore'dagi user ma'lumoti
-let games = {};                // Stollar holati (real-time)
-let bookings = [];             // Bronlar (real-time)
-let history = [];              // Tarix (real-time)
-let pendingRequests = [];      // Kutilayotgan so'rovlar
-let userLogs = [];             // Foydalanuvchi jurnali
+let currentUser = null;
+let currentUserData = null;
+let games = {};
+let bookings = [];
+let history = [];
+let pendingRequests = [];
+let userLogs = [];
 
 let selectedHistoryDateValue = "";
 let bookingFilterToday = true;
 
 let currentLang = localStorage.getItem("billiardLang") || "uz";
 
-/* Firebase listener unsubscribe funksiyalari */
 let unsubscribers = {
   games: null,
   bookings: null,
@@ -3195,11 +3144,11 @@ function setLanguage(lang){
   renderBookingTableOptions();
   beep("money");
 }
+
 /* ═══════════════════════════════════════════════════════════════
    FIREBASE AUTH — LOGIN / REGISTER / LOGOUT
    ═══════════════════════════════════════════════════════════════ */
 
-/* Parolni ko'rsatish/yashirish */
 function togglePasswordVisibility(inputId, btn){
   const input = document.getElementById(inputId);
   if(!input) return;
@@ -3212,7 +3161,6 @@ function togglePasswordVisibility(inputId, btn){
   }
 }
 
-/* Foydalanuvchi hujjatini Firestore'dan olish */
 async function loadUserData(uid){
   try{
     const doc = await db.collection("users").doc(uid).get();
@@ -3227,7 +3175,6 @@ async function loadUserData(uid){
   }
 }
 
-/* Login */
 async function checkLogin(){
   const userInput = document.getElementById("loginUsername").value.trim();
   const passInput = document.getElementById("loginPassword").value;
@@ -3248,21 +3195,17 @@ async function checkLogin(){
   errorEl.style.color = "#35c9ff";
 
   try{
-    /* Username → email (Firebase Auth email talab qiladi) */
     const email = userInput.toLowerCase() + "@billiard.local";
 
-    /* Firebase Auth bilan kirish */
     let userCredential;
     try{
       userCredential = await auth.signInWithEmailAndPassword(email, passInput);
     }catch(authErr){
-      /* Auth'da yo'q — Firestore'dan tekshiramiz */
       const usersSnap = await db.collection("users")
         .where("username", "==", userInput)
         .limit(1).get();
 
       if(usersSnap.empty){
-        /* Pending request tekshirish */
         const pendingSnap = await db.collection("pendingRequests")
           .where("username", "==", userInput)
           .where("status", "==", "pending")
@@ -3297,7 +3240,6 @@ async function checkLogin(){
         return;
       }
 
-      /* Firestore'da bor, lekin Auth'da yo'q — avtomatik yaratamiz */
       const userDoc = usersSnap.docs[0];
       const userData = userDoc.data();
 
@@ -3309,10 +3251,8 @@ async function checkLogin(){
         return;
       }
 
-      /* Auth'da yaratamiz */
       try{
         userCredential = await auth.createUserWithEmailAndPassword(email, passInput);
-        /* Firestore'ga uid yozamiz */
         await db.collection("users").doc(userCredential.user.uid).set({
           ...userData,
           uid: userCredential.user.uid
@@ -3326,10 +3266,8 @@ async function checkLogin(){
       }
     }
 
-    /* Muvaffaqiyatli kirish */
     currentUser = userCredential.user;
 
-    /* Foydalanuvchi ma'lumotini yuklaymiz */
     const userData = await loadUserData(currentUser.uid);
 
     if(!userData){
@@ -3358,10 +3296,8 @@ async function checkLogin(){
       localStorage.removeItem("billiardRemember");
     }
 
-    /* Log yozamiz */
     await logUserAction("login", "Tizimga kirdi");
 
-    /* Ekranni yashirish */
     setTimeout(()=>{
       document.getElementById("loginScreen").classList.add("hidden");
       document.getElementById("loginUsername").value = "";
@@ -3388,7 +3324,6 @@ async function checkLogin(){
   }
 }
 
-/* Ro'yxatdan o'tish */
 async function doRegister(){
   const fullName = document.getElementById("regFullName").value.trim();
   const username = document.getElementById("regUsername").value.trim();
@@ -3400,7 +3335,6 @@ async function doRegister(){
 
   errorEl.style.color = "#ff6878";
 
-  /* Validatsiya */
   if(!fullName || fullName.length < 2){
     errorEl.innerText = t("regErrorFullName");
     errorEl.classList.remove("shake");
@@ -3444,7 +3378,6 @@ async function doRegister(){
   errorEl.style.color = "#35c9ff";
 
   try{
-    /* Login band emasligini tekshirish */
     const usersSnap = await db.collection("users")
       .where("username", "==", username)
       .limit(1).get();
@@ -3456,7 +3389,6 @@ async function doRegister(){
       return;
     }
 
-    /* Pending request tekshirish */
     const pendingSnap = await db.collection("pendingRequests")
       .where("username", "==", username)
       .where("status", "==", "pending")
@@ -3469,12 +3401,10 @@ async function doRegister(){
       return;
     }
 
-    /* Narxlar */
     const defaultPrice = 40000;
     const prices = [];
     for(let i = 0; i < tablesCount; i++) prices.push(defaultPrice);
 
-    /* So'rov yaratish */
     const requestId = "req_" + Date.now() + "_" +
       Math.random().toString(36).slice(2,7);
 
@@ -3494,14 +3424,12 @@ async function doRegister(){
 
     await db.collection("pendingRequests").doc(requestId).set(request);
 
-    /* Telegram xabar */
     sendApprovalRequestToAdmin(request);
 
     errorEl.style.color = "#ffd23f";
     errorEl.innerText = t("regSuccess");
     beep("money");
 
-    /* Formani tozalash */
     document.getElementById("regFullName").value = "";
     document.getElementById("regUsername").value = "";
     document.getElementById("regPhone").value = "";
@@ -3526,7 +3454,6 @@ async function doRegister(){
   }
 }
 
-/* Register / Login oynalarini almashtirish */
 function showRegister(){
   document.getElementById("loginBox").style.display = "none";
   document.getElementById("registerBox").style.display = "block";
@@ -3543,7 +3470,6 @@ function showLogin(){
   setTimeout(()=>document.getElementById("loginUsername").focus(), 100);
 }
 
-/* Logout */
 function logout(){
   document.getElementById("modalIcon").innerText = "🚪";
   document.getElementById("modalTitle").innerText = t("logoutTitle");
@@ -3563,7 +3489,6 @@ async function confirmLogout(){
     }
     await auth.signOut();
 
-    /* Listenerlarni to'xtatamiz */
     Object.keys(unsubscribers).forEach(key=>{
       if(unsubscribers[key]){
         unsubscribers[key]();
@@ -3606,7 +3531,6 @@ async function confirmLogout(){
 function startRealtimeListeners(){
   if(!currentUserData) return;
 
-  /* Oldingi listenerlarni to'xtatamiz */
   Object.keys(unsubscribers).forEach(key=>{
     if(unsubscribers[key]){
       unsubscribers[key]();
@@ -3618,7 +3542,7 @@ function startRealtimeListeners(){
     ? "main"
     : currentUserData.uid;
 
-  /* GAMES (stollar holati) */
+  /* GAMES */
   unsubscribers.games = db.collection("games")
     .where("ownerId", "==", ownerId)
     .onSnapshot(snap=>{
@@ -3631,7 +3555,7 @@ function startRealtimeListeners(){
       updateActiveTablesBadge();
     }, err => console.warn("games listener:", err));
 
-  /* BOOKINGS (bronlar) */
+  /* BOOKINGS */
   unsubscribers.bookings = db.collection("bookings")
     .where("ownerId", "==", ownerId)
     .onSnapshot(snap=>{
@@ -3644,7 +3568,7 @@ function startRealtimeListeners(){
       renderReports();
     }, err => console.warn("bookings listener:", err));
 
-  /* HISTORY (tarix) */
+  /* HISTORY */
   unsubscribers.history = db.collection("history")
     .where("ownerId", "==", ownerId)
     .orderBy("savedAt", "desc")
@@ -3659,7 +3583,7 @@ function startRealtimeListeners(){
       renderAdminHistory();
     }, err => console.warn("history listener:", err));
 
-  /* USERS (faqat main admin uchun) */
+  /* USERS (faqat main admin) */
   if(currentUserData.role === "main_admin"){
     unsubscribers.users = db.collection("users")
       .onSnapshot(snap=>{
@@ -3696,7 +3620,7 @@ function startRealtimeListeners(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   RO'YXATDAN O'TISH — TELEGRAM XABARLARI
+   TELEGRAM — RO'YXATDAN O'TISH XABARLARI
    ═══════════════════════════════════════════════════════════════ */
 
 async function sendApprovalRequestToAdmin(req){
@@ -3798,7 +3722,6 @@ async function logUserAction(type, description, extra){
 
     await db.collection("userLogs").add(logEntry);
 
-    /* Telegram xabar */
     const icons = {
       login: "🚪", logout: "👋",
       start_game: "▶️", finish_game: "⏹️",
@@ -3968,7 +3891,6 @@ function openAdminUsersDirect(){
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* Welcome toast */
 function showWelcomeToast(user){
   const roleLabel = user.role === "main_admin" ? "👑 Bosh admin"
                   : user.role === "admin" ? "🛡️ Admin"
@@ -4039,7 +3961,7 @@ setInterval(updateClock, 1000);
 updateClock();
 
 /* ═══════════════════════════════════════════════════════════════
-   MODAL (xabar oynasi)
+   MODAL
    ═══════════════════════════════════════════════════════════════ */
 
 function showModal(icon, title, text){
@@ -4081,12 +4003,11 @@ function openPage(page, button){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   INIT — Sahifa yuklanishida
+   AUTH STATE
    ═══════════════════════════════════════════════════════════════ */
 
 auth.onAuthStateChanged(async (user)=>{
   if(user){
-    /* Avtomatik kirish */
     currentUser = user;
     const userData = await loadUserData(user.uid);
 
@@ -4113,7 +4034,6 @@ auth.onAuthStateChanged(async (user)=>{
       await auth.signOut();
     }
   } else {
-    /* Login ekrani */
     document.querySelectorAll(".lang-btn").forEach(b=>{
       b.classList.toggle("active",
         b.getAttribute("data-lang") === currentLang);
@@ -4127,7 +4047,6 @@ auth.onAuthStateChanged(async (user)=>{
   }
 });
 
-/* Sahifa yopilishida listenerlarni tozalash */
 window.addEventListener("beforeunload", ()=>{
   Object.keys(unsubscribers).forEach(key=>{
     if(unsubscribers[key]){
@@ -4136,8 +4055,9 @@ window.addEventListener("beforeunload", ()=>{
     }
   });
 });
+
 /* ═══════════════════════════════════════════════════════════════
-   GAMES (STOLLAR) — Boshlash, tugatish, to'lov
+   GAMES (STOLLAR)
    ═══════════════════════════════════════════════════════════════ */
 
 function getOwnerId(){
@@ -4145,7 +4065,6 @@ function getOwnerId(){
   return currentUserData.role === "main_admin" ? "main" : currentUserData.uid;
 }
 
-/* Stollarni chiqarish */
 function renderTables(){
   const grid = document.getElementById("tablesGrid");
   if(!grid) return;
@@ -4224,7 +4143,6 @@ function renderTables(){
     grid.insertAdjacentHTML("beforeend", tableHTML);
   }
 
-  /* Har bir stol holatini yangilaymiz */
   for(let id = 1; id <= count; id++){
     updateTable(id);
   }
@@ -4233,7 +4151,6 @@ function renderTables(){
   updateActiveTablesBadge();
 }
 
-/* Narx matnlarini yangilash (til o'zgarganda) */
 function updatePriceTexts(){
   if(!currentUserData || !currentUserData.tablesCount) return;
   for(let id = 1; id <= currentUserData.tablesCount; id++){
@@ -4242,7 +4159,6 @@ function updatePriceTexts(){
   }
 }
 
-/* O'yinni boshlash */
 async function startGame(id){
   if(games[id] && games[id].start && !games[id].finished){
     beep("error");
@@ -4283,7 +4199,6 @@ async function startGame(id){
   }
 }
 
-/* Stollar holatini yangilash */
 function updateTable(id){
   const g = games[id];
   const statusEl = document.getElementById("status" + id);
@@ -4324,7 +4239,6 @@ function updateTable(id){
   }
 }
 
-/* Timerni yangilash */
 function updateTimer(id){
   if(!games[id] || !games[id].start) return;
   const price = getTablePrice(id);
@@ -4344,7 +4258,6 @@ function updateTimer(id){
   if(liveEl) liveEl.innerText = money(amount);
 }
 
-/* Har soniyada timerlarni yangilaymiz */
 setInterval(()=>{
   if(!currentUserData || !currentUserData.tablesCount) return;
   for(let id = 1; id <= currentUserData.tablesCount; id++){
@@ -4354,7 +4267,6 @@ setInterval(()=>{
   }
 }, 1000);
 
-/* O'yinni tugatish */
 async function finishGame(id){
   if(!games[id] || !games[id].start) return;
   const price = getTablePrice(id);
@@ -4398,13 +4310,11 @@ async function finishGame(id){
   }
 }
 
-/* Qarz formasi ko'rsatish */
 function showDebt(id){
   const df = document.getElementById("debtForm" + id);
   if(df) df.style.display = "block";
 }
 
-/* PUL OLINDI */
 async function savePaid(id){
   const g = games[id];
   if(!g) return;
@@ -4413,7 +4323,6 @@ async function savePaid(id){
   const amount = g.amount;
   const bookingId = g.bookingId;
 
-  /* Bronni yopish */
   if(bookingId){
     try{
       await db.collection("bookings").doc(bookingId)
@@ -4441,8 +4350,6 @@ async function savePaid(id){
 
   try{
     await db.collection("history").add(historyDoc);
-
-    /* Games'dan stolni o'chiramiz */
     await db.collection("games").doc(ownerId + "_" + id).delete();
 
     beep("money");
@@ -4457,7 +4364,6 @@ async function savePaid(id){
   }
 }
 
-/* QARZGA YOZISH */
 async function saveDebt(id){
   const g = games[id];
   if(!g) return;
@@ -4523,7 +4429,6 @@ async function saveDebt(id){
   }
 }
 
-/* Faol stollar sonini yangilash */
 function updateActiveTablesBadge(){
   if(!currentUserData || !currentUserData.tablesCount){
     const badge = document.getElementById("activeTablesBadge");
@@ -4553,7 +4458,6 @@ function toggleBookingFilter(){
   renderBookings();
 }
 
-/* Custom Select — stol tanlash */
 function renderBookingTableOptions(){
   const menu = document.getElementById("bookingTableMenu");
   if(!menu) return;
@@ -4644,7 +4548,6 @@ function selectTable(tableNum, e){
   beep("money");
 }
 
-/* Tashqi bosishda dropdown yopish */
 document.addEventListener("click", (e)=>{
   if(!e.target.closest(".custom-select")){
     document.querySelectorAll(".custom-select.open")
@@ -4652,7 +4555,6 @@ document.addEventListener("click", (e)=>{
   }
 });
 
-/* Bronni saqlash */
 async function saveBooking(){
   const table = Number(document.getElementById("bookingTable").value);
   const name = document.getElementById("bookingName").value.trim();
@@ -4692,7 +4594,6 @@ async function saveBooking(){
     return;
   }
 
-  /* Konflikt tekshirish */
   const conflict = bookings.find(b=>{
     if(b.table !== table) return false;
     if(b.status === "cancelled" || b.status === "completed") return false;
@@ -4755,7 +4656,6 @@ async function saveBooking(){
   }
 }
 
-/* Bron statusini aniqlash */
 function getBookingStatus(booking){
   const now = Date.now();
   if(booking.status === "cancelled") return "cancelled";
@@ -4769,7 +4669,6 @@ function getBookingStatus(booking){
   return "expired";
 }
 
-/* Bronlarni chiqarish */
 function renderBookings(){
   const box = document.getElementById("bookingList");
   if(!box) return;
@@ -4841,7 +4740,6 @@ function renderBookings(){
   });
 }
 
-/* Brondan o'yinni boshlash */
 async function startFromBooking(id){
   const b = bookings.find(x => x.id === id);
   if(!b) return;
@@ -4891,7 +4789,6 @@ async function startFromBooking(id){
   }
 }
 
-/* Bronni bekor qilish */
 function cancelBooking(id){
   const b = bookings.find(x => x.id === id);
   if(!b) return;
@@ -4933,7 +4830,6 @@ async function confirmCancelBooking(id){
   }
 }
 
-/* Bron ko'rsatkichlarini yangilash (stol kartalarida) */
 function updateAllBookingIndicators(){
   if(!currentUserData || !currentUserData.tablesCount) return;
 
@@ -4972,7 +4868,6 @@ function updateAllBookingIndicators(){
   }
 }
 
-/* Bronlarni avtomatik yangilash (har 30 soniyada) */
 setInterval(()=>{
   renderBookings();
   updateAllBookingIndicators();
@@ -5004,16 +4899,14 @@ setInterval(()=>{
   });
 }, 30000);
 
-/* Notification ruxsati */
 if("Notification" in window && Notification.permission === "default"){
   try{ Notification.requestPermission(); }catch(e){}
 }
+
 /* ═══════════════════════════════════════════════════════════════
    USERS MANAGEMENT — Foydalanuvchilar boshqaruvi
-   (Faqat Main Admin uchun)
    ═══════════════════════════════════════════════════════════════ */
 
-/* Stollar va narxlar inputlarini yaratish */
 function generateTablePriceInputs(){
   const countInput = document.getElementById("newUserTablesCount");
   const container = document.getElementById("tablePriceInputsContainer");
@@ -5028,7 +4921,6 @@ function generateTablePriceInputs(){
     return;
   }
 
-  /* Mavjud qiymatlarni saqlab qolamiz */
   const existingPrices = {};
   for(let i = 1; i <= 20; i++){
     const inp = document.getElementById("tablePrice_" + i);
@@ -5067,7 +4959,6 @@ function setAllPrices(price){
   beep("money");
 }
 
-/* Yangi foydalanuvchi yaratish */
 async function handleCreateUser(){
   const fullName = document.getElementById("newUserFullName").value.trim();
   const username = document.getElementById("newUserUsername").value.trim();
@@ -5076,7 +4967,6 @@ async function handleCreateUser(){
   const tablesCount = Number(document.getElementById("newUserTablesCount").value);
   const prices = [];
 
-  /* Validatsiya */
   if(!fullName || fullName.length < 2){
     beep("error");
     showModal("⚠️", t("errorTitle"), t("regErrorFullName"));
@@ -5116,7 +5006,6 @@ async function handleCreateUser(){
   }
 
   try{
-    /* Login band emasligini tekshirish */
     const checkSnap = await db.collection("users")
       .where("username", "==", username)
       .limit(1).get();
@@ -5127,7 +5016,6 @@ async function handleCreateUser(){
       return;
     }
 
-    /* Firebase Auth'da yangi user yaratish — vaqtinchalik */
     const email = username.toLowerCase() + "@billiard.local";
     const tempPass = password + "_temp_" + Date.now();
 
@@ -5136,7 +5024,6 @@ async function handleCreateUser(){
     );
     const newUid = userCredential.user.uid;
 
-    /* Firestore'ga yozish */
     await db.collection("users").doc(newUid).set({
       uid: newUid,
       username: username,
@@ -5150,13 +5037,11 @@ async function handleCreateUser(){
       createdBy: currentUserData.username
     });
 
-    /* Firestore'dan chiqib, yana o'zimizni kiriting */
     await auth.signInWithEmailAndPassword(
       currentUserData.username.toLowerCase() + "@billiard.local",
       currentUserData.password
     );
 
-    /* Formani tozalash */
     document.getElementById("newUserFullName").value = "";
     document.getElementById("newUserUsername").value = "";
     document.getElementById("newUserPassword").value = "";
@@ -5198,7 +5083,6 @@ async function handleCreateUser(){
   }
 }
 
-/* Foydalanuvchilar ro'yxatini chiqarish */
 function renderUsers(){
   const box = document.getElementById("usersList");
   if(!box) return;
@@ -5229,7 +5113,6 @@ function renderUsers(){
       : '<span style="color:#42e979;font-weight:900">' +
         t("userActive") + '</span>';
 
-    /* Statistika */
     const userHistory = allHistory.filter(h => h.userId === u.uid);
     const todayItems = userHistory.filter(h =>
       (h.saveDate || h.gameDate) === today
@@ -5264,7 +5147,6 @@ function renderUsers(){
     const paidCount = logs.filter(l => l.type === "paid").length;
     const debtCount = logs.filter(l => l.type === "debt").length;
 
-    /* Stollar ma'lumoti */
     let tablesInfo = "";
     if(u.tablesCount && u.tablePrices && u.tablePrices.length){
       const pricesStr = u.tablePrices.map((p,i) =>
@@ -5288,7 +5170,6 @@ function renderUsers(){
       `;
     }
 
-    /* Moliyaviy ko'rsatkichlar */
     const financeBlock = `
       <div style="margin-top:10px;padding:12px;border-radius:12px;
                   background:linear-gradient(135deg,rgba(13,187,133,.08),rgba(53,201,255,.08));
@@ -5435,7 +5316,6 @@ function renderUsers(){
   renderUserLogs();
 }
 
-/* Faoliyat jurnalini chiqarish */
 function renderUserLogs(){
   const box = document.getElementById("userLogsList");
   if(!box) return;
@@ -5490,8 +5370,9 @@ function renderUserLogs(){
     box.appendChild(div);
   });
 }
+
 /* ═══════════════════════════════════════════════════════════════
-   EDIT TABLES (Stollarni tahrirlash)
+   EDIT TABLES
    ═══════════════════════════════════════════════════════════════ */
 
 let editingTablesUserId = null;
@@ -5634,7 +5515,7 @@ function closeEditTablesModal(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PASSWORD CHANGE (Login/Parol o'zgartirish)
+   PASSWORD CHANGE
    ═══════════════════════════════════════════════════════════════ */
 
 let pwdModalTargetId = null;
@@ -5714,7 +5595,6 @@ async function saveUserCredentials(){
     return;
   }
 
-  /* Login band emasligini tekshirish */
   const duplicate = (window._allUsers || []).find(x =>
     x.uid !== pwdModalTargetId &&
     x.username.toLowerCase() === newLogin.toLowerCase()
@@ -5811,10 +5691,8 @@ async function doDeleteUser(uid){
   if(!u){ closeModal(); return; }
 
   try{
-    /* Firestore'dan o'chirish */
     await db.collection("users").doc(uid).delete();
 
-    /* Foydalanuvchining o'yinlari, bronlari, tarixini o'chirish */
     const gamesSnap = await db.collection("games")
       .where("ownerId", "==", uid).get();
     gamesSnap.forEach(doc => doc.ref.delete());
@@ -5841,7 +5719,7 @@ async function doDeleteUser(uid){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   CLEAR LOGS (Loglarni tozalash)
+   CLEAR LOGS
    ═══════════════════════════════════════════════════════════════ */
 
 function clearUserLogs(){
@@ -5856,7 +5734,6 @@ function closeClearModal(){
 
 async function doClearUserLogs(){
   try{
-    /* Batches bilan o'chiramiz (500 tadan) */
     const snap = await db.collection("userLogs").get();
     const batch = db.batch();
     let count = 0;
@@ -5884,7 +5761,7 @@ async function doClearUserLogs(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   PENDING REQUESTS (Kutilayotgan so'rovlar)
+   PENDING REQUESTS
    ═══════════════════════════════════════════════════════════════ */
 
 function renderPendingRequests(){
@@ -5998,8 +5875,9 @@ function updatePendingBadge(){
   const card = document.getElementById("pendingAdminCard");
   if(card) card.style.display = count > 0 ? "flex" : "none";
 }
+
 /* ═══════════════════════════════════════════════════════════════
-   APPROVE / REJECT — So'rovlarni tasdiqlash yoki rad etish
+   APPROVE / REJECT
    ═══════════════════════════════════════════════════════════════ */
 
 function confirmApproveRequest(id){
@@ -6031,74 +5909,47 @@ async function doApproveRequest(id){
   }
 
   try{
-    /* ═══════════════════════════════════════════════
-       1. ESKI USER NI O'CHIRISH (agar mavjud bo'lsa)
-       ═══════════════════════════════════════════════ */
-
     const email = req.username.toLowerCase() + "@billiard.local";
     const tempPass = req.password + "_temp_" + Date.now();
 
-    /* 1.1. Firestore'dan eski userni o'chirish */
+    /* Firestore'dan eski userni o'chirish */
     try {
       const oldUsersSnap = await db.collection("users")
         .where("username", "==", req.username)
         .get();
 
       if(!oldUsersSnap.empty){
-        console.log("⚠️ Firestore'da eski user topildi:", oldUsersSnap.size);
         for(const doc of oldUsersSnap.docs){
           await doc.ref.delete();
-          console.log("✅ Firestore'dan o'chirildi:", doc.id);
         }
       }
-    } catch(e){
-      console.log("Firestore tekshirish xatosi:", e.code);
-    }
+    } catch(e){ console.log("Firestore:", e.code); }
 
-    /* 1.2. Auth'dan eski userni o'chirish */
+    /* Auth'dan eski userni o'chirish */
     try {
       const cred = await auth.signInWithEmailAndPassword(email, tempPass)
         .catch(err => {
-          if(err.code === "auth/user-not-found"){
-            console.log("Auth'da user yo'q — davom etamiz");
-            return null;
-          }
-          if(err.code === "auth/wrong-password"){
-            console.log("Auth'da user bor, lekin parol boshqa");
-            return null;
-          }
-          if(err.code === "auth/invalid-credential"){
-            console.log("Auth'da user bor, lekin credentials xato");
-            return null;
-          }
+          if(err.code === "auth/user-not-found") return null;
+          if(err.code === "auth/wrong-password") return null;
+          if(err.code === "auth/invalid-credential") return null;
           throw err;
         });
 
       if(cred && cred.user){
-        console.log("⚠️ Auth'da eski user topildi:", cred.user.uid);
         await cred.user.delete();
-        console.log("✅ Auth'dan o'chirildi");
         await auth.signOut();
       }
-    } catch(e){
-      console.log("Auth tekshirish xatosi:", e.code);
-    }
+    } catch(e){ console.log("Auth:", e.code); }
 
-    /* ═══════════════════════════════════════════════
-       2. YANGI USER YARATISH
-       ═══════════════════════════════════════════════ */
-
-    /* 2.1. Admin'ni saqlab qolamiz (yangi user yaratilgach qayta kirish uchun) */
+    /* Admin'ni saqlab qolamiz */
     const adminEmail = currentUserData.username.toLowerCase() + "@billiard.local";
     const adminPassword = currentUserData.password;
 
-    /* 2.2. Yangi user yaratish */
-    console.log("🔨 Yangi user yaratilmoqda:", email);
+    /* Yangi user yaratish */
     const userCredential = await auth.createUserWithEmailAndPassword(email, tempPass);
     const newUid = userCredential.user.uid;
-    console.log("✅ Yangi user yaratildi:", newUid);
 
-    /* 2.3. Firestore'ga yozish */
+    /* Firestore'ga yozish */
     await db.collection("users").doc(newUid).set({
       uid: newUid,
       username: req.username,
@@ -6115,16 +5966,13 @@ async function doApproveRequest(id){
       approvedAt: new Date().toISOString(),
       approvedBy: currentUserData.username
     });
-    console.log("✅ Firestore'ga yozildi");
 
-    /* 2.4. Admin'ni qayta tiklash */
+    /* Admin'ni qayta tiklash */
     await auth.signOut();
     await auth.signInWithEmailAndPassword(adminEmail, adminPassword);
-    console.log("✅ Admin qayta tiklandi");
 
-    /* 2.5. So'rovni o'chirish */
+    /* So'rovni o'chirish */
     await db.collection("pendingRequests").doc(id).delete();
-    console.log("✅ So'rov o'chirildi");
 
     closeModal();
     beep("money");
@@ -6144,13 +5992,13 @@ async function doApproveRequest(id){
     }, 200);
 
   }catch(e){
-    console.error("doApproveRequest xatosi:", e);
+    console.error("doApproveRequest:", e);
     closeModal();
     beep("error");
 
     let errMsg = e.message || t("approveError");
     if(e.code === "auth/email-already-in-use"){
-      errMsg = "⚠️ Email band. Firebase Console → Authentication → Users'dan eski userni o'chiring.";
+      errMsg = "⚠️ Email band. Firebase Console'dan eski userni o'chiring.";
     }
 
     showModal("❌", t("errorTitle"), errMsg);
@@ -6199,14 +6047,14 @@ async function doRejectRequest(id){
     }, 200);
 
   }catch(e){
-    console.error("doRejectRequest xatosi:", e);
+    console.error("doRejectRequest:", e);
     beep("error");
     showModal("❌", t("errorTitle"), t("errorOccurred"));
   }
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   ADMIN MENU — Admin sahifasini ochish
+   ADMIN MENU
    ═══════════════════════════════════════════════════════════════ */
 
 function openAdmin(){
@@ -6277,7 +6125,6 @@ function openAdminPage(page){
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 /* ═══════════════════════════════════════════════════════════════
    PATTERN LOCK (Grafik parol)
    ═══════════════════════════════════════════════════════════════ */
@@ -6441,6 +6288,7 @@ function closePattern(){
   patternSelected = [];
   drawPatternCanvas();
 }
+
 /* ═══════════════════════════════════════════════════════════════
    HISOBOT (Reports)
    ═══════════════════════════════════════════════════════════════ */
@@ -6448,7 +6296,6 @@ function closePattern(){
 function renderReports(){
   const today = todayDate();
 
-  /* Bugungi o'yinlar */
   const todayData = history.filter(x =>
     x.saveDate === today || (!x.saveDate && x.gameDate === today)
   );
@@ -6457,10 +6304,8 @@ function renderReports(){
   const unpaid = todayData.filter(x => !x.paid)
     .reduce((a, b) => a + Number(b.amount || 0), 0);
 
-  /* Barcha qarzdorlar */
   const debtors = history.filter(x => !x.paid);
 
-  /* Faol bronlar */
   const now = Date.now();
   const activeBookings = bookings.filter(b =>
     b.status !== "cancelled" &&
@@ -6530,7 +6375,6 @@ function renderAdminDebtors(){
   });
 }
 
-/* Qarzni to'lash */
 async function markPaid(id){
   const item = history.find(x => x.id === id);
   if(!item) return;
@@ -6575,7 +6419,6 @@ function renderAdminHistory(){
   const totalBox = document.getElementById("historyTotalBox");
   if(!box) return;
 
-  /* Sanalar bo'yicha guruhlash */
   const dateGroups = {};
   history.forEach(item=>{
     const date = item.saveDate || item.gameDate || "";
@@ -6710,7 +6553,6 @@ function backToHistoryDates(){
   renderAdminHistory();
 }
 
-/* Tarixni tozalash — tasdiqlash oynasi */
 function confirmClearSelectedHistory(){
   const date = selectedHistoryDateValue;
   if(!date){
@@ -6744,7 +6586,6 @@ function confirmClearSelectedHistory(){
   document.getElementById("modalBg").style.display = "flex";
 }
 
-/* Tarixni o'chirish */
 async function clearSelectedHistory(){
   const date = selectedHistoryDateValue;
   if(!date){
@@ -6753,7 +6594,6 @@ async function clearSelectedHistory(){
   }
 
   try{
-    /* Sanaga tegishli barcha hujjatlarni topib, o'chiramiz */
     const snap = await db.collection("history")
       .where("ownerId", "==", getOwnerId())
       .where("saveDate", "==", date)
@@ -6787,7 +6627,7 @@ async function clearSelectedHistory(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   DINAMIK KONTENTNI YANGILASH (til o'zgarganda)
+   DINAMIK KONTENTNI YANGILASH
    ═══════════════════════════════════════════════════════════════ */
 
 function refreshDynamicContent(){
@@ -6820,6 +6660,7 @@ function refreshDynamicContent(){
   updateActiveTablesBadge();
   updatePendingBadge();
 }
+
 /* ═══════════════════════════════════════════════════════════════
    PDF CHEK — Umumiy chek elementi yaratish
    ═══════════════════════════════════════════════════════════════ */
@@ -6842,7 +6683,6 @@ function buildChekElement(options){
   const chekNo = "CHK-" + Date.now().toString().slice(-8);
   const now = fullDateTime();
 
-  /* Jadval qatorlari */
   let itemsHTML = "";
   items.forEach((row, idx)=>{
     const bg = idx % 2 === 0 ? "#ffffff" : "#f8fafc";
@@ -6862,7 +6702,6 @@ function buildChekElement(options){
       </tr>`;
   });
 
-  /* Jami summalar */
   let totalsHTML = "";
   totals.forEach(tObj=>{
     if(tObj.value === "" && tObj.label.includes("━")){
@@ -6889,7 +6728,6 @@ function buildChekElement(options){
       </div>`;
   });
 
-  /* Header ma'lumotlari */
   let headerInfoHTML = "";
   if(headerInfo){
     const tmp = document.createElement("div");
@@ -6909,7 +6747,6 @@ function buildChekElement(options){
     });
   }
 
-  /* Wrapper */
   const wrapper = document.createElement("div");
   wrapper.style.cssText = `
     width:780px;
@@ -6921,7 +6758,6 @@ function buildChekElement(options){
   `;
 
   wrapper.innerHTML = `
-    <!-- HEADER -->
     <div style="background:#0a2540;color:#ffffff;
                 padding:26px 30px;position:relative">
       <div style="display:flex;align-items:center;gap:12px">
@@ -6951,7 +6787,6 @@ function buildChekElement(options){
       </div>
     </div>
 
-    <!-- HEADER INFO -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;
                 padding:18px 30px;background:#f4f7fb;
                 border-bottom:1px solid #e0e7f0;font-size:13px">
@@ -6966,7 +6801,6 @@ function buildChekElement(options){
       ${headerInfoHTML}
     </div>
 
-    <!-- TABLE -->
     <div style="padding:22px 30px">
       <table style="width:100%;border-collapse:collapse;font-size:13px">
         <thead>
@@ -7001,10 +6835,8 @@ function buildChekElement(options){
       </table>
     </div>
 
-    <!-- TOTALS -->
     <div style="padding:0 30px 22px">${totalsHTML}</div>
 
-    <!-- SIGNATURE -->
     ${showSignature ? `
     <div style="padding:0 30px 22px">
       <div style="display:flex;justify-content:space-between;
@@ -7029,7 +6861,6 @@ function buildChekElement(options){
     </div>
     ` : ''}
 
-    <!-- FOOTER -->
     <div style="padding:22px 30px;background:#f4f7fb;
                 border-top:1px dashed #c8d4e0;
                 text-align:center;font-size:11px;color:#5a6a7d">
@@ -7116,11 +6947,11 @@ async function downloadPDF(element, filename){
     }
   }
 }
+
 /* ═══════════════════════════════════════════════════════════════
-   PDF CHEKLAR — har xil turdagi cheklar
+   PDF CHEKLAR
    ═══════════════════════════════════════════════════════════════ */
 
-/* Kunlik chek (sana bo'yicha) */
 function printDateChek(date){
   const items = history.filter(i =>
     i.saveDate === date || (!i.saveDate && i.gameDate === date)
@@ -7166,7 +6997,6 @@ function printDateChek(date){
   downloadPDF(el, "BILLIARD_KUNLIK_" + date.replace(/\./g,"-") + ".pdf");
 }
 
-/* Tanlangan kun PDF */
 function printDayChek(){
   const date = selectedHistoryDateValue;
   if(!date){
@@ -7176,7 +7006,6 @@ function printDayChek(){
   printDateChek(date);
 }
 
-/* Barcha tarix PDF */
 function printAllHistoryChek(){
   if(!history.length){
     showModal("📋", t("historyEmptyTitle"), t("noHistory"));
@@ -7217,7 +7046,6 @@ function printAllHistoryChek(){
   downloadPDF(el, "BILLIARD_TARIX_" + fileDate() + ".pdf");
 }
 
-/* Barcha qarzdorlar PDF */
 function printDebtorsChek(){
   const debtors = history.filter(x => !x.paid);
 
@@ -7257,7 +7085,6 @@ function printDebtorsChek(){
   downloadPDF(el, "BILLIARD_QARZDORLAR_" + fileDate() + ".pdf");
 }
 
-/* Bitta qarz cheki */
 function printSingleDebtChek(id){
   const item = history.find(x => x.id === id);
   if(!item){
@@ -7293,7 +7120,6 @@ function printSingleDebtChek(id){
   downloadPDF(el, "BILLIARD_QARZ_" + safeFilename(item.name) + ".pdf");
 }
 
-/* Umumiy hisobot PDF */
 function printReportChek(){
   const today = todayDate();
 
@@ -7344,43 +7170,10 @@ function printReportChek(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   BOSHLANG'ICH SOZLAMALAR (Initialization)
-   ═══════════════════════════════════════════════════════════════ */
-
-/* Til tugmalarini faollashtirish */
-document.querySelectorAll(".lang-btn").forEach(b=>{
-  b.classList.toggle("active", b.getAttribute("data-lang") === currentLang);
-});
-applyTranslations();
-
-/* Realtime listener'larni ishga tushirish (agar user bo'lsa) */
-if(currentUserData){
-  startRealtimeListeners();
-}
-
-/* Bron eslatmalarini tekshirish (har 30 soniyada) */
-setInterval(()=>{
-  if(!currentUserData) return;
-
-  const now = Date.now();
-  bookings.forEach(b=>{
-    if(b.status === "pending"){
-      const diffMin = (b.startTime - now) / 60000;
-      if(diffMin > 0 && diffMin <= 5 && !b.notified){
-        beep("start");
-        try{
-          db.collection("bookings").doc(b.id).update({ notified: true });
-        }catch(e){}
-      }
-    }
-  });
-}, 30000);
-/* ═══════════════════════════════════════════════════════════════
    KLAVIATURA SHORTCUTS
    ═══════════════════════════════════════════════════════════════ */
 
 document.addEventListener("keydown", function(e){
-  /* Login ekrani ochiq bo'lsa */
   const loginScreen = document.getElementById("loginScreen");
   if(loginScreen && !loginScreen.classList.contains("hidden")){
     if(e.key === "Enter"){
@@ -7405,13 +7198,11 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* Input/textarea/select ichida bo'lsa — qisqa tugmalar ishlamaydi */
   const tag = (e.target.tagName || "").toLowerCase();
   if(tag === "input" || tag === "textarea" || tag === "select") return;
 
   const key = e.key.toLowerCase();
 
-  /* ESC — hamma modalni yopish */
   if(e.key === "Escape"){
     const modal = document.getElementById("modalBg");
     const pattern = document.getElementById("patternBg");
@@ -7432,7 +7223,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* Ctrl+P — PDF chop etish */
   if(e.ctrlKey && key === "p"){
     e.preventDefault();
     if(document.getElementById("adminReports").classList.contains("active")){
@@ -7451,14 +7241,12 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* Modal ochiq bo'lsa — boshqa tugmalar ishlamaydi */
   if(document.getElementById("modalBg").style.display === "flex") return;
   if(document.getElementById("patternBg").style.display === "flex") return;
   if(document.getElementById("pwdModalBg").classList.contains("active")) return;
   if(document.getElementById("clearModalBg").classList.contains("active")) return;
   if(document.getElementById("tablesEditBg").classList.contains("active")) return;
 
-  /* Main Admin uchun faqat U tugmasi */
   if(isMainAdmin()){
     if(key === "u"){
       e.preventDefault();
@@ -7467,7 +7255,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* 1-9 — stollar */
   const num = parseInt(key);
   if(!isNaN(num) && num >= 1 && num <= 9){
     if(!currentUserData || !currentUserData.tablesCount) return;
@@ -7488,7 +7275,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* H — home */
   if(key === "h"){
     e.preventDefault();
     openPage('home');
@@ -7499,14 +7285,12 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* A — admin pattern */
   if(key === "a"){
     e.preventDefault();
     openPattern();
     return;
   }
 
-  /* R — hisobot */
   if(key === "r"){
     e.preventDefault();
     openAdmin();
@@ -7514,7 +7298,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* D — qarzdorlar */
   if(key === "d"){
     e.preventDefault();
     openAdmin();
@@ -7522,7 +7305,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* T — tarix */
   if(key === "t"){
     e.preventDefault();
     openAdmin();
@@ -7530,7 +7312,6 @@ document.addEventListener("keydown", function(e){
     return;
   }
 
-  /* B — bron */
   if(key === "b"){
     e.preventDefault();
     openAdmin();
@@ -7541,7 +7322,6 @@ document.addEventListener("keydown", function(e){
 
 /* ═══════════════════════════════════════════════════════════════
    PENDING REQUESTS POLLING
-   (Main admin uchun — so'rovlarni tekshirish)
    ═══════════════════════════════════════════════════════════════ */
 
 setInterval(()=>{
@@ -7553,7 +7333,6 @@ setInterval(()=>{
   }
 }, 15000);
 
-/* Notification ruxsati so'rash */
 if("Notification" in window && Notification.permission === "default"){
   try{ Notification.requestPermission(); }catch(e){}
 }
@@ -7574,15 +7353,12 @@ window.addEventListener("unhandledrejection", (e)=>{
    YAKUNIY SOZLAMALAR
    ═══════════════════════════════════════════════════════════════ */
 
-/* Til tugmalarini faollashtirish */
 document.querySelectorAll(".lang-btn").forEach(b=>{
   b.classList.toggle("active", b.getAttribute("data-lang") === currentLang);
 });
 
-/* Boshlang'ich tarjimalar */
 applyTranslations();
 
-/* Boshlang'ich renderlar (faqat user bo'lsa) */
 if(currentUserData){
   applyRoleUI();
   renderTables();
@@ -7599,16 +7375,15 @@ console.log("🎱 BILLIARD CLUB — Firebase ulandi!");
 console.log("📊 Project ID:", firebaseConfig.projectId);
 console.log("🌐 Auth Domain:", firebaseConfig.authDomain);
 
-
 /* ═══════════════════════════════════════════════════════════════
-   BOSH ADMINNI TIKLASH
+   BOSH ADMINNI TIKLASH (URL orqali)
    ═══════════════════════════════════════════════════════════════ */
 
 async function resetMainAdmin(){
   console.log("🔧 Bosh adminni tiklash...");
-  const email = "firdavsbekibrohimov39@billiar.local";
+  const email = "firdavsbekibrohimov39@billiard.local";
   const password = "311010";
-  
+
   try {
     try {
       const cred = await auth.signInWithEmailAndPassword(email, password);
@@ -7620,11 +7395,11 @@ async function resetMainAdmin(){
     } catch (e) {
       console.log("⚠️ Auth xato:", e.code);
     }
-    
+
     const cred = await auth.createUserWithEmailAndPassword(email, password);
     const uid = cred.user.uid;
     console.log("✅ Yangi user:", uid);
-    
+
     await db.collection("users").doc(uid).set({
       uid: uid,
       username: "Firdavsbek",
@@ -7639,7 +7414,7 @@ async function resetMainAdmin(){
       createdAt: new Date().toISOString()
     }, { merge: true });
     console.log("✅ Firestore'ga yozildi!");
-    
+
     await auth.signOut();
     return "CREATED";
   } catch (e) {
@@ -7655,8 +7430,6 @@ if (location.search.includes("reset_admin=1")) {
     });
   }, 3000);
 }
-
-
 </script>
 </body>
 </html>
