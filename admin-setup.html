@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🔧 Admin Setup</title>
-<link rel="icon" type="image/png" href="https://m6061.myxvest.ru/Billiard/logoadmin.png">
+<link rel="icon" type="image/png" href="https://m6061.myxvest.ru/Billiard/logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
@@ -14,7 +14,7 @@ body{
   display:flex;justify-content:center;align-items:center;
 }
 .box{
-  max-width:500px;width:100%;
+  max-width:520px;width:100%;
   background:linear-gradient(155deg,rgba(20,42,67,.98),rgba(11,26,44,.99));
   border:1px solid rgba(53,201,255,.3);
   border-radius:24px;padding:30px;
@@ -37,12 +37,14 @@ h1{
 .label{
   display:block;font-size:11px;font-weight:800;
   color:#7d93ab;letter-spacing:1.5px;margin-bottom:6px;
+  text-transform:uppercase;
 }
 .input{
   width:100%;padding:14px 16px;border-radius:12px;
   border:1px solid rgba(48,73,102,.9);
   background:rgba(7,17,31,.95);
   color:#fff;font-size:14px;font-weight:600;
+  transition:.25s;
 }
 .input:focus{
   outline:none;border-color:#35c9ff;
@@ -50,15 +52,19 @@ h1{
 }
 .btn{
   width:100%;padding:16px;margin-top:10px;
-  background:linear-gradient(135deg,#0dbb85,#067858);
   color:#fff;font-weight:900;font-size:14px;
   border:0;border-radius:12px;cursor:pointer;
   letter-spacing:1px;transition:.25s;
+  font-family:inherit;
 }
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(13,187,133,.5)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.green{background:linear-gradient(135deg,#0dbb85,#067858)}
+.btn.green:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(13,187,133,.5)}
 .btn.red{background:linear-gradient(135deg,#e04456,#8f1e2d)}
+.btn.red:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(224,68,86,.5)}
 .btn.blue{background:linear-gradient(135deg,#0a8ee8,#065a9f)}
+.btn.blue:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(10,142,232,.5)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn.hidden{display:none}
 .result{
   margin-top:20px;padding:16px;border-radius:12px;
   background:rgba(7,17,31,.8);
@@ -79,6 +85,14 @@ h1{
 .status.loading{background:rgba(53,201,255,.15);color:#35c9ff;border:1px solid rgba(53,201,255,.4)}
 .status.success{background:rgba(66,233,121,.15);color:#42e979;border:1px solid rgba(66,233,121,.4)}
 .status.error{background:rgba(224,68,86,.15);color:#ff6878;border:1px solid rgba(224,68,86,.4)}
+.status.warn{background:rgba(255,210,63,.15);color:#ffd23f;border:1px solid rgba(255,210,63,.4)}
+.hidden{display:none !important}
+.lock-icon{
+  text-align:center;font-size:64px;margin-bottom:12px;
+  filter:drop-shadow(0 0 25px rgba(53,201,255,.5));
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{50%{transform:translateY(-8px)}}
 </style>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -87,47 +101,84 @@ h1{
 </head>
 <body>
 <div class="box">
-  <h1>🔧 Bosh Admin Setup</h1>
-  <p class="sub">Bir marta bosib, Bosh adminni yaratasiz</p>
 
-  <div id="status" class="status loading">⏳ Tayyorlanmoqda...</div>
+  <!-- ═══ 1. HIMOYA PAROLI ═══ -->
+  <div id="lockScreen">
+    <div class="lock-icon">🔐</div>
+    <h1>HIMOYA</h1>
+    <p class="sub">Bu sahifa faqat maxsus parol bilan ochiladi</p>
 
-  <div class="field">
-    <label class="label">🔑 LOGIN</label>
-    <input type="text" id="adminLogin" class="input" value="Firdavsbek">
+    <div id="lockStatus" class="status loading">⏳ Tayyorlanmoqda...</div>
+
+    <div class="field">
+      <label class="label">🔒 MAXSUS PAROL</label>
+      <input type="password" id="lockPassword" class="input" 
+             placeholder="Parolni kiriting" autocomplete="off">
+    </div>
+
+    <button class="btn blue" id="unlockBtn" onclick="unlockPage()">
+      🔓 OCHISH
+    </button>
+
+    <div class="result" id="lockResult">Tayyor...</div>
   </div>
 
-  <div class="field">
-    <label class="label">🔒 PAROL</label>
-    <input type="text" id="adminPassword" class="input" value="311010">
+  <!-- ═══ 2. SETUP (parol to'g'ri kiritilgandan keyin) ═══ -->
+  <div id="setupScreen" class="hidden">
+    <div class="lock-icon">🔧</div>
+    <h1>Bosh Admin Setup</h1>
+    <p class="sub">Bosh adminni yaratish / o'chirish / tekshirish</p>
+
+    <div id="status" class="status loading">⏳ Tayyorlanmoqda...</div>
+
+    <div class="field">
+      <label class="label">🔑 LOGIN</label>
+      <input type="text" id="adminLogin" class="input" value="Firdavsbek">
+    </div>
+
+    <div class="field">
+      <label class="label">🔒 PAROL</label>
+      <input type="text" id="adminPassword" class="input" value="311010">
+    </div>
+
+    <div class="field">
+      <label class="label">👤 TO'LIQ ISM</label>
+      <input type="text" id="adminFullName" class="input" value="Firdavsbek">
+    </div>
+
+    <div class="field">
+      <label class="label">🎱 STOLLAR SONI</label>
+      <input type="number" id="adminTables" class="input" value="3" min="1" max="20">
+    </div>
+
+    <button class="btn green" id="createBtn" onclick="createAdmin()">
+      ✨ BOSH ADMINNI YARATISH
+    </button>
+
+    <button class="btn blue" onclick="testLogin()">
+      🔐 LOGIN TESTINI SINASH
+    </button>
+
+    <button class="btn red" onclick="deleteAdmin()">
+      🗑️ BOSH ADMINNI O'CHIRISH
+    </button>
+
+    <button class="btn red" onclick="lockPage()" style="background:linear-gradient(135deg,#172c43,#0d1a29)">
+      🔒 QAYTA QULFLASH
+    </button>
+
+    <div class="result" id="result">Tayyor...</div>
   </div>
 
-  <div class="field">
-    <label class="label">👤 TO'LIQ ISM</label>
-    <input type="text" id="adminFullName" class="input" value="Firdavsbek">
-  </div>
-
-  <div class="field">
-    <label class="label">🎱 STOLLAR SONI</label>
-    <input type="number" id="adminTables" class="input" value="3" min="1" max="20">
-  </div>
-
-  <button class="btn" id="createBtn" onclick="createAdmin()">
-    ✨ BOSH ADMINNI YARATISH
-  </button>
-
-  <button class="btn red" onclick="deleteAdmin()">
-    🗑️ BOSH ADMINNI O'CHIRISH
-  </button>
-
-  <button class="btn blue" onclick="testLogin()">
-    🔐 LOGIN TESTINI SINASH
-  </button>
-
-  <div class="result" id="result">Tayyor...</div>
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════════
+   MAXSUS PAROL — o'zingiz xohlagan parolni qo'ying
+   ═══════════════════════════════════════════════════════════════ */
+
+const SETUP_PASSWORD = "Firdavsbek3110"; /* ← BU YERNI O'ZGARTIRING! */
+
 /* ═══════════════════════════════════════════════════════════════
    FIREBASE CONFIG
    ═══════════════════════════════════════════════════════════════ */
@@ -141,12 +192,45 @@ const firebaseConfig = {
   appId: "1:186310392493:web:3da30a2db28ec880e2a424"
 };
 
-let auth, db;
-let app;
+let auth, db, app;
 
-/* Log funksiyasi */
-function log(msg, type){
-  const el = document.getElementById("result");
+/* ═══ XATO XABARLARINI O'ZBEKCHAGA TARJIMA QILISH ═══ */
+const ERROR_MESSAGES = {
+  "auth/api-key-not-valid.-please-pass-a-valid-api-key.": 
+    "API kalit noto'g'ri. Firebase Console'dan yangi kalit oling.",
+  "auth/api-key-not-valid": 
+    "API kalit noto'g'ri.",
+  "auth/email-already-in-use": 
+    "Bu email allaqachon band. 'O'chirish' tugmasini bosing.",
+  "auth/weak-password": 
+    "Parol juda kuchsiz — kamida 6 ta belgi kiriting.",
+  "auth/network-request-failed": 
+    "Internet aloqasi yo'q. Internetni tekshiring.",
+  "auth/wrong-password": 
+    "Parol noto'g'ri.",
+  "auth/user-not-found": 
+    "Foydalanuvchi topilmadi.",
+  "auth/invalid-email": 
+    "Email formati noto'g'ri.",
+  "auth/too-many-requests": 
+    "Juda ko'p urinish. 1-2 daqiqadan keyin qayta urinib ko'ring.",
+  "auth/invalid-credential": 
+    "Login yoki parol noto'g'ri.",
+  "permission-denied": 
+    "Firestore ruxsat bermaydi. Rules'ni tekshiring.",
+  "unavailable": 
+    "Server javob bermayapti. Internetni tekshiring."
+};
+
+function getErrorMessage(code){
+  return ERROR_MESSAGES[code] || code || "Noma'lum xato";
+}
+
+/* ═══ LOG ═══ */
+
+function log(msg, type, target){
+  const el = document.getElementById(target || "result");
+  if(!el) return;
   const time = new Date().toLocaleTimeString();
   const cls = type || "";
   el.innerHTML += `\n[${time}] <span class="${cls}">${msg}</span>`;
@@ -154,21 +238,22 @@ function log(msg, type){
   console.log(msg);
 }
 
-function setStatus(text, type){
-  const el = document.getElementById("status");
+function setStatus(text, type, target){
+  const el = document.getElementById(target || "status");
+  if(!el) return;
   el.className = "status " + (type || "loading");
   el.innerText = text;
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   FIREBASE INITIALIZE
+   INITIALIZE
    ═══════════════════════════════════════════════════════════════ */
 
 window.addEventListener("load", () => {
   try {
     if(typeof firebase === "undefined"){
-      setStatus("❌ Firebase SDK yuklanmadi!", "error");
-      log("❌ Firebase SDK yuklanmadi — internet aloqasini tekshiring", "err");
+      setStatus("❌ Firebase SDK yuklanmadi!", "error", "lockStatus");
+      log("❌ Firebase SDK yuklanmadi — internet aloqasini tekshiring", "err", "lockResult");
       return;
     }
 
@@ -176,17 +261,86 @@ window.addEventListener("load", () => {
     auth = firebase.auth();
     db = firebase.firestore();
 
-    log("✅ Firebase initialize muvaffaqiyatli", "ok");
-    log("📊 Project: " + firebaseConfig.projectId, "info");
-    log("🌐 Auth Domain: " + firebaseConfig.authDomain, "info");
-    log("", "");
-    log("💡 'BOSH ADMINNI YARATISH' tugmasini bosing", "info");
+    log("✅ Firebase tayyor", "ok", "lockResult");
+    log("📊 Project: " + firebaseConfig.projectId, "info", "lockResult");
+    log("", "", "lockResult");
+    log("🔑 Maxsus parolni kiriting", "warn", "lockResult");
 
-    setStatus("✅ Tayyor — tugmani bosing", "success");
+    setStatus("🔐 Parolni kiriting", "loading", "lockStatus");
+
+    /* Parol inputga focus */
+    setTimeout(()=>{
+      const inp = document.getElementById("lockPassword");
+      if(inp) inp.focus();
+    }, 200);
 
   } catch(e){
-    setStatus("❌ Xato: " + e.message, "error");
-    log("❌ " + e.message, "err");
+    setStatus("❌ Xato: " + e.message, "error", "lockStatus");
+    log("❌ " + e.message, "err", "lockResult");
+  }
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   HIMOYA PAROLINI TEKSHIRISH
+   ═══════════════════════════════════════════════════════════════ */
+
+function unlockPage(){
+  const input = document.getElementById("lockPassword");
+  const password = input.value;
+
+  if(!password){
+    setStatus("⚠️ Parolni kiriting!", "error", "lockStatus");
+    input.focus();
+    return;
+  }
+
+  if(password !== SETUP_PASSWORD){
+    setStatus("❌ Parol noto'g'ri!", "error", "lockStatus");
+    log("❌ Noto'g'ri parol kiritildi", "err", "lockResult");
+    input.value = "";
+    input.focus();
+
+    /* Shake animatsiya */
+    input.style.animation = "none";
+    void input.offsetWidth;
+    input.style.animation = "shake .4s";
+    return;
+  }
+
+  /* ✅ Parol to'g'ri */
+  setStatus("✅ Parol to'g'ri!", "success", "lockStatus");
+  log("✅ Parol to'g'ri — kirish ochildi", "ok", "lockResult");
+
+  document.getElementById("lockScreen").classList.add("hidden");
+  document.getElementById("setupScreen").classList.remove("hidden");
+
+  setStatus("✅ Himoya ochildi", "success", "status");
+  log("💡 Endi Bosh adminni yaratish mumkin", "info");
+
+  /* Parolni tozalash */
+  input.value = "";
+}
+
+function lockPage(){
+  document.getElementById("lockScreen").classList.remove("hidden");
+  document.getElementById("setupScreen").classList.add("hidden");
+  document.getElementById("lockPassword").value = "";
+  document.getElementById("lockResult").innerHTML = "Tayyor...";
+  setStatus("🔐 Parolni kiriting", "loading", "lockStatus");
+
+  setTimeout(()=>{
+    const inp = document.getElementById("lockPassword");
+    if(inp) inp.focus();
+  }, 200);
+}
+
+/* Enter tugmasi bilan ochish */
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Enter"){
+    const lockScreen = document.getElementById("lockScreen");
+    if(lockScreen && !lockScreen.classList.contains("hidden")){
+      unlockPage();
+    }
   }
 });
 
@@ -209,6 +363,12 @@ async function createAdmin(){
     return;
   }
 
+  if(password.length < 6){
+    setStatus("⚠️ Parol kamida 6 ta belgi bo'lsin!", "error");
+    btn.disabled = false;
+    return;
+  }
+
   setStatus("⏳ Yaratilmoqda...", "loading");
   log("", "");
   log("═══════════════════════════════════", "info");
@@ -218,7 +378,6 @@ async function createAdmin(){
   const email = login.toLowerCase() + "@billiard.local";
   log("📧 Email: " + email, "info");
   log("🔑 Login: " + login, "info");
-  log("🔒 Parol: " + password, "info");
   log("👤 Ism: " + fullName, "info");
   log("", "");
 
@@ -227,17 +386,28 @@ async function createAdmin(){
 
     /* 1. Auth'da mavjudligini tekshirish */
     log("1️⃣ Auth'da userni tekshirish...", "info");
+
+    let userExistsInAuth = false;
     try {
       const cred = await auth.signInWithEmailAndPassword(email, password);
       uid = cred.user.uid;
-      log("✅ User mavjud: " + uid, "ok");
+      userExistsInAuth = true;
+      log("✅ Auth'da user mavjud: " + uid, "ok");
       log("   Parol to'g'ri!", "ok");
       await auth.signOut();
     } catch(signInErr){
-      log("⚠️ Auth'da yo'q: " + signInErr.code, "warn");
+      if(signInErr.code === "auth/wrong-password" ||
+         signInErr.code === "auth/invalid-credential"){
+        log("⚠️ Auth'da user bor, lekin parol boshqa", "warn");
+        log("💡 Parolni o'zgartirish uchun avval o'chiring", "warn");
+        setStatus("⚠️ Parol boshqa. Avval o'chiring!", "error");
+        btn.disabled = false;
+        return;
+      }
 
-      /* 2. Yangi user yaratish */
+      log("⚠️ Auth'da yo'q: " + signInErr.code, "warn");
       log("2️⃣ Yangi user yaratish...", "info");
+
       try {
         const cred = await auth.createUserWithEmailAndPassword(email, password);
         uid = cred.user.uid;
@@ -245,6 +415,7 @@ async function createAdmin(){
         await auth.signOut();
       } catch(createErr){
         log("❌ Yaratishda xato: " + createErr.code, "err");
+        log("💡 " + getErrorMessage(createErr.code), "warn");
         throw createErr;
       }
     }
@@ -281,37 +452,19 @@ async function createAdmin(){
     log("🔒 Parol: " + password, "ok");
     log("🆔 UID: " + uid, "ok");
     log("", "");
-    log("📱 Endi saytga kiring:", "info");
+    log("📱 Endi asosiy saytga kiring:", "info");
     log("   https://firdavsbek3110.github.io/BilliardClub", "info");
     log("", "");
-    log("Login: " + login, "warn");
-    log("Parol: " + password, "warn");
+    log("🔑 Login: " + login, "warn");
+    log("🔒 Parol: " + password, "warn");
 
     setStatus("🎉 Bosh admin tayyor! Saytga kiring.", "success");
 
   } catch(e){
     log("", "");
     log("❌ XATO: " + (e.code || e.message), "err");
-
-    let hint = "";
-    if(e.code === "auth/api-key-not-valid.-please-pass-a-valid-api-key."){
-      hint = "API kalit noto'g'ri. Firebase Console → Project Settings → Config'dan yangi kalit oling.";
-    } else if(e.code === "auth/email-already-in-use"){
-      hint = "Email allaqachon band. 'O'chirish' tugmasini bosing, keyin qayta yaratish.";
-    } else if(e.code === "auth/weak-password"){
-      hint = "Parol juda kuchsiz — 6 ta belgidan kam bo'lmasin.";
-    } else if(e.code === "auth/network-request-failed"){
-      hint = "Internet aloqasi yo'q.";
-    } else if(e.code === "permission-denied"){
-      hint = "Firestore Rules ruxsat bermaydi. Rules'ni tekshiring.";
-    }
-
-    if(hint){
-      log("", "");
-      log("💡 " + hint, "warn");
-    }
-
-    setStatus("❌ Xato: " + (e.code || e.message), "error");
+    log("💡 " + getErrorMessage(e.code), "warn");
+    setStatus("❌ " + getErrorMessage(e.code), "error");
   } finally {
     btn.disabled = false;
   }
@@ -325,39 +478,59 @@ async function deleteAdmin(){
   const login = document.getElementById("adminLogin").value.trim();
   const password = document.getElementById("adminPassword").value.trim();
 
+  if(!login){
+    setStatus("⚠️ Loginni kiriting!", "error");
+    return;
+  }
+
   log("", "");
   log("═══════════════════════════════════", "warn");
-  log("🗑️ O'chirish boshlandi", "warn");
+  log("🗑️ O'chirish boshlandi: " + login, "warn");
   log("═══════════════════════════════════", "warn");
 
   const email = login.toLowerCase() + "@billiard.local";
+  let authDeleted = false;
+  let firestoreDeleted = 0;
 
+  /* 1. Auth'dan o'chirish */
   try {
-    /* Auth'dan o'chirish */
-    try {
-      const cred = await auth.signInWithEmailAndPassword(email, password);
-      await cred.user.delete();
-      log("✅ Auth'dan o'chirildi", "ok");
-    } catch(e){
-      log("⚠️ Auth'da yo'q yoki parol xato", "warn");
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    await cred.user.delete();
+    log("✅ Auth'dan o'chirildi", "ok");
+    authDeleted = true;
+  } catch(e){
+    if(e.code === "auth/user-not-found"){
+      log("⚠️ Auth'da bunday user yo'q", "warn");
+    } else if(e.code === "auth/wrong-password" ||
+              e.code === "auth/invalid-credential"){
+      log("⚠️ Parol noto'g'ri — Auth'dan o'chirilmadi", "warn");
+    } else {
+      log("⚠️ Auth xato: " + e.code, "warn");
     }
+  }
 
-    /* Firestore'dan o'chirish */
+  /* 2. Firestore'dan o'chirish */
+  try {
     const snap = await db.collection("users")
       .where("username", "==", login).get();
 
     if(!snap.empty){
-      snap.forEach(doc => doc.ref.delete());
-      log("✅ Firestore'dan o'chirildi (" + snap.size + " ta)", "ok");
+      for(const doc of snap.docs){
+        await doc.ref.delete();
+        firestoreDeleted++;
+      }
+      log("✅ Firestore'dan o'chirildi (" + firestoreDeleted + " ta)", "ok");
     } else {
       log("⚠️ Firestore'da topilmadi", "warn");
     }
-
-    setStatus("✅ O'chirildi", "success");
-
   } catch(e){
-    log("❌ " + (e.code || e.message), "err");
-    setStatus("❌ " + (e.code || e.message), "error");
+    log("❌ Firestore xato: " + e.code, "err");
+  }
+
+  if(authDeleted || firestoreDeleted > 0){
+    setStatus("✅ O'chirildi", "success");
+  } else {
+    setStatus("⚠️ Hech narsa o'chirilmadi", "warn");
   }
 }
 
@@ -369,9 +542,14 @@ async function testLogin(){
   const login = document.getElementById("adminLogin").value.trim();
   const password = document.getElementById("adminPassword").value.trim();
 
+  if(!login || !password){
+    setStatus("⚠️ Login va parolni kiriting!", "error");
+    return;
+  }
+
   log("", "");
   log("═══════════════════════════════════", "info");
-  log("🔐 Login testi", "info");
+  log("🔐 Login testi: " + login, "info");
   log("═══════════════════════════════════", "info");
 
   const email = login.toLowerCase() + "@billiard.local";
@@ -388,6 +566,7 @@ async function testLogin(){
       log("👤 Ism: " + data.fullName, "ok");
       log("🎭 Rol: " + data.role, "ok");
       log("🎱 Stollar: " + data.tablesCount, "ok");
+      log("💰 Narxlar: " + (data.tablePrices||[]).join(", "), "ok");
     } else {
       log("⚠️ Firestore'da ma'lumot yo'q!", "warn");
     }
@@ -397,7 +576,7 @@ async function testLogin(){
 
   } catch(e){
     log("❌ LOGIN XATO: " + e.code, "err");
-    log("   " + e.message, "err");
+    log("💡 " + getErrorMessage(e.code), "warn");
     setStatus("❌ Login ishlamayapti", "error");
   }
 }
